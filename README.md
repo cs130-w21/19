@@ -1,3 +1,12 @@
+# Set up
+```sh
+# install server modules. Make sure to use node v13.14.0 as stated in .nvmrc
+npm install;
+
+# install client modules
+cd client && yarn;
+```
+
 # Repository Template
 
 [![Build Status](https://travis-ci.org/cs130-w21/template.svg?branch=master)](https://travis-ci.org/cs130-w21/template)
