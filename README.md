@@ -1,6 +1,6 @@
 # Set up
 ```sh
-# install server modules. Make sure to use node v13.14.0 as stated in .nvmrc
+# install server modules. Make sure to use node v12.19.0 as stated in .nvmrc
 npm install;
 
 # install client modules
