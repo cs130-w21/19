@@ -1,0 +1,14 @@
+language: node_js
+
+install:
+  - npm install
+  - chmod +x ./ci/build-client-prod.sh
+  - ./ci/build-client-prod.sh
+
+script:
+  - npm test
+  - cd client && yarn run test
+
+deploy:
+  - chmod +x ./ci/deploy.sh
+  - ./ci/deploy.sh
