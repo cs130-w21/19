@@ -5,7 +5,7 @@
   "description": "Our CS 130 repo",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"No tests\" && exit 1"
+    "test": "echo \"No tests\""
   },
   "repository": {
     "type": "git",

@@ -1,14 +1,35 @@
 language: node_js
 
 install:
-  - npm install
-  - chmod +x ./ci/build-client-prod.sh
-  - ./ci/build-client-prod.sh
+- npm install
+- bash -c "cd client && yarn install"
 
 script:
-  - npm test
-  - cd client && yarn run test
+- bash -c "cd client && yarn run build"
+
+after_script:
+- bash -c "cd client && yarn run test"
+- npm test
+
+before_deploy:
+- chmod +x ./ci/create-zip-bundle.sh && ./ci/create-zip-bundle.sh
 
 deploy:
-  - chmod +x ./ci/deploy.sh
-  - ./ci/deploy.sh
+  provider: elasticbeanstalk
+  access_key_id:
+    secure: "VfJ5ca4ddG7mKRaAYPoL5KxLfPfJYzhGnkDaqeTC8xZIY6gH+8dcKTxI/x0Coo2sw5EzKZQzDYGeZRCLvFTsSoU6npf/dIRqiL6XVlInO7aGC9suVSI2plTvWOC6YJtMvVdYP8PTp16of/82282NCiZn1gT0L2xSCoxQp3PNbkg94E4pEz6MVJZnZtL1pc2tN0cKfRMK3dC0RaSA6ymU4WycvlABFs/wbJ5ZyJpnrybiYm6iNjhrbIhd4djaxNHlTBh1IvY9+Sgmtuo1C9n10vHb92FdI8qEXVhmJELmMj8gWcxz8N15T3DHHVfbuQ9BagLWOvosM24cAqzUL5ADVx0hnvgPv+HWwvDFUEw0zgZpyPT6z9CI6ICChrlyWChcc0OY2F22LjEd8Fp2paV1OiRT8M+2kqbxvXvKHjGyfIYCpVGl33qynbqXy4jPOggfaeAH3MQBKQsf8jmnBUyUeQn9GsG444nxDSR/huTS8QeL3471OY23FDXXBGsaob8e+Lx1pWnkrOitoMixPI+1OXY8aM+Bigz/YOnJZ9K/vt5/z9eTHfiJDe3AL1xK4UjClykp3N+KzBP5qfSz034v+zbmMzPbvDabjU+JC6TNrYFNzILxT6KJYdnckRRpkZbcg6+w8NMR6R/4UhxeRVZbVrKD5qAQdvyCztteIeWMFrI="
+  secret_access_key:
+    secure: "LUDPsHLHy5Yx871tB2E4Mz2PUpJYa2I9mxaDtBnI6v0EEsEOZwbt71mzQoOXLv6hXZzmvlhODNJFPXgUH/G+k7wMD3XIoWNDUpxvPBlHVhArnlWLs1LiRf0ssGjBhi6jdFN9KvZWH8CgehjmuvzavP4WOUu2E6zHeutj0MA7Rwj9pwRrvNwKGzrYhDoX6jH+9Q5bhB91YFPEf8O3LzsSLbsYz6ryq4ALUiLyZ6pYpdClAU3n01LIjXjF+KRDGiH4AfYPickM8oYynZlONYJ/0c7DGg5/OPc8fYJCSM42KXSOSOwOGE/YI+Psid2n35uNZHDRWy9NZf+UmANzh94u5P33E0k0N2gwz9Yxd+JGpCdQs/tMG8b/Kk04DQTliZy5f/BG+DQG8p0vFZE70pDD/PgawNC7oVlAlimSCiwzs0kLrmg2bF1xUjcevcTGZW4/4QNn6xhbj2dL096JGPbReBsqwx2+7oovicOflT9lxQR457JY4Di4sa/VIuNmjCM+jES9z6KSI15peGtrRFozPryAH3I4chqI20t4kT75Wilvv23xV4VRLsyn/FQflYALEfpdfiikyTa0hVKI/0R6ZE6dUWTMVSiI3YvIdlu/i2fEDAw5n+56DQ+6jVtViC2S89SKJbXH8j8++8GrAZaXEGMftgDWLMOc81UXCW5NJ9o="
+  region: "us-west-1"
+  app: "stonks"
+  env: "stonks-env"
+  bucket_name: "stonks-source"
+  on:
+    repo: cs130-w21/19
+    branch: master
+  skip_cleanup: true
+  cleanup: false
+  zip_file: './eb_bundle.zip'
+
+after_deploy:
+- echo "NOTIFY dpeloyment successful."
