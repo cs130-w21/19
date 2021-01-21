@@ -6,9 +6,8 @@ import path from 'path';
 import accountRoutes from './src/accountRoutes.js';
 
 const app = express();
-// IF PRODUCTION
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'client', 'build')));
+if (process.env.NODE_ENV !== 'stonks-dev') {
+  app.use(express.static(path.join('client', 'build')));
 }
 
 app.get('/api/health', (req, res) => {
