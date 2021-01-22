@@ -7,7 +7,7 @@ install:
 script:
 - bash -c "cd client && yarn run build"
 
-after_script:
+after_success:
 - bash -c "cd client && yarn run test"
 - npm test
 

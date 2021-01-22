@@ -1,0 +1,4 @@
+# Sample env file. Supply these in beanstalk for production credentials
+
+export PG_CONNSTR="postgresql://willyspinner:@localhost:5432/willyspinner"
+
