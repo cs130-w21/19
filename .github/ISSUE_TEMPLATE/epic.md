@@ -2,7 +2,7 @@
 name: Epic
 about: Describe an epic
 title: ''
-labels: 'epic'
+labels: epic
 assignees: ''
 
 ---
