@@ -19,7 +19,11 @@
   "homepage": "https://github.com/cs130-w21/19#readme",
   "dependencies": {
     "body-parser": "^1.19.0",
+    "d3-dsv": "^2.0.0",
     "express": "^4.17.1",
-    "pg": "^8.5.1"
+    "pg": "^8.5.1",
+    "react": "^16.14.0",
+    "react-dom": "^16.14.0",
+    "react-stockcharts": "^0.7.8"
   }
 }
