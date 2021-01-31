@@ -5,7 +5,7 @@ install:
 - bash -c "cd client && yarn install"
 
 script:
-- bash -c "cd client && yarn run build"
+- bash -c "cd client && CI='' yarn run build"
 
 after_success:
 - bash -c "cd client && yarn run test"
