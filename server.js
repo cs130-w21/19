@@ -2,24 +2,62 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
+import crypto from 'crypto';
 
 // have to import using .js extension, a wierd nodejs quirk
 import accountRoutes from './src/accountRoutes.js';
 import { initializePg } from './src/db/dbClient.js';
+import { truncate } from 'fs';
+
+import cors from 'cors';
+import passport from 'passport';
+import configurePassport from './src/auth/passportConfig.js';
+import passportLocal from 'passport-local';
+import cookieParser from 'cookie-parser';
+import bcrypt from 'bcryptjs';
+import session from 'express-session';
+import { pgPool } from './src/db/dbClient.js';
 
 const app = express();
+
 if (process.env.NODE_ENV !== 'stonks-dev') {
   app.use(express.static(path.join('client', 'build')));
 }
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(cors({
+  origin: 'http://localhost:3000', //location of react app // TODO: change.
+  credentials: truncate,
+}))
+
+/* passport authentication setup */
+const secret = crypto.randomBytes(128) + '';
+app.use(session({
+  secret,
+  resave: true,
+  saveUninitialized: true
+}));
+
+// NOTE: since we are using in-memory session storage, our secret is randomly generated every time.
+// This will change if we opt to use anoter storage, e.g. DB.
+app.use(cookieParser(secret));
+
+app.use(passport.initialize());
+app.use(passport.session());
+configurePassport(passport);
+
+
 app.get('/api/health', (req, res) => {
   res.json({
-    "success": true
+    success: true,
+    user: req.user || 'NONE'
   });
 });
 
+
 // register the main routes here.
-app.use('/accounts', accountRoutes);
+app.use('/api/accounts', accountRoutes);
 
 const port = process.env.PORT || 8080;
 
