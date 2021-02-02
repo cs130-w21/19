@@ -5,7 +5,8 @@
   "description": "Our CS 130 repo",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"No tests\"",
+    "test": "mocha --recursive",
+    "start": "node server.js",
     "dev-server": "NODE_ENV='stonks-dev' node server.js"
   },
   "repository": {
@@ -35,5 +36,11 @@
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-stockcharts": "^0.7.8"
+  },
+  "devDependencies": {
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "sinon": "^9.2.4",
+    "sinon-chai": "^3.5.0"
   }
 }

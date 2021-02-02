@@ -6,6 +6,7 @@ import crypto from 'crypto';
 
 // have to import using .js extension, a wierd nodejs quirk
 import accountRoutes from './src/accountRoutes.js';
+import tradingRoutes from './src/tradingRoutes.js';
 import { initializePg } from './src/db/dbClient.js';
 import { truncate } from 'fs';
 
@@ -58,6 +59,7 @@ app.get('/api/health', (req, res) => {
 
 // register the main routes here.
 app.use('/api/accounts', accountRoutes);
+app.use('/api/trading', tradingRoutes);
 
 const port = process.env.PORT || 8080;
 
