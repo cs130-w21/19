@@ -26,7 +26,7 @@ export const tradesTable = `
     user_id UUID NOT NULL REFERENCES Users(user_id),
     ticker TEXT NOT NULL,
     action TEXT NOT NULL,
-    quantity UINT NOT NULL,
+    quantity BIGINT NOT NULL,
     unit_price_executed DECIMAL(12, 2) NOT NULL
   );
 `;
