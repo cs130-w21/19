@@ -4,11 +4,11 @@ install:
 - npm install
 - bash -c "cd client && yarn install"
 
-script:
+before_script:
 - bash -c "cd client && CI='' yarn run build"
 
-after_success:
-- bash -c "cd client && yarn run test"
+script:
+- bash -c "cd client && yarn run test --passWithNoTests"
 - npm test
 
 before_deploy:
