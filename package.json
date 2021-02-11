@@ -1,46 +1,47 @@
 {
-  "name": "cs130-proj",
-  "version": "1.0.0",
-  "type": "module",
-  "description": "Our CS 130 repo",
-  "main": "server.js",
-  "scripts": {
-    "test": "mocha --recursive",
-    "start": "node server.js",
-    "dev-server": "NODE_ENV='stonks-dev' node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/cs130-w21/19.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/cs130-w21/19/issues"
-  },
-  "homepage": "https://github.com/cs130-w21/19#readme",
-  "dependencies": {
-    "axios": "^0.21.1",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "bootstrap": "^4.6.0",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "d3-dsv": "^2.0.0",
-    "express": "^4.17.1",
-    "express-session": "^1.17.1",
-    "joi-browser": "^13.4.0",
-    "passport": "^0.4.1",
-    "passport-local": "^1.0.0",
-    "pg": "^8.5.1",
-    "react": "^16.14.0",
-    "react-dom": "^16.14.0",
-    "react-stockcharts": "^0.7.8"
-  },
-  "devDependencies": {
-    "chai": "^4.2.0",
-    "mocha": "^8.2.1",
-    "sinon": "^9.2.4",
-    "sinon-chai": "^3.5.0"
-  }
+    "name": "cs130-proj",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Our CS 130 repo",
+    "main": "server.js",
+    "scripts": {
+        "test": "mocha --recursive",
+        "start": "node server.js",
+        "dev-server": "NODE_ENV='stonks-dev' node server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cs130-w21/19.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/cs130-w21/19/issues"
+    },
+    "homepage": "https://github.com/cs130-w21/19#readme",
+    "dependencies": {
+        "axios": "^0.21.1",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "bootstrap": "^4.6.0",
+        "cookie-parser": "^1.4.5",
+        "cors": "^2.8.5",
+        "d3-dsv": "^2.0.0",
+        "express": "^4.17.1",
+        "express-session": "^1.17.1",
+        "joi-browser": "^13.4.0",
+        "passport": "^0.4.1",
+        "passport-local": "^1.0.0",
+        "pg": "^8.5.1",
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0",
+        "react-stockcharts": "^0.7.8",
+        "react-toastify": "^7.0.3"
+    },
+    "devDependencies": {
+        "chai": "^4.2.0",
+        "mocha": "^8.2.1",
+        "sinon": "^9.2.4",
+        "sinon-chai": "^3.5.0"
+    }
 }

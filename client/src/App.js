@@ -1,28 +1,44 @@
 import React, { Component } from 'react';
-import Loginform from "./components/loginForm"
-import Registerfrom from "./components/registerForm"
+import LoginForm from "./components/loginForm"
+import RegisterForm from "./components/registerForm"
 import NavBar from "./components/navibar"
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import ChartComponent from "./components/chart"
+import Store from 'store'
+import Logout from './components/logout';
 
 
+class App extends Component {
+  state = { user:undefined}
 
-function App() {
-  return (
-    <React.Fragment>
-      <NavBar/>
+  componentDidMount() {
+    
+    try{
+      const user = Store.get('user');
+      console.log(user)
+      this.setState({user:user})
+    }catch(ex)
+    {}
+    
+  };
+
+  render() { 
+    return ( 
+      <React.Fragment>
+      <NavBar user={this.state.user} />
       <main className= "container">
         <Switch>
-          <Route path= "/login" component={Loginform} />
-          <Route path= "/register" component={Registerfrom} />
-          <Route path= "/chart" component={ChartComponent} />
+        <Route path= "/login" component={LoginForm} />
+        <Route path= "/register" component={RegisterForm} />
+        <Route path= "/logout" component={Logout}/>
+        <Route path= "/chart" component={ChartComponent} />
 
         </Switch>
       </main>
-
-
     </React.Fragment>
-  );
+     );
+  }
 }
+ 
 
 export default App;

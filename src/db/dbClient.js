@@ -3,7 +3,7 @@ import tableSchemas from './schemas.js';
 
 const { Client, Pool } = pg;
 
-const connectionString = process.env.PG_CONNSTR || 'postgresql://willyspinner:@localhost:5432/willyspinner';
+const connectionString = process.env.PG_CONNSTR || 'postgresql://lorance:123@localhost:5432/lorance';
 
 const pgClient = new Client({ connectionString });
 
