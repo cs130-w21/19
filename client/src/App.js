@@ -3,13 +3,14 @@ import LoginForm from "./components/loginForm"
 import RegisterForm from "./components/registerForm"
 import NavBar from "./components/navibar"
 import { Route, Switch } from "react-router-dom";
-import ChartComponent from "./components/chart"
+import ChartPage from "./pages/chart"
 import Store from 'store'
 import Logout from './components/logout';
+import './styles/app.css';
 
 
 class App extends Component {
-  state = { user:undefined}
+  state = { user:undefined }
 
   componentDidMount() {
     
@@ -31,7 +32,7 @@ class App extends Component {
         <Route path= "/login" component={LoginForm} />
         <Route path= "/register" component={RegisterForm} />
         <Route path= "/logout" component={Logout}/>
-        <Route path= "/chart" component={ChartComponent} />
+        <Route path= "/chart" component={ChartPage} />
 
         </Switch>
       </main>

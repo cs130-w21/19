@@ -1,0 +1,21 @@
+/* overriding bootstrap themes */
+.list-group-item-danger.list-group-item-action.active {
+  /*background-color: #ce3240 !important;*/
+  color: #fff !important;
+  border-color: #721c24 !important;
+  /*background-color: #007bff !important;*/
+  background-color: #dc3545  !important;
+  background-image: none !important;
+}
+
+.btn-inactive {
+  opacity: 0.65;
+}
+
+
+
+.list-group-item-primary.list-group-item-action.active {
+  background-color: #007bff !important;
+  background-image: none !important;
+}
+
