@@ -7,7 +7,8 @@
     "scripts": {
         "test": "mocha --recursive",
         "start": "node server.js",
-        "dev-server": "NODE_ENV='stonks-dev' node server.js"
+        "dev-server": "npm run doc && NODE_ENV='stonks-dev' node server.js",
+        "doc": "apidoc -i src/ -o docs/"
     },
     "repository": {
         "type": "git",
@@ -39,6 +40,7 @@
         "react-toastify": "^7.0.3"
     },
     "devDependencies": {
+        "apidoc": "^0.26.0",
         "chai": "^4.2.0",
         "mocha": "^8.2.1",
         "sinon": "^9.2.4",

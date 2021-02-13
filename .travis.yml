@@ -1,4 +1,4 @@
-language: node_js
+language: node_js # version is specified in .nvmrc
 
 install:
 - npm install
@@ -10,6 +10,7 @@ before_script:
 script:
 - bash -c "cd client && yarn run test --passWithNoTests"
 - npm test
+- npm run doc # build documentation
 
 before_deploy:
 - chmod +x ./ci/create-zip-bundle.sh && ./ci/create-zip-bundle.sh

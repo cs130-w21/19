@@ -222,12 +222,21 @@ export const executeMarketSellOrder = async (userId, ticker, stockQuantity) => {
   }
 }
 
-/* POST /api/trading/buy
- * body parameters:
- * quantity: units of shares to buy - a positive integer.
- * ticker: capitalized stock ticker symbol e.g. PLTR, GOOG, etc.
- *
- */
+/**
+* @api {post} /api/trading/buy Buy a stock
+* @apiPermission auth
+* @apiUse auth
+* @apiGroup trading
+* @apiParam {String} ticker capitalized stock ticker e.g. MSFT 
+* @apiParam {Number} quantity positive integer indicating amount to buy
+*
+* @apiSuccess {Boolean} success set to true if successful.
+* @apiSuccess {String} message order status message.
+*
+* @apiError {Boolean} success (false)
+* @apiError {String} errorMessage useful error message that states why it failed.
+*
+*/
 router.post('/buy', authMiddleware, async (req, res) => {
 
   // first, we make sure the request data is valid.
@@ -267,6 +276,20 @@ router.post('/buy', authMiddleware, async (req, res) => {
 });
 
 
+/**
+* @api {post} /api/trading/sell Sell a stock
+* @apiPermission auth
+* @apiUse auth
+* @apiGroup trading
+* @apiParam {String} ticker capitalized stock ticker e.g. MSFT 
+* @apiParam {Number} quantity positive integer indicating amount to sell
+*
+* @apiSuccess {Boolean} success set to true if successful.
+* @apiSuccess {String} message order status message.
+*
+* @apiError {Boolean} success (false)
+* @apiError {String} errorMessage useful error message that states why it failed.
+*/
 router.post('/sell', authMiddleware, async (req, res) => {
   // first, we make sure the request data is valid.
   const stockQuantity = parseInt(req.body.quantity);

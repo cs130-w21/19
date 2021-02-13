@@ -6,7 +6,19 @@ import passport from 'passport';
 
 const router = express.Router()
 
-// NOTE: all these routes are prefixed with /api/accounts (see server.js)
+/**
+* @api {post} /api/accounts/login Login
+* @apiPermission none
+* @apiGroup accounts
+* @apiParam {String} username username
+* @apiParam {String} password plaintext password 
+*
+* @apiSuccess {Boolean} success set to true if successful.
+*
+* @apiError {Boolean} success (false)
+* @apiError {String} errorMessage useful error message that states why it failed.
+*/
+
 router.post('/login', (req, res, next) => {
   const { username, password } = req.body;
   if (!password || !username) {
@@ -40,6 +52,19 @@ router.post('/login', (req, res, next) => {
   })(req, res,next);
 });
 
+/**
+* @api {post} /api/accounts/register Register new account 
+* @apiPermission none
+* @apiGroup accounts
+* @apiParam {String} username username
+* @apiParam {String} password plaintext password 
+* @apiParam {String} email valid email
+*
+* @apiSuccess {Boolean} success set to true if successful.
+*
+* @apiError {Boolean} success (false)
+* @apiError {String} errorMessage useful error message that states why it failed.
+*/
 router.post('/register', async (req, res) => {
   const dbClient = await pgPool.connect();
   const { username, email, password } = req.body;

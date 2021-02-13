@@ -25,6 +25,8 @@ if (process.env.NODE_ENV !== 'stonks-dev') {
   app.use(express.static(path.join('client', 'build')));
 }
 
+app.use('/docs', express.static('docs'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({

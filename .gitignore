@@ -122,3 +122,7 @@ dist
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# documentation. This will be built in prod
+docs/
+
