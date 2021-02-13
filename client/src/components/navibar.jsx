@@ -1,4 +1,4 @@
-import React, { Component } from 'react'; 
+import React from 'react'; 
 import { Link, NavLink } from "react-router-dom";
 
 const NavBar =({user})=> 
@@ -23,14 +23,8 @@ const NavBar =({user})=>
         </button>
         <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div className="navbar-nav" >
-          <NavLink className="nav-item nav-link" to="/watchlist" >
-            Watch List
-          </NavLink>
           <NavLink className="nav-item nav-link" to="/chart">
             Chart
-          </NavLink>
-          <NavLink className="nav-item nav-link" to="/rentals">
-            Support
           </NavLink>
           {!user   &&  (<React.Fragment>
           <NavLink className="nav-item nav-link" to="/login">

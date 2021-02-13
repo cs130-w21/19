@@ -4,9 +4,11 @@ import RegisterForm from "./components/registerForm"
 import NavBar from "./components/navibar"
 import { Route, Switch } from "react-router-dom";
 import ChartPage from "./pages/chart"
+import ProfilePage from "./pages/myProfile"
 import Store from 'store'
 import Logout from './components/logout';
 import './styles/app.css';
+import WelcomeComponent from './pages/welcome';
 
 
 class App extends Component {
@@ -24,7 +26,7 @@ class App extends Component {
   };
 
   render() { 
-    return ( 
+        return ( 
       <React.Fragment>
       <NavBar user={this.state.user} />
       <main className= "container">
@@ -33,6 +35,8 @@ class App extends Component {
         <Route path= "/register" component={RegisterForm} />
         <Route path= "/logout" component={Logout}/>
         <Route path= "/chart" component={ChartPage} />
+        <Route path= "/myProfile" component={ProfilePage} />
+        <Route path= "/" component={WelcomeComponent} />
 
         </Switch>
       </main>

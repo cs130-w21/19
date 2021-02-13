@@ -1,3 +1,6 @@
+import luxon  from 'luxon';
+
+const { DateTime } = luxon;
 
 // returns a boolean that indicates whether markets are open or not.
 // we are using NYSE / NASDAQ US stock markets, so they open
@@ -5,12 +8,9 @@
 // Normally, federal holidays are included, but for the sake 
 // of simplicity we're not doing it here.
 export const checkMarketOpen = () => {
-  const date = new Date();
-  const HH = date.getHours();
-  const mm = date.getMinutes();
-  const dow = date.getDay();
+  const { minute: mm, hour: hh, weekday: dow } = DateTime.local().setZone('America/New_York');
 
-  const elapsedMinsDay = HH * 60 + mm;
+  const elapsedMinsDay = hh * 60 + mm;
   const isDuringTime = (9*60 + 30) <= elapsedMinsDay && elapsedMinsDay <= (16 * 60);
 
   const isWeekday = 1 <= dow && dow <= 5;

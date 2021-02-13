@@ -26,7 +26,7 @@ class LoginForm extends Form {
             const {data} = this.state;
             localStorage.setItem('user',data.username );
             await login(data.username, data.password);
-            window.location="/"
+            window.location="/chart"
             
             
         } catch (ex) {
@@ -46,7 +46,7 @@ class LoginForm extends Form {
     render() { 
         return (
             <div>
-              <h3>Welcome to Stonk</h3>
+              <h3>Login Form</h3>
               <form onSubmit={this.handleSubmit}>
                 {this.renderInput("username", "Username", "text", "Enter Username")}
                 {this.renderInput("password", "Password", "password", "Enter Password")}

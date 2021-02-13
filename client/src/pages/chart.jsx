@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
-import Chart from '../Chart';
+import Chart from '../components/Chart';
 import { getData } from "../utils"
 import { TypeChooser } from "react-stockcharts/lib/helper";
 import Container from 'react-bootstrap/Container';

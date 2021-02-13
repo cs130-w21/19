@@ -82,6 +82,13 @@ router.post('/register', async (req, res) => {
     INSERT INTO Users(date_created, username, hashed_password, email) VALUES($1, $2, $3, $4) RETURNING *;
   `, [ new Date(), username, hashedPassword, email ]);
 
+  // add some starting money here.
+  const startingAmount = 75000;
+
+  await dbClient.query(`
+    INSERT INTO portfolioItems (date_created, date_changed, user_id, symbol, quantity) values(NOW(), NOW(), $1, 'USD', $2);
+  `, [ newUser.user_id, startingAmount ]);
+
   // TODO: is there a promise version of this?
   req.logIn(newUser, (err) => {
     if (err) {

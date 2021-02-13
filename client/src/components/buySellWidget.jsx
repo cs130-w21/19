@@ -81,7 +81,6 @@ class BuySellWidget extends Component {
   }
 
   onSubmitTrade = async () => {
-    let res;
     this.setState({
       isTransactionPending: true,
       isConfirmationOpen: false,
@@ -206,7 +205,7 @@ class BuySellWidget extends Component {
         </ListGroup>
         <p style={{ marginTop: '0.5em' }}> 
           { isLoggedIn ?
-            "Enter a quantity to purchase or sell {ticker}.":"Please login/register to trade!"
+            `Enter a quantity to purchase or sell ${ticker}.`:"Please login/register to trade!"
           }
         </p>
 
