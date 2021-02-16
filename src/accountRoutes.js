@@ -10,8 +10,8 @@ const router = express.Router()
 * @api {post} /api/accounts/login Login
 * @apiPermission none
 * @apiGroup accounts
-* @apiParam {String} username username
-* @apiParam {String} password plaintext password 
+* @apiParam (Request body) {String} username username
+* @apiParam (Request body) {String} password plaintext password 
 *
 * @apiSuccess {Boolean} success set to true if successful.
 *
@@ -56,9 +56,9 @@ router.post('/login', (req, res, next) => {
 * @api {post} /api/accounts/register Register new account 
 * @apiPermission none
 * @apiGroup accounts
-* @apiParam {String} username username
-* @apiParam {String} password plaintext password 
-* @apiParam {String} email valid email
+* @apiParam (Request body) {String} username username
+* @apiParam (Request body) {String} password plaintext password 
+* @apiParam (Request body) {String} email valid email
 *
 * @apiSuccess {Boolean} success set to true if successful.
 *

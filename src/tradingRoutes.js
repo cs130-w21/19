@@ -227,8 +227,8 @@ export const executeMarketSellOrder = async (userId, ticker, stockQuantity) => {
 * @apiPermission auth
 * @apiUse auth
 * @apiGroup trading
-* @apiParam {String} ticker capitalized stock ticker e.g. MSFT 
-* @apiParam {Number} quantity positive integer indicating amount to buy
+* @apiParam (Request body) {String} ticker capitalized stock ticker e.g. MSFT 
+* @apiParam (Request body) {Number} quantity positive integer indicating amount to buy
 *
 * @apiSuccess {Boolean} success set to true if successful.
 * @apiSuccess {String} message order status message.
@@ -281,8 +281,8 @@ router.post('/buy', authMiddleware, async (req, res) => {
 * @apiPermission auth
 * @apiUse auth
 * @apiGroup trading
-* @apiParam {String} ticker capitalized stock ticker e.g. MSFT 
-* @apiParam {Number} quantity positive integer indicating amount to sell
+* @apiParam (Request body) {String} ticker capitalized stock ticker e.g. MSFT 
+* @apiParam (Request body) {Number} quantity positive integer indicating amount to sell
 *
 * @apiSuccess {Boolean} success set to true if successful.
 * @apiSuccess {String} message order status message.

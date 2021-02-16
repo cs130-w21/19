@@ -16,13 +16,20 @@ import { pgPool } from './db/dbClient.js';
  *     {
  *       "portfolioItems": [
  *         {
- *           "trade_id": "51cb778c-6129-443e-8be4-0b8a96fa808a",
- *           "date_executed": "2021-02-12",
+ *           "item_id": "51cb778c-6129-443e-8be4-0b8a96fa808a",
+ *           "date_created": "2021-02-12",
+ *           "date_changed": "2021-02-12",
  *           "user_id": "61f004d1-56c0-4303-af89-fe39e904cbce",
- *           "ticker": "MSFT",
- *           "action": "buy",
+ *           "symbol": "MSFT",
  *           "quantity": "300",
- *           "unit_price_executed": "50.40",
+ *         },
+ *         {
+ *           "item_id": "21cb778c-6129-443e-8be4-0b8a96fa808a",
+ *           "date_created": "2021-02-12",
+ *           "date_changed": "2021-02-12",
+ *           "user_id": "61f004d1-56c0-4303-af89-fe39e904cbce",
+ *           "symbol": "USD",
+ *           "quantity": "100000",
  *         }
  *       ]
  *     }
