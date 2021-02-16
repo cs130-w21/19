@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router()
-import { checkMarketOpen } from './utils/markets.js';
+import marketUtils from './utils/markets.js';
 import authMiddleware from './auth/authMiddleware.js';
 import getMarketFns from './marketData/marketPrice.js';
 import { pgPool } from './db/dbClient.js';
@@ -9,7 +9,7 @@ import { pgPool } from './db/dbClient.js';
 
 // router-specific middleware to always check trading time of day.
 router.use((_, res, next) => {
-  if(checkMarketOpen()) {
+  if(marketUtils.checkMarketOpen()) {
     next();
   } else {
     res.status(404).json({
@@ -148,7 +148,7 @@ export const executeMarketSellOrder = async (userId, ticker, stockQuantity) => {
   const dbClient = await pgPool.connect();
   try {
     // first, get current price of S and get current portfolio money balance.
-    const pricePerShare = await getMarketFns.getMarketPrice(ticker);
+    const pricePerShare = await getMarketFns.getMarketPrice(dbClient, ticker);
     await dbClient.query(`BEGIN`);
     const moneyToReceive = pricePerShare * stockQuantity;
     const curDate = new Date();

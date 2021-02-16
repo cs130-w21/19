@@ -17,6 +17,8 @@ export const checkMarketOpen = () => {
   return /*isDuringTime && isWeekday*/ true; // TODO: temporary
 }
 
-export default {
+const obj = {
   checkMarketOpen,
 }
+
+export default obj;

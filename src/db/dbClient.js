@@ -9,6 +9,12 @@ const pgClient = new Client({ connectionString });
 
 const pgPool = new Pool({ connectionString });
 
+const createConnectedClient = async () => {
+  const c = new Client({ connectionString });
+  await c.connect();
+  return c;
+};
+
 const initializePg = async () => {
   // first, we connect to the postgres client.
   await pgClient.connect();
@@ -16,4 +22,4 @@ const initializePg = async () => {
   await Promise.all(tableSchemas.map((schemaQuery) => pgClient.query(schemaQuery)));
 };
 
-export { initializePg, pgClient, pgPool };
+export { initializePg, createConnectedClient, pgClient, pgPool };

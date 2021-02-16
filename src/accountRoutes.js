@@ -66,22 +66,26 @@ router.post('/login', (req, res, next) => {
 * @apiError {String} errorMessage useful error message that states why it failed.
 */
 router.post('/register', async (req, res) => {
-  const dbClient = await pgPool.connect();
   const { username, email, password } = req.body;
   if (!password || !username || !email) {
     return res.status(400).json({ errorMessage: 'invalid registration details. ', success: false });
   }
+  const dbClient = await pgPool.connect();
+
   const { rows } = await dbClient.query(`
     SELECT * from Users WHERE username = $1 OR email = $2;
   `, [ username, email ]);
   if (rows.length === 1) {
-    return res.status(400).json({ errorMessage: 'user with username / email already exists. '});
+    dbClient.release();
+    return res.status(400).json({ errorMessage: 'user with username / email already exists. ', success: false });
   }
   const hashedPassword = await bcrypt.hash(password, 10);
   const { rows: [newUser, ]} = await dbClient.query(`
     INSERT INTO Users(date_created, username, hashed_password, email) VALUES($1, $2, $3, $4) RETURNING *;
   `, [ new Date(), username, hashedPassword, email ]);
 
+  // need to check out the pool client (release it)
+  dbClient.release();
   // add some starting money here.
   const startingAmount = 75000;
 
@@ -98,7 +102,7 @@ router.post('/register', async (req, res) => {
         success: false 
       });
     }
-    res.json({ success: true });
+    res.json({ success: true, userId: newUser.user_id });
   });
 
 

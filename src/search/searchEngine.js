@@ -1,5 +1,5 @@
 import path from 'path';
-import MiniSearch from 'MiniSearch';
+import MiniSearch from 'minisearch';
 import csvToJson from 'csvtojson';
 import { fileURLToPath } from 'url';
 

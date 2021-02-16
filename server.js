@@ -90,3 +90,5 @@ process.on('SIGTERM', () => {
   console.log("SIGTERM received - Shutting down server.")
   process.exit(1);
 });
+
+export default app;

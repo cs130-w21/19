@@ -1,20 +1,42 @@
 language: node_js # version is specified in .nvmrc
 
+# we provision a temporary postgres DB to do backend integration tests.
+# default user 'postgres' with blank password.
+# The travis postgres installation is buggy, so we use docker for this.
+services:
+  - docker
+
+# create database with db name 'integration_test_db'
+before_install:
+- chmod +x ./ci/run_test_db.sh && ./ci/run_test_db.sh
+
+# install step
 install:
 - npm install
 - bash -c "cd client && yarn install"
 
+
+# step to build assets & setup for tests
 before_script:
 - bash -c "cd client && CI='' yarn run build"
 
+
+# run our unit and integration tests
 script:
 - bash -c "cd client && yarn run test --passWithNoTests"
-- npm test
+- npm run unit-test
+- PG_CONNSTR='postgresql://postgres:@localhost:5432/integration_test_db' npm run integration-test
 - npm run doc # build documentation
 
+
+
+# create EB (Elastic Beanstalk) zip bundle to upload to AWS EB.
 before_deploy:
 - chmod +x ./ci/create-zip-bundle.sh && ./ci/create-zip-bundle.sh
 
+
+
+# deploy step (only when branch is master)
 deploy:
   provider: elasticbeanstalk
   access_key_id:

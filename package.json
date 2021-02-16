@@ -5,8 +5,9 @@
     "description": "Our CS 130 repo",
     "main": "server.js",
     "scripts": {
-        "test": "mocha --recursive",
         "start": "node server.js",
+        "unit-test": "mocha 'test/unit/*.test.js'",
+        "integration-test": "mocha 'test/integration/*.test.js' --exit",
         "dev-server": "npm run doc && NODE_ENV='stonks-dev' node server.js",
         "doc": "apidoc -i src/ -o docs/"
     },
@@ -47,6 +48,7 @@
     "devDependencies": {
         "apidoc": "^0.26.0",
         "chai": "^4.2.0",
+        "chai-http": "^4.3.0",
         "mocha": "^8.2.1",
         "sinon": "^9.2.4",
         "sinon-chai": "^3.5.0"
