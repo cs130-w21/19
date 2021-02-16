@@ -36,7 +36,11 @@ import { pgPool } from './db/dbClient.js';
  * @apiUse auth
  */
 router.get('/', authMiddleware, async (req, res) => {
-  const { rows }  = await pgPool.query('SELECT * FROM PortfolioItems WHERE user_id = $1;', [ req.user.user_id ]);
+  // TODO: change this to use most recent price per share for securities when using real-time data.
+  const { rows }  = await pgPool.query(`
+    SELECT *, CASE WHEN symbol = 'USD' then 1 ELSE 50.40 END as price_per_share 
+    FROM PortfolioItems WHERE user_id = $1;`, 
+    [ req.user.user_id ]);
   return res.json({
     portfolioItems: rows,
   });

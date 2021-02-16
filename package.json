@@ -5,10 +5,10 @@
     "description": "Our CS 130 repo",
     "main": "server.js",
     "scripts": {
-        "start": "node server.js",
+        "start": "nodemon --ignore client/ --ignore docs --ignore node_modules --exec npm run dev-server",
+        "dev-server": "npm run doc && cross-env NODE_ENV='stonks-dev' node server.js",
         "unit-test": "mocha 'test/unit/*.test.js'",
         "integration-test": "mocha 'test/integration/*.test.js' --exit",
-        "dev-server": "npm run doc && NODE_ENV='stonks-dev' node server.js",
         "doc": "apidoc -i src/ -o docs/"
     },
     "repository": {
@@ -22,6 +22,11 @@
     },
     "homepage": "https://github.com/cs130-w21/19#readme",
     "dependencies": {
+        "@fortawesome/fontawesome-svg-core": "^1.2.34",
+        "@fortawesome/free-brands-svg-icons": "^5.15.2",
+        "@fortawesome/free-regular-svg-icons": "^5.15.2",
+        "@fortawesome/free-solid-svg-icons": "^5.15.2",
+        "@fortawesome/react-fontawesome": "^0.1.14",
         "axios": "^0.21.1",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
@@ -43,13 +48,16 @@
         "react-bs-notifier": "^6.0.0",
         "react-chartjs-2": "^2.11.1",
         "react-stockcharts": "^0.7.8",
-        "react-toastify": "^7.0.3"
+        "react-toastify": "^7.0.3",
+        "timeago.js": "^4.0.2"
     },
     "devDependencies": {
         "apidoc": "^0.26.0",
         "chai": "^4.2.0",
+        "cross-env": "^7.0.3",
         "chai-http": "^4.3.0",
         "mocha": "^8.2.1",
+        "nodemon": "^2.0.7",
         "sinon": "^9.2.4",
         "sinon-chai": "^3.5.0"
     },

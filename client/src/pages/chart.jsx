@@ -1,38 +1,146 @@
 import React, { Component } from 'react';
-import Chart from '../components/Chart';
-import { getData } from "../utils"
 import { TypeChooser } from "react-stockcharts/lib/helper";
 import Container from 'react-bootstrap/Container';
-import BuySellWidget from '../components/buySellWidget';
+import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Store from 'store';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
+import { faStar as outlineStar } from '@fortawesome/free-regular-svg-icons';
+import Chart from '../components/Chart';
+import { getData } from "../utils"
+import BuySellWidget from '../components/buySellWidget';
+import Watchlist from '../components/Watchlist';
+import { getWatchlist, addToWatchlist, deleteFromWatchlist } from '../services/watchlistService';
+import { getPortfolioItems } from '../services/portfolioService';
+import Portfolio from '../components/Portfolio';
 
 class ChartComponent extends Component {
+
+  defaultState = {
+    isWatchlistSelected: true,
+    ticker: 'MSFT',
+    data: undefined,
+    watchlistItems: [],
+    portfolioItems: [],
+    isWatchlisted: false,
+  }
+  constructor(props) {
+    super(props);
+    this.state = this.defaultState;
+  }
+
   componentDidMount() {
-    const ticker = 'MSFT';
     const mostRecentPrice = 50.40;
     getData().then(data => {
-      this.setState({ data, ticker, mostRecentPrice })
+      this.setState({ data, mostRecentPrice })
     })
+    getWatchlist().then(({ data: resData })=> {
+      const { watchlistItems } = resData;
+      this.setState(prevState => {
+        console.log("tick", prevState.ticker)
+        return {
+          watchlistItems,
+          isWatchlisted: watchlistItems.map((x) => x.ticker).includes(prevState.ticker)
+        };
+      });
+    });
+
+    getPortfolioItems().then(({ data: resData }) => {
+      const { portfolioItems } = resData;
+      this.setState({ portfolioItems });
+    });
   }
+
+  changeSelectedStock = (ticker) => {
+    this.setState({
+      ticker,
+    });
+  }
+
+  toggleWatchlistAdd = async () => {
+    try {
+      if (this.state.isWatchlisted) {
+        await deleteFromWatchlist(this.state.ticker);
+      } else {
+        await addToWatchlist(this.state.ticker);
+      }
+
+      this.setState( prevState => ({
+        isWatchlisted: !prevState.isWatchlisted
+      }));
+    } catch(e) {
+      // TODO: error
+      console.log("ERROR", e);
+    }
+  }
+
   render() {
     const user = Store.get('user');
-    if (this.state == null || !this.state.data) {
+    const {
+      portfolioItems,
+      isWatchlistSelected,
+      ticker,
+      mostRecentPrice,
+      data,
+      watchlistItems,
+      isWatchlisted,
+    } = this.state || {};
+
+    if (this.state == null || !mostRecentPrice || !data) {
       return <div>Loading...</div>
     }
-    const { ticker, mostRecentPrice, data } = this.state;
     return (
       <Container style={{ marginTop: '1rem'}}>
         <Row md={12}>
           <Col md={8}>
-            <TypeChooser>
-              {type => <Chart type={type} data={data} />}
-            </TypeChooser>
-            </Col>
-            <Col md={4}>
-              <BuySellWidget ticker={ticker} mostRecentPrice={mostRecentPrice} isLoggedIn={!!user}/>
-            </Col>
+            <div style={{ fontSize: '1.3em',  display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
+              <h3 style={{ marginLeft: '1.3em', marginRight: '0.3em' }} > Microsoft Corporation </h3>
+              <FontAwesomeIcon
+                style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
+                icon={isWatchlisted? solidStar: outlineStar}
+                onClick={this.toggleWatchlistAdd}
+              />
+            </div>
+          </Col >
+        </Row>
+        <Row md={12}>
+          <Col md={8}>
+            <Chart type="hybrid" data={data}/>
+          </Col>
+          <Col md={4}>
+            <BuySellWidget ticker={ticker} mostRecentPrice={mostRecentPrice} isLoggedIn={!!user}/>
+          </Col>
+        </Row>
+        <Row md={12}>
+          <Col md={8}>
+            <Tabs
+              activeKey={isWatchlistSelected ? 'watchlist': 'portfolio'}
+              onSelect={(k) => this.setState({ isWatchlistSelected: k === 'watchlist' })}
+            >
+              <Tab eventKey="watchlist" title="Watchlist">
+                <Watchlist
+                  watchlistItems={watchlistItems}
+                  onSelectStock={this.changeSelectedStock}
+                  isLoggedIn={!!user}
+                />
+              </Tab>
+              <Tab eventKey="portfolio" title="Portfolio">
+                <Portfolio
+                  items={portfolioItems}
+                  titleLess
+                  onSelectStock={this.changeSelectedStock}
+                  light
+                />
+
+              </Tab>
+            </Tabs>
+          </Col>
+          <Col md={4}>
+
+          </Col>
         </Row>
       </Container>
     )

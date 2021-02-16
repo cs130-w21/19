@@ -49,6 +49,19 @@ export const portfolioTable = `
     CONSTRAINT user_symbol_unq unique (user_id, symbol)
   );
 `;
-export default [usersTable, tradesTable, portfolioTable];
+
+/* table containing watchlist items for each user. 
+ */
+export const watchlistTable = `
+  CREATE EXTENSION IF NOT EXISTS pgcrypto;
+  CREATE TABLE IF NOT EXISTS watchlist (
+    watchlist_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES Users(user_id),
+    date_added TIMESTAMP NOT NULL DEFAULT NOW(),
+    ticker TEXT NOT NULL,
+    CONSTRAINT ticker_tbl_user_symbol_unq unique (user_id, ticker)
+  );
+`
+export default [usersTable, tradesTable, portfolioTable, watchlistTable];
 
 
