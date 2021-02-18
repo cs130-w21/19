@@ -10,6 +10,7 @@ import tradingRoutes from './src/tradingRoutes.js';
 import portfolioRoutes from './src/portfolioRoutes.js';
 import searchRoutes from './src/searchRoutes.js';
 import watchlistRoutes from './src/watchlistRoutes.js';
+import historyRoutes from './src/historyRoutes.js';
 import { initializePg } from './src/db/dbClient.js';
 import { initializeSearchEngine } from './src/search/searchEngine.js';
 import { truncate } from 'fs';
@@ -69,6 +70,7 @@ app.use('/api/trading', tradingRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/watchlist', watchlistRoutes);
+app.use('/api/history', historyRoutes);
 
 const port = process.env.PORT || 8080;
 
