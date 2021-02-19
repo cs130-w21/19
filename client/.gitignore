@@ -24,3 +24,6 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# we are commiting the yarn.lock file, so package-lock.json is unneeded.
+package-lock.json

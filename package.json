@@ -1,65 +1,29 @@
 {
-    "name": "cs130-proj",
-    "version": "1.0.0",
-    "type": "module",
-    "description": "Our CS 130 repo",
-    "main": "server.js",
-    "scripts": {
-        "start": "nodemon --ignore client/ --ignore docs --ignore node_modules --exec npm run dev-server",
-        "dev-server": "npm run doc && cross-env NODE_ENV='stonks-dev' node server.js",
-        "unit-test": "mocha 'test/unit/*.test.js'",
-        "integration-test": "mocha 'test/integration/*.test.js' --exit",
-        "doc": "apidoc -i src/ -o docs/"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/cs130-w21/19.git"
-    },
-    "author": "",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/cs130-w21/19/issues"
-    },
-    "homepage": "https://github.com/cs130-w21/19#readme",
-    "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "^1.2.34",
-        "@fortawesome/free-brands-svg-icons": "^5.15.2",
-        "@fortawesome/free-regular-svg-icons": "^5.15.2",
-        "@fortawesome/free-solid-svg-icons": "^5.15.2",
-        "@fortawesome/react-fontawesome": "^0.1.14",
-        "axios": "^0.21.1",
-        "bcryptjs": "^2.4.3",
-        "body-parser": "^1.19.0",
-        "bootstrap": "^4.6.0",
-        "chart.js": "^2.9.4",
-        "cookie-parser": "^1.4.5",
-        "cors": "^2.8.5",
-        "csvtojson": "^2.0.10",
-        "d3-dsv": "^2.0.0",
-        "express": "^4.17.1",
-        "express-session": "^1.17.1",
-        "joi-browser": "^13.4.0",
-        "luxon": "^1.25.0",
-        "minisearch": "^3.0.2",
-        "passport": "^0.4.1",
-        "passport-local": "^1.0.0",
-        "pg": "^8.5.1",
-        "react-bootstrap": "^1.4.3",
-        "react-bs-notifier": "^6.0.0",
-        "react-chartjs-2": "^2.11.1",
-        "react-stockcharts": "^0.7.8",
-        "react-toastify": "^7.0.3",
-        "timeago.js": "^4.0.2"
-    },
-    "devDependencies": {
-        "apidoc": "^0.26.0",
-        "chai": "^4.2.0",
-        "cross-env": "^7.0.3",
-        "chai-http": "^4.3.0",
-        "mocha": "^8.2.1",
-        "nodemon": "^2.0.7",
-        "sinon": "^9.2.4",
-        "sinon-chai": "^3.5.0"
-    },
-    "proxy": "http://localhost:8080"
+  "name": "cs130-project",
+  "version": "1.0.0",
+  "description": "Main package.json file containing helpful development npm scripts",
+  "main": "index.js",
+  "scripts": {
+    "test": "cd server && npm run test",
+    "install": "npm install && npm run install:server && npm run install:client",
+    "install:server": "cd server && npm install",
+    "install:client": "cd client && yarn install",
+    "start": "concurrently -n server,client \"npm run run:server\" \"npm run run:client\"",
+    "run:server": "cd server && npm run dev-server",
+    "run:client": "cd client && yarn start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cs130-w21/19.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cs130-w21/19/issues"
+  },
+  "homepage": "https://github.com/cs130-w21/19#readme",
+  "dependencies": {},
+  "devDependencies": {
+    "concurrently": "^5.3.0"
+  }
 }

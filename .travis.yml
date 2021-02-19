@@ -12,7 +12,7 @@ before_install:
 
 # install step
 install:
-- npm install
+- bash -c "cd server && npm install"
 - bash -c "cd client && yarn install"
 
 
@@ -24,10 +24,9 @@ before_script:
 # run our unit and integration tests
 script:
 - bash -c "cd client && yarn run test --passWithNoTests"
-- npm run unit-test
-- PG_CONNSTR='postgresql://postgres:@localhost:5432/integration_test_db' npm run integration-test
-- npm run doc # build documentation
-
+- bash -c "cd server && npm run unit-test"
+- PG_CONNSTR='postgresql://postgres:@localhost:5432/integration_test_db' bash -c "cd server && npm run integration-test"
+- bash -c "cd server && npm run doc" # build documentation
 
 
 # create EB (Elastic Beanstalk) zip bundle to upload to AWS EB.

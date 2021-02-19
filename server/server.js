@@ -3,6 +3,14 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import path from 'path';
 import crypto from 'crypto';
+import { truncate } from 'fs';
+import cors from 'cors';
+import passport from 'passport';
+import passportLocal from 'passport-local';
+import cookieParser from 'cookie-parser';
+import bcrypt from 'bcryptjs';
+import session from 'express-session';
+import { fileURLToPath } from 'url';
 
 // have to import using .js extension, a wierd nodejs quirk
 import accountRoutes from './src/accountRoutes.js';
@@ -12,22 +20,14 @@ import searchRoutes from './src/searchRoutes.js';
 import watchlistRoutes from './src/watchlistRoutes.js';
 import { initializePg } from './src/db/dbClient.js';
 import { initializeSearchEngine } from './src/search/searchEngine.js';
-import { truncate } from 'fs';
-
-import cors from 'cors';
-import passport from 'passport';
 import configurePassport from './src/auth/passportConfig.js';
-import passportLocal from 'passport-local';
-import cookieParser from 'cookie-parser';
-import bcrypt from 'bcryptjs';
-import session from 'express-session';
 import { pgPool } from './src/db/dbClient.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
-if (process.env.NODE_ENV !== 'stonks-dev') {
-  app.use(express.static(path.join('client', 'build')));
-}
 
 app.use('/docs', express.static('docs'));
 
@@ -69,6 +69,16 @@ app.use('/api/trading', tradingRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/watchlist', watchlistRoutes);
+
+// serve frontend assets if not exists
+if (process.env.NODE_ENV !== 'stonks-dev') {
+  const frontendBuildPath = path.join(__dirname, '..', 'client', 'build');
+  const frontendAssetsRoute = express.static(frontendBuildPath);
+  app.use(frontendAssetsRoute);
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
+  });
+}
 
 const port = process.env.PORT || 8080;
 

@@ -1,0 +1,49 @@
+{
+    "name": "cs130-proj-server",
+    "version": "1.0.0",
+    "type": "module",
+    "description": "Our CS 130 repo",
+    "main": "server.js",
+    "scripts": {
+        "start": "nodemon --ignore docs --ignore node_modules --exec npm run dev-server",
+        "dev-server": "npm run doc && cross-env NODE_ENV='stonks-dev' node server.js",
+        "unit-test": "mocha 'test/unit/*.test.js'",
+        "integration-test": "mocha 'test/integration/*.test.js' --exit",
+        "doc": "apidoc -i src/ -o docs/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/cs130-w21/19.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/cs130-w21/19/issues"
+    },
+    "homepage": "https://github.com/cs130-w21/19#readme",
+    "dependencies": {
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.19.0",
+        "cookie-parser": "^1.4.5",
+        "passport": "^0.4.1",
+        "passport-local": "^1.0.0",
+        "cors": "^2.8.5",
+        "csvtojson": "^2.0.10",
+        "express": "^4.17.1",
+        "express-session": "^1.17.1",
+        "luxon": "^1.25.0",
+        "minisearch": "^3.0.2",
+        "pg": "^8.5.1"
+    },
+    "devDependencies": {
+        "apidoc": "^0.26.0",
+        "chai": "^4.2.0",
+        "cross-env": "^7.0.3",
+        "chai-http": "^4.3.0",
+        "mocha": "^8.2.1",
+        "nodemon": "^2.0.7",
+        "sinon": "^9.2.4",
+        "sinon-chai": "^3.5.0"
+    },
+    "proxy": "http://localhost:8080"
+}
