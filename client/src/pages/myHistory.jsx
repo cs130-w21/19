@@ -5,9 +5,11 @@ import * as getUserHistory from "../services/getUserData";
 import { paginate } from "../components/common/paginate";
 import Pagination from "../components/common/pagination";
 import _ from "lodash"
-
+import * as getUserHistoryData from "../services/getUserData"
+import Alert from 'react-bootstrap/Alert'
 //just for testing
 import * as dummyhistory from "./dummyHistory"
+
 
 
 class Histroy extends Component {
@@ -27,8 +29,13 @@ class Histroy extends Component {
     // }
     
     async componentDidMount() {
-        const userHistory =  await dummyhistory.getHistory();
-        const userHistory1 = userHistory.map(
+        
+        try
+        {
+            const backEndData =  await getUserHistoryData.getUserHistoryData();
+            const userHistory =  backEndData.data.Trades;
+    
+            const userHistory1 = userHistory.map(
             function(item)  
             { 
                 item.quantity = parseFloat(item.quantity);
@@ -36,8 +43,16 @@ class Histroy extends Component {
                 return item;
             });
         
-        const totalCost = userHistory1.map((item) => (  Object.assign( item, { total_cost: (item.quantity * item.unit_price_executed).toFixed(2) })));
-        this.setState({userHistory: totalCost})
+            const totalCost = userHistory1.map((item) => (  Object.assign( item, { total_cost: (item.quantity * item.unit_price_executed).toFixed(2) })));
+            this.setState({userHistory: totalCost})
+        }
+        catch(e)
+        {
+            const error = "Cannot Connect to the database"; 
+            this.setState({error:error});
+            console.log(  "this is error " + this.state.error)
+        }
+        
     }
 
     handleSort = sortColumn => {
@@ -80,8 +95,21 @@ class Histroy extends Component {
             );
         
         const {totalCount, data: userHistory} = this.getPagedData();
-
         
+        if(!this.state.error)
+        {
+            return (
+                <div>
+                <h1>
+                    {history_title}
+                    <Alert variant="danger">
+                        {this.state.error}
+                    </Alert>
+                </h1>
+                </div>
+            )
+        }
+
         return (
             <div>
                 <h1>
