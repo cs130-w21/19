@@ -1,14 +1,15 @@
-import React from 'react'; 
+import React, { Component } from 'react';
 import { Link, NavLink } from "react-router-dom";
 
-const NavBar =({user})=> 
-{
-    
-    
+class NavBar extends Component{
+ 
+
+
+  render(){
     return(
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <Link className = "navbar-brand" to="/">
-            Stonk
+            Stonks
         </Link>
         <button
         className="navbar-toggler"
@@ -21,36 +22,40 @@ const NavBar =({user})=>
       >
         <span className="navbar-toggler-icon" />
         </button>
-        <div className="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div className="navbar-nav" >
           <NavLink className="nav-item nav-link" to="/chart">
             Chart
-          </NavLink>
-          {!user   &&  (<React.Fragment>
+          </NavLink></div>
+          {!this.props.user   &&  (<React.Fragment>
+          <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+        <div className="navbar-nav" >
           <NavLink className="nav-item nav-link" to="/login">
             Login
           </NavLink>
           <NavLink className="nav-item nav-link" to="/register">
             Register
-          </NavLink>
+          </NavLink></div></div>
           </React.Fragment>)
           }
 
-          {user    && (<React.Fragment>
+          {this.props.user    && (<React.Fragment>
+            <div className="navbar-nav" >
           <NavLink className="nav-item nav-link" to="/myProfile">
-            {user}
-          </NavLink>
+            {this.props.user}
+          </NavLink> </div>
+      
+          <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+          <div className="navbar-nav" >
           <NavLink className="nav-item nav-link" to="/logout">
             Logout
-          </NavLink>
+          </NavLink></div></div>
           </React.Fragment>)
           }
           
-        </div>
-      </div>
     </nav>
 
     );
+  }
 }
 
 export default NavBar

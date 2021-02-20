@@ -12,6 +12,7 @@
     "joi-browser": "^13.4.0",
     "luxon": "^1.25.0",
     "react-bootstrap": "^1.4.3",
+    "react-bootstrap-typeahead": "^5.1.4",
     "react-bs-notifier": "^6.0.0",
     "react-chartjs-2": "^2.11.1",
     "chart.js": "^2.9.4",

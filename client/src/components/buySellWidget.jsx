@@ -20,6 +20,7 @@ import { AlertList } from 'react-bs-notifier';
  * mostRecentPrice: most recent price of selected ticker 
  * ticker: ticker of stock selected in CAPITAL LETTERS.
  * user: user information (used to detect if logged in or not
+ * onTransactionSuccess: called if transaction is successful.
 */
 
 
@@ -104,6 +105,7 @@ class BuySellWidget extends Component {
             message: "Order filled and executed.",
           }
         })
+        this.props.onTransactionSuccess();
       }, 500);
     } catch(e) {
       const { errorMessage } = e.response.data;

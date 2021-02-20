@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import LoginForm from "./components/loginForm"
 import RegisterForm from "./components/registerForm"
 import NavBar from "./components/navibar"
+import SearchNavBar from "./components/searchNavbar"
 import { Route, Switch } from "react-router-dom";
 import ChartPage from "./pages/chart"
 import ProfilePage from "./pages/myProfile"

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { TypeChooser } from "react-stockcharts/lib/helper";
 import Container from 'react-bootstrap/Container';
 import Tabs from 'react-bootstrap/Tabs';
 import Tab from 'react-bootstrap/Tab';
@@ -16,20 +15,38 @@ import Watchlist from '../components/Watchlist';
 import { getWatchlist, addToWatchlist, deleteFromWatchlist } from '../services/watchlistService';
 import { getPortfolioItems } from '../services/portfolioService';
 import Portfolio from '../components/Portfolio';
-
+import StockSelector from '../components/StockSelector';
 class ChartComponent extends Component {
 
   defaultState = {
     isWatchlistSelected: true,
     ticker: 'MSFT',
+    companyName: 'Microsoft Corporation Common Stock',
     data: undefined,
     watchlistItems: [],
     portfolioItems: [],
-    isWatchlisted: false,
   }
   constructor(props) {
     super(props);
     this.state = this.defaultState;
+  }
+
+  updateWatchlistData = () => {
+    getWatchlist().then(({ data: resData })=> {
+      const { watchlistItems } = resData;
+      this.setState(prevState => {
+        return {
+          watchlistItems,
+        };
+      });
+    });
+  }
+
+  updatePortfolioData = () => {
+    getPortfolioItems().then(({ data: resData }) => {
+      const { portfolioItems } = resData;
+      this.setState({ portfolioItems });
+    });
   }
 
   componentDidMount() {
@@ -37,23 +54,17 @@ class ChartComponent extends Component {
     getData().then(data => {
       this.setState({ data, mostRecentPrice })
     })
-    getWatchlist().then(({ data: resData })=> {
-      const { watchlistItems } = resData;
-      this.setState(prevState => {
-        console.log("tick", prevState.ticker)
-        return {
-          watchlistItems,
-          isWatchlisted: watchlistItems.map((x) => x.ticker).includes(prevState.ticker)
-        };
-      });
-    });
-
-    getPortfolioItems().then(({ data: resData }) => {
-      const { portfolioItems } = resData;
-      this.setState({ portfolioItems });
-    });
+    this.updateWatchlistData();
+    this.updatePortfolioData();
   }
 
+
+  onSearchbarSelectStock = ({ name, symbol }) => {
+    this.setState({
+      ticker: symbol,
+      companyName: name,
+    });
+  }
   changeSelectedStock = (ticker) => {
     this.setState({
       ticker,
@@ -61,20 +72,27 @@ class ChartComponent extends Component {
   }
 
   toggleWatchlistAdd = async () => {
+    const isWatchlisted = this.checkCurrentStockWatchlisted();
     try {
-      if (this.state.isWatchlisted) {
+      if (isWatchlisted) {
         await deleteFromWatchlist(this.state.ticker);
       } else {
         await addToWatchlist(this.state.ticker);
       }
-
-      this.setState( prevState => ({
-        isWatchlisted: !prevState.isWatchlisted
-      }));
+      await this.updateWatchlistData();
     } catch(e) {
       // TODO: error
       console.log("ERROR", e);
     }
+  }
+
+  checkCurrentStockWatchlisted = () => {
+    return this.state.watchlistItems.map((x) => x.ticker).includes(this.state.ticker)
+  }
+
+  onTransactionSuccess = () => {
+    this.updateWatchlistData();
+    this.updatePortfolioData();
   }
 
   render() {
@@ -84,20 +102,24 @@ class ChartComponent extends Component {
       isWatchlistSelected,
       ticker,
       mostRecentPrice,
+      companyName,
       data,
       watchlistItems,
-      isWatchlisted,
     } = this.state || {};
 
     if (this.state == null || !mostRecentPrice || !data) {
       return <div>Loading...</div>
     }
+
+    const isWatchlisted = this.checkCurrentStockWatchlisted();
     return (
+      <>
+      <StockSelector onSelectStock={this.onSearchbarSelectStock} />
       <Container style={{ marginTop: '1rem'}}>
         <Row md={12}>
           <Col md={8}>
             <div style={{ fontSize: '1.3em',  display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
-              <h3 style={{ marginLeft: '1.3em', marginRight: '0.3em' }} > Microsoft Corporation </h3>
+              <h3 style={{ marginLeft: '1.3em', marginRight: '0.3em' }} > {ticker}: { companyName } </h3>
               <FontAwesomeIcon
                 style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
                 icon={isWatchlisted? solidStar: outlineStar}
@@ -111,7 +133,7 @@ class ChartComponent extends Component {
             <Chart type="hybrid" data={data}/>
           </Col>
           <Col md={4}>
-            <BuySellWidget ticker={ticker} mostRecentPrice={mostRecentPrice} isLoggedIn={!!user}/>
+            <BuySellWidget ticker={ticker} mostRecentPrice={mostRecentPrice} isLoggedIn={!!user} onTransactionSuccess={this.onTransactionSuccess}/>
           </Col>
         </Row>
         <Row md={12}>
@@ -134,7 +156,6 @@ class ChartComponent extends Component {
                   onSelectStock={this.changeSelectedStock}
                   light
                 />
-
               </Tab>
             </Tabs>
           </Col>
@@ -143,6 +164,7 @@ class ChartComponent extends Component {
           </Col>
         </Row>
       </Container>
+      </>
     )
   }
 }
