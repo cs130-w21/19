@@ -37,7 +37,8 @@ export const checkMarketOpen = () => {
   const isDuringTime = (9*60 + 30) <= elapsedMinsDay && elapsedMinsDay <= (16 * 60);
 
   const isWeekday = 1 <= dow && dow <= 5;
-  return isDuringTime && isWeekday;
+  //return isDuringTime && isWeekday;
+  return true;
 }
 
 

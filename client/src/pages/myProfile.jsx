@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {getPortfolioItems} from "../services/portfolioService.js"
 import Portfolio from "../components/Portfolio"
+import History from "./myHistory"
 import { Doughnut } from 'react-chartjs-2'
 import {createChartInput} from '../utils'
 
@@ -52,6 +53,8 @@ class Profile extends Component{
               }
             }}
           />
+          <History/>
+         
         </div>
       );
   }
