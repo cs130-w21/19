@@ -10,7 +10,10 @@ npm run install:all
 
 # 2. make sure to have postgresql 12.4 running, and specify the connection string in the 
 # environment variable PG_CONNSTR
-export PG_CONNSTR="postgresql://willyspinner:@localhost:5432/willyspinner"
+export PG_CONNSTR="postgresql://username:password@localhost:5432/db_name"
+
+# go to finnhub.io and make a free account. Then, add your API KEY:
+export FINNHUB_API_KEY="YOUR_API_KEY_HERE"
 
 
 # 3. Start both client and server in development mode. See the root directory

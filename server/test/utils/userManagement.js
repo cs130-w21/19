@@ -48,6 +48,10 @@ const deleteTestUser = async (dbClient, userId) => {
   `, [ userId ]);
 
   await dbClient.query(`
+    DELETE FROM watchlist WHERE user_id = $1;
+  `, [ userId ]);
+
+  await dbClient.query(`
     DELETE FROM Users WHERE user_id = $1;
   `, [ userId ]);
 }

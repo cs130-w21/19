@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser';
 import bcrypt from 'bcryptjs';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
+import ws from 'ws';
 
 // have to import using .js extension, a wierd nodejs quirk
 import accountRoutes from './src/accountRoutes.js';
@@ -18,17 +19,22 @@ import tradingRoutes from './src/tradingRoutes.js';
 import portfolioRoutes from './src/portfolioRoutes.js';
 import searchRoutes from './src/searchRoutes.js';
 import watchlistRoutes from './src/watchlistRoutes.js';
+import chartingRoutes, { wsSubscribeToTickerHandler, wsUnsubscribeFromTickerHandler } from './src/chartingRoutes.js';
 import historyRoutes from './src/historyRoutes.js';
 import { initializePg } from './src/db/dbClient.js';
+import { FinnhubWsClient } from './src/marketData/finnhub.js';
+import { finnhubWsMessageHandler } from './src/marketData/realtimeStream.js';
 import { initializeSearchEngine } from './src/search/searchEngine.js';
 import configurePassport from './src/auth/passportConfig.js';
 import { pgPool } from './src/db/dbClient.js';
+import SubscriptionManager from './src/marketData/subscriptionManager.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
 
+const wsServer = new ws.Server({ noServer :true, clientTracking: true });
 
 app.use('/docs', express.static('docs'));
 
@@ -64,12 +70,14 @@ app.get('/api/health', (req, res) => {
 });
 
 
+
 // register the main routes here.
 app.use('/api/accounts', accountRoutes);
 app.use('/api/trading', tradingRoutes);
 app.use('/api/portfolio', portfolioRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/watchlist', watchlistRoutes);
+app.use('/api/chart', chartingRoutes);
 app.use('/api/history', historyRoutes);
 
 // serve frontend assets if not exists
@@ -84,9 +92,48 @@ if (process.env.NODE_ENV !== 'stonks-dev') {
 
 const port = process.env.PORT || 8080;
 
-console.log("Initializing pg tables if not exists & search engine...");
-Promise.all([initializePg(), initializeSearchEngine()]).then(() => {
-  app.listen(port, () => {
+/* Our websocket server initializations */
+wsServer.on('connection', (ws) => {
+  SubscriptionManager.registerClient(ws);
+  console.log("Client connected. Assigned websocket id:", ws.id);
+  ws.on('message', async (msg) => {
+    let payload;
+    try {
+      payload = JSON.parse(msg);
+    } catch(e) {
+      ws.send("Invalid JSON.");
+      return;
+    }
+
+    if (payload.event === 'subscribeToTicker') {
+      await wsSubscribeToTickerHandler(wsServer, ws, payload);
+    } else  if (payload.event === 'unsubscribeFromTicker') {
+      await wsUnsubscribeFromTickerHandler(wsServer, ws, payload);
+    } else {
+      console.log("Invalid event type for msg", payload);
+      ws.send("Invalid event type");
+    }
+  });
+  ws.on('close', () => {
+    console.log("Client", ws.id,"Unregistered.")
+    SubscriptionManager.unregisterClient(ws);
+  });
+});
+
+
+/* Finnhub Websocket Client listeners */ 
+FinnhubWsClient.addEventListener('message', finnhubWsMessageHandler);
+
+console.log("Initializing pg tables if not exists...");
+initializePg().then(() => {
+  console.log("OK. Initializing search engine & ticker table...");
+  initializeSearchEngine().then(() => {
+    const server = app.listen(port);
+    server.on('upgrade', (req, socket, head) => {
+      wsServer.handleUpgrade(req, socket, head, (ws) => {
+        wsServer.emit('connection', ws, req);
+      });
+    });
     console.log("App listening on port", port);
   });
 }).catch((e) => {
@@ -97,7 +144,6 @@ Promise.all([initializePg(), initializeSearchEngine()]).then(() => {
 process.on('SIGINT', () => {
   console.log("SIGINT received - Shutting down server.")
   process.exit(1);
-
 })
 
 process.on('SIGTERM', () => {

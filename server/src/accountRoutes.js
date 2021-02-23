@@ -84,8 +84,6 @@ router.post('/register', async (req, res) => {
     INSERT INTO Users(date_created, username, hashed_password, email) VALUES($1, $2, $3, $4) RETURNING *;
   `, [ new Date(), username, hashedPassword, email ]);
 
-  // need to check out the pool client (release it)
-  dbClient.release();
   // add some starting money here.
   const startingAmount = 75000;
 
@@ -93,6 +91,7 @@ router.post('/register', async (req, res) => {
     INSERT INTO portfolioItems (date_created, date_changed, user_id, symbol, quantity) values(NOW(), NOW(), $1, 'USD', $2);
   `, [ newUser.user_id, startingAmount ]);
 
+  dbClient.release();
   // TODO: is there a promise version of this?
   req.logIn(newUser, (err) => {
     if (err) {

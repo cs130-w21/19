@@ -5,7 +5,7 @@ export const usersTable = `
   CREATE EXTENSION IF NOT EXISTS pgcrypto;
   CREATE TABLE IF NOT EXISTS Users (
     user_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    date_created DATE NOT NULL,
+    date_created TIMESTAMP NOT NULL,
     username TEXT NOT NULL,
     hashed_password TEXT NOT NULL,
     email TEXT UNIQUE
@@ -22,7 +22,7 @@ export const tradesTable = `
   CREATE EXTENSION IF NOT EXISTS pgcrypto;
   CREATE TABLE IF NOT EXISTS Trades (
     trade_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    date_executed DATE NOT NULL,
+    date_executed TIMESTAMP NOT NULL,
     user_id UUID NOT NULL REFERENCES Users(user_id),
     ticker TEXT NOT NULL,
     action TEXT NOT NULL,
@@ -41,12 +41,26 @@ export const portfolioTable = `
   CREATE EXTENSION IF NOT EXISTS pgcrypto;
   CREATE TABLE IF NOT EXISTS PortfolioItems (
     item_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    date_created DATE NOT NULL,
-    date_changed DATE NOT NULL,
+    date_created TIMESTAMP NOT NULL,
+    date_changed TIMESTAMP NOT NULL,
     user_id UUID NOT NULL REFERENCES Users(user_id),
     symbol TEXT NOT NULL,
     quantity DECIMAL(12, 2) NOT NULL,
     CONSTRAINT user_symbol_unq unique (user_id, symbol)
+  );
+`;
+
+/* the ticker_name  e.g. MSFT serves as the primary key here.*/
+// NOTE: we store the last_price here since we need to use it to join with portfolioItems table
+// to get most up-to-date portfolio value/worth.
+export const tickersTable = `
+  CREATE EXTENSION IF NOT EXISTS pgcrypto;
+  CREATE TABLE IF NOT EXISTS tickers (
+    ticker_name TEXT PRIMARY KEY,
+    full_name TEXT NOT NULL,
+    date_added TIMESTAMP NOT NULL DEFAULT NOW(),
+    price_last_changed TIMESTAMP NOT NULL DEFAULT NOW(),
+    last_price DECIMAL(12, 2)
   );
 `;
 
@@ -62,6 +76,6 @@ export const watchlistTable = `
     CONSTRAINT ticker_tbl_user_symbol_unq unique (user_id, ticker)
   );
 `
-export default [usersTable, tradesTable, portfolioTable, watchlistTable];
 
 
+export default [usersTable, tradesTable, portfolioTable, tickersTable, watchlistTable];

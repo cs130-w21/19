@@ -88,7 +88,7 @@ describe('/api/trading/buy integration tests', () => {
       .withArgs(sinon.match.any, 'TEST_TICKER').resolves(DUMMY_PRICE)
       .withArgs(sinon.match.any, 'TEST_TICKER2').resolves(DUMMY_PRICE2);
 
-    testUserObj = await createTestUser(pgClient, app);// username test_user, gives 100k usd to this user.
+    testUserObj = await createTestUser(pgClient, app);// username test_user.
   });
 
   afterEach(async () => {
@@ -121,7 +121,7 @@ describe('/api/trading/buy integration tests', () => {
       .send({ ticker: 'TEST_TICKER', quantity: 100 });
 
     expect(res.status).to.equal(200);
-    expect(res.body).to.deep.equal({ message: 'order filled', success: true });
+    expect(res.body).to.deep.equal({ message: 'order filled', success: true, executedPrice: DUMMY_PRICE });
 
     await checkTrades (pgClient, testUserObj.userId, [
       { action: 'buy', quantity: 100, price: DUMMY_PRICE, ticker: 'TEST_TICKER' },
@@ -146,7 +146,7 @@ describe('/api/trading/buy integration tests', () => {
 
     [res1, res2].forEach((res) => {
       expect(res.status).to.equal(200);
-      expect(res.body).to.deep.equal({ message: 'order filled', success: true });
+      expect(res.body).to.deep.equal({ message: 'order filled', success: true, executedPrice: DUMMY_PRICE });
     });
 
     await checkTrades (pgClient, testUserObj.userId, [
@@ -171,8 +171,8 @@ describe('/api/trading/buy integration tests', () => {
       .set('Cookie', testUserObj.setCookie)
       .send({ ticker: 'TEST_TICKER2', quantity: 400 });
 
-    [res1, res2].forEach((res) => {
-      expect(res.body).to.deep.equal({ message: 'order filled', success: true });
+    [res1, res2].forEach((res, i) => {
+      expect(res.body).to.deep.equal({ message: 'order filled', success: true, executedPrice: [DUMMY_PRICE, DUMMY_PRICE2][i] });
       expect(res.status).to.equal(200);
     });
 
@@ -328,7 +328,7 @@ describe('/api/trading/sell integration tests', () => {
       .send({ ticker: 'TEST_TICKER', quantity: 20 });
 
     expect(res.status).to.equal(200);
-    expect(res.body).to.deep.equal({ message: 'order filled', success: true });
+    expect(res.body).to.deep.equal({ message: 'order filled', success: true, executedPrice: DUMMY_PRICE });
 
     await checkTrades(pgClient, testUserObj.userId, [
       { action: 'sell', quantity: 20, price: DUMMY_PRICE, ticker: 'TEST_TICKER' },
@@ -353,7 +353,7 @@ describe('/api/trading/sell integration tests', () => {
 
     [res1, res2].forEach((res) => {
       expect(res.status).to.equal(200);
-      expect(res.body).to.deep.equal({ message: 'order filled', success: true });
+      expect(res.body).to.deep.equal({ message: 'order filled', success: true, executedPrice: DUMMY_PRICE });
     });
 
     await checkTrades(pgClient, testUserObj.userId, [
@@ -378,8 +378,8 @@ describe('/api/trading/sell integration tests', () => {
       .set('Cookie', testUserObj.setCookie)
       .send({ ticker: 'TEST_TICKER2', quantity: 50 });
 
-    [res1, res2].forEach((res) => {
-      expect(res.body).to.deep.equal({ message: 'order filled', success: true });
+    [res1, res2].forEach((res, i) => {
+      expect(res.body).to.deep.equal({ message: 'order filled', success: true, executedPrice: [DUMMY_PRICE, DUMMY_PRICE2][i] });
       expect(res.status).to.equal(200);
     });
 

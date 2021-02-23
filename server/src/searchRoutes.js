@@ -42,7 +42,7 @@ router.get('/', async (req, res) => {
     });
   }
 
-  const searchResults = miniSearchEngine.search(searchString, { fuzzy: 0.4 }).slice(0, numResults)
+  const searchResults = miniSearchEngine.search(searchString, { fuzzy: 0.2 }).slice(0, numResults)
     .map((result) => ({...result, id: undefined }));
 
   return res.json({

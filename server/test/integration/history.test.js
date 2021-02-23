@@ -4,6 +4,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from '../../server.js';
 import sinonChai from "sinon-chai";
+import getMarket from '../../src/marketData/marketPrice.js';
 import { createTestUser, deleteTestUser }  from '../utils/userManagement.js';
 
 const { expect, assert } = chai;
@@ -41,6 +42,8 @@ describe('/api/history integration tests', () => {
     })
   
     beforeEach(async () => {
+      sandbox.stub(getMarket, 'getMarketPrice')
+        .withArgs(sinon.match.any, 'TEST_TICKER').resolves(DUMMY_PRICE)
       testUserObj = await createTestUser(pgClient, app);
 
       const r = await chai.request(app)

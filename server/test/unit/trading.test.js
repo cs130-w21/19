@@ -42,7 +42,7 @@ describe('/api/trading/buy executeMarketBuyOrder unit tests', () => {
     expect(dbClientMock.query).to.be.calledWith('COMMIT');
     expect(dbClientMock.query).to.not. be.calledWith('ROLLBACK');
     expect(dbClientMock.release).to.be.calledOnce;
-    expect(res).to.deep.equal({ status: 200 });
+    expect(res).to.deep.equal({ status: 200, executedPrice: 10.40 });
   });
 
   it('should not fill a market order when not enough money', async function () {
@@ -93,7 +93,7 @@ describe('/api/trading/sell executeMarketSellOrder unit tests', () => {
     expect(dbClientMock.query).to.be.calledWith('COMMIT');
     expect(dbClientMock.query).to.not. be.calledWith('ROLLBACK');
     expect(dbClientMock.release).to.be.calledOnce;
-    expect(res).to.deep.equal({ status: 200 });
+    expect(res).to.deep.equal({ status: 200, executedPrice: 10.40 });
   });
 
   it('should not fill a sell market order when not enough stock quantity', async function () {
@@ -127,7 +127,7 @@ describe('/api/trading/sell executeMarketSellOrder unit tests', () => {
     expect(dbClientMock.query).to.be.calledWith('COMMIT');
     expect(dbClientMock.query).to.not.be.calledWith('ROLLBACK');
     expect(dbClientMock.release).to.be.calledOnce;
-    expect(res).to.deep.equal({ status: 200 });
+    expect(res).to.deep.equal({ status: 200, executedPrice: 10.40 });
   });
 
   it('should return status 500 with appropriate errorMessage if dbClient errors.', async function () {

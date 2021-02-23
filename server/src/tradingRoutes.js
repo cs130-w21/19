@@ -73,14 +73,15 @@ export const executeMarketBuyOrder = async (userId, ticker, stockQuantity) => {
   try {
     // first, get current price of S and get current portfolio money balance.
     await dbClient.query(`BEGIN`);
-    const pricePerShare = await getMarketFns.getMarketPrice(dbClient, ticker);
     const { rows: qRows } = await dbClient.query(`
-      SELECT quantity FROM portfolioItems WHERE user_Id = $1 AND symbol = 'USD';
+      SELECT quantity, user_id FROM portfolioItems WHERE user_Id = $1 AND symbol = 'USD';
     `, [ userId ]);
+
 
     if (qRows.length === 0) {
       throw Error(`No money (USD) present in client account ${userId}`);
     }
+    const pricePerShare = await getMarketFns.getMarketPrice(dbClient, ticker);
     const moneyOwned = qRows[0].quantity;
     const moneyToUse = pricePerShare * stockQuantity;
     if (moneyOwned < moneyToUse) {
@@ -130,6 +131,10 @@ export const executeMarketBuyOrder = async (userId, ticker, stockQuantity) => {
     // And we are done!
     await dbClient.query('COMMIT');
     dbClient.release()
+    return {
+      status: 200,
+      executedPrice: pricePerShare,
+    }
   } catch (e) {
     console.error(e);
     await dbClient.query('ROLLBACK');
@@ -139,17 +144,14 @@ export const executeMarketBuyOrder = async (userId, ticker, stockQuantity) => {
       errorMessage: 'We could not process your trade. Please try again later',
     };
   }
-  return {
-    status: 200,
-  }
 };
 
 export const executeMarketSellOrder = async (userId, ticker, stockQuantity) => {
   const dbClient = await pgPool.connect();
   try {
     // first, get current price of S and get current portfolio money balance.
-    const pricePerShare = await getMarketFns.getMarketPrice(dbClient, ticker);
     await dbClient.query(`BEGIN`);
+    const pricePerShare = await getMarketFns.getMarketPrice(dbClient, ticker);
     const moneyToReceive = pricePerShare * stockQuantity;
     const curDate = new Date();
     // finally, we can now execute the trade.
@@ -208,6 +210,10 @@ export const executeMarketSellOrder = async (userId, ticker, stockQuantity) => {
     // And we are done!
     await dbClient.query('COMMIT');
     dbClient.release()
+    return {
+      status: 200,
+      executedPrice: pricePerShare,
+    }
   } catch (e) {
     console.error(e)
     await dbClient.query('ROLLBACK');
@@ -216,9 +222,6 @@ export const executeMarketSellOrder = async (userId, ticker, stockQuantity) => {
       status: 500,
       errorMessage: 'We could not process your trade. Please try again later',
     };
-  }
-  return {
-    status: 200,
   }
 }
 
@@ -232,6 +235,7 @@ export const executeMarketSellOrder = async (userId, ticker, stockQuantity) => {
 *
 * @apiSuccess {Boolean} success set to true if successful.
 * @apiSuccess {String} message order status message.
+* @apiSuccess {Number} executedPrice market price received when executing trade.
 *
 * @apiError {Boolean} success (false)
 * @apiError {String} errorMessage useful error message that states why it failed.
@@ -260,10 +264,11 @@ router.post('/buy', authMiddleware, async (req, res) => {
   }
 
   const userId = req.user.user_id;
-  const { status: httpStatus, errorMessage } = await executeMarketBuyOrder(userId, ticker, stockQuantity);
+  const { status: httpStatus, errorMessage, executedPrice } = await executeMarketBuyOrder(userId, ticker, stockQuantity);
 
   if (httpStatus === 200 ) {
     return res.status(200).json({
+      executedPrice,
       success: true,
       message: 'order filled',
     });
@@ -311,10 +316,11 @@ router.post('/sell', authMiddleware, async (req, res) => {
   }
 
   const userId = req.user.user_id;
-  const { status: httpStatus, errorMessage } = await executeMarketSellOrder(userId, ticker, stockQuantity);
+  const { status: httpStatus, errorMessage, executedPrice, } = await executeMarketSellOrder(userId, ticker, stockQuantity);
 
   if (httpStatus === 200 ) {
     return res.status(200).json({
+      executedPrice,
       success: true,
       message: 'order filled',
     });

@@ -7,8 +7,8 @@
     "scripts": {
         "start": "nodemon --ignore docs --ignore node_modules --exec npm run dev-server",
         "dev-server": "npm run doc && cross-env NODE_ENV='stonks-dev' node server.js",
-        "unit-test": "mocha 'test/unit/*.test.js'",
-        "integration-test": "mocha 'test/integration/*.test.js' --exit",
+        "unit-test": "mocha 'test/unit/*.test.js' --exit",
+        "integration-test": "cross-env TEST_SEARCH_ENGINE=yes mocha 'test/integration/*.test.js' --timeout 4000 --exit",
         "doc": "apidoc -i src/ -o docs/"
     },
     "repository": {
@@ -22,6 +22,7 @@
     },
     "homepage": "https://github.com/cs130-w21/19#readme",
     "dependencies": {
+        "axios": "^0.21.1",
         "bcryptjs": "^2.4.3",
         "body-parser": "^1.19.0",
         "cookie-parser": "^1.4.5",
@@ -33,7 +34,10 @@
         "minisearch": "^3.0.2",
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
-        "pg": "^8.5.1"
+        "pg": "^8.5.1",
+        "pg-format": "^1.0.4",
+        "uuid": "^8.3.2",
+        "ws": "^7.4.3"
     },
     "devDependencies": {
         "apidoc": "^0.26.0",

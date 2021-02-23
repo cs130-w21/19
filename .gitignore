@@ -124,7 +124,8 @@ dist
 !.elasticbeanstalk/*.global.yml
 
 # documentation. This will be built in prod
-docs/
+# TEMPORARY FOR JAKE
+#docs/
 
 
 .env
