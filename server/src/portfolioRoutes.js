@@ -11,6 +11,7 @@ const router = express.Router();
  * @apiGroup portfolio
  *
  * @apiSuccess {Object[]} portfolioItems array of portfolio item objects pertaining to user
+ * @apiSuccess {Boolean} portfolioItems[i].was_stale whether the price_per_share was updated during the HTTP call because it was stale before. Useful to create animations of 'changing' prices.
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {

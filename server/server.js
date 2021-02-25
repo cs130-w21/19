@@ -37,7 +37,7 @@ const app = express();
 
 const wsServer = new ws.Server({ noServer :true, clientTracking: true });
 
-app.use('/docs', express.static('docs'));
+app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
