@@ -14,7 +14,11 @@ import { pgPool } from './db/dbClient.js';
  * @apiSuccessExample {json} Success-Response:
  *     HTTP/1.1 200 OK
  *     {
+<<<<<<< HEAD
  *       "Trades": [
+=======
+ *       "trade": [
+>>>>>>> 57d29e33272e8d414169cf7fbe8489b8fea8a845
  *         {
  *           "trade_id": "51cb778c-6129-443e-8be4-0b8a96fa808a",
  *           "date_executed": "2021-02-12",
@@ -41,7 +45,9 @@ import { pgPool } from './db/dbClient.js';
 
 router.get('/', authMiddleware, async (req, res) => {
   const { rows }  = await pgPool.query(`
-    SELECT * FROM Trades WHERE user_id = $1;`, 
+    SELECT * FROM Trades 
+    WHERE user_id = $1
+    ORDER BY date_executed ASC;`, 
     [ req.user.user_id ]);
   return res.json({
     Trades: rows,

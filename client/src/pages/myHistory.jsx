@@ -8,8 +8,6 @@ import _ from "lodash"
 import * as getUserHistoryData from "../services/getUserData"
 import Alert from 'react-bootstrap/Alert'
 //just for testing
-import * as dummyhistory from "./dummyHistory"
-
 
 
 class Histroy extends Component {

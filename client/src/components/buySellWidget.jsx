@@ -88,11 +88,14 @@ class BuySellWidget extends Component {
     })
 
     try {
+      let res;
       if (this.state.isBuying) {
-        await buy(this.props.ticker, this.state.quantity);
+        res = await buy(this.props.ticker, this.state.quantity);
       } else {
-        await sell(this.props.ticker, this.state.quantity);
+        res = await sell(this.props.ticker, this.state.quantity);
       }
+
+      const { executedPrice } = res.data;
 
       // so we can get the animation running for a bit.
       setTimeout(() => {
@@ -102,7 +105,7 @@ class BuySellWidget extends Component {
           alert: {
             id: '1',
             type: 'success',
-            message: "Order filled and executed.",
+            message: `Order filled and executed at $${executedPrice}`,
           }
         })
         this.props.onTransactionSuccess();
@@ -168,7 +171,7 @@ class BuySellWidget extends Component {
       <Card
         style={{ paddingLeft: '0.2em', paddingRight: '0.2em' }}
       >
-      <AlertList alerts={alert ? [alert]: []} timeout={3000} onDismiss={this.onDismissAlert}/>
+      <AlertList alerts={alert ? [alert]: []} timeout={4500} onDismiss={this.onDismissAlert}/>
       <Card.Title
         style={{ marginTop: '0.2em', marginLeft: '0.2em' }}
       >

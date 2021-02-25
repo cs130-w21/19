@@ -175,7 +175,7 @@ describe('/api/accounts/login integration tests', () => {
 
   afterEach(async () => {
     sandbox.restore();
-    deleteTestUser(pgClient, userId);
+    await deleteTestUser(pgClient, userId);
   });
 
   after(() => {
