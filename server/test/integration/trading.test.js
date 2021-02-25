@@ -8,6 +8,7 @@ import { executeMarketBuyOrder } from '../../src/tradingRoutes.js';
 import marketUtils from '../../src/utils/markets.js';
 import getMarket from '../../src/marketData/marketPrice.js';
 import { createTestUser, deleteTestUser }  from '../utils/userManagement.js';
+import { addTestTickers, cleanupTestTickers }  from '../utils/testTickers.js';
 
 const { expect, assert } = chai;
 chai.use(sinonChai);
@@ -77,14 +78,16 @@ describe('/api/trading/buy integration tests', () => {
   const sandbox = sinon.createSandbox();
   let testUserObj;
   let pgClient;
+  let marketPriceStub;
 
   before(async () => {
     pgClient = await createConnectedClient();
+    await addTestTickers(pgClient);
   })
 
   beforeEach(async () => {
     sandbox.stub(marketUtils, "checkMarketOpen").returns(true);
-    sandbox.stub(getMarket, 'getMarketPrice')
+    marketPriceStub = sandbox.stub(getMarket, 'getMarketPrice')
       .withArgs(sinon.match.any, 'TEST_TICKER').resolves(DUMMY_PRICE)
       .withArgs(sinon.match.any, 'TEST_TICKER2').resolves(DUMMY_PRICE2);
 
@@ -96,7 +99,8 @@ describe('/api/trading/buy integration tests', () => {
     await deleteTestUser(pgClient, testUserObj.userId);
   });
 
-  after(() => {
+  after(async () => {
+    await cleanupTestTickers(pgClient);
     pgClient.end();
   });
 
@@ -262,6 +266,29 @@ describe('/api/trading/buy integration tests', () => {
     await checkPortfolioItemExists(pgClient, testUserObj.userId, 'TEST_TICKER', false);
     await checkPortfolioItem(pgClient, testUserObj.userId, 'USD', startingBalance);
   });
+
+  it('should be able to use real price of stock to buy (marketPrice not stubbed)', async () => {
+    marketPriceStub.parent.restore();
+    const res = await chai.request(app)
+      .post('/api/trading/buy')
+      .set('Content-Type', 'application/json')
+      .set('Cookie', testUserObj.setCookie)
+      .send({ ticker: 'ABNB', quantity: 5 });
+
+    expect(res.status).to.equal(200);
+    expect(res.body.message).to.equal('order filled');
+    expect(res.body.success).to.equal(true);
+    expect(parseFloat(res.body.executedPrice)).to.be.a('number');
+
+    const executedPrice = parseFloat(res.body.executedPrice);
+
+    await checkTrades (pgClient, testUserObj.userId, [
+      { action: 'buy', quantity: 5, price: executedPrice , ticker: 'ABNB' },
+    ]);
+
+    await checkPortfolioItem(pgClient, testUserObj.userId, 'ABNB', 5);
+    await checkPortfolioItem(pgClient, testUserObj.userId, 'USD', startingBalance - executedPrice * 5);
+  });
 });
 
 
@@ -270,6 +297,7 @@ describe('/api/trading/sell integration tests', () => {
   let testUserObj;
   let pgClient;
   let currentUsdBalance;
+  let marketPriceStub;
 
   before(async () => {
     pgClient = await createConnectedClient();
@@ -277,7 +305,7 @@ describe('/api/trading/sell integration tests', () => {
 
   beforeEach(async () => {
     sandbox.stub(marketUtils, "checkMarketOpen").returns(true);
-    sandbox.stub(getMarket, 'getMarketPrice')
+    marketPriceStub = sandbox.stub(getMarket, 'getMarketPrice')
       .withArgs(sinon.match.any, 'TEST_TICKER').resolves(DUMMY_PRICE)
       .withArgs(sinon.match.any, 'TEST_TICKER2').resolves(DUMMY_PRICE2)
       .withArgs(sinon.match.any, 'TEST_TICKER3').resolves(DUMMY_PRICE3);
@@ -443,5 +471,36 @@ describe('/api/trading/sell integration tests', () => {
       errorMessage: 'ticker cannot be a currency.',
       success: false,
     });
+  });
+
+  it('should be able to use real price of stock to sell (marketPrice not stubbed)', async () => {
+    marketPriceStub.parent.restore();
+
+    const r = await chai.request(app)
+      .post('/api/trading/buy')
+      .set('Content-Type', 'application/json')
+      .set('Cookie', testUserObj.setCookie)
+      .send({ ticker: 'ABNB', quantity: 10 });
+    const boughtPrice = parseFloat(r.body.executedPrice);
+
+    const res = await chai.request(app)
+      .post('/api/trading/sell')
+      .set('Content-Type', 'application/json')
+      .set('Cookie', testUserObj.setCookie)
+      .send({ ticker: 'ABNB', quantity: 8 });
+
+    expect(res.status).to.equal(200);
+    expect(res.body.message).to.equal('order filled');
+    expect(res.body.success).to.equal(true);
+    const soldPrice = parseFloat(res.body.executedPrice);
+    expect(soldPrice).to.be.a('number');
+
+
+    await checkTrades (pgClient, testUserObj.userId, [
+      { action: 'sell', quantity: 8, price: soldPrice, ticker: 'ABNB' },
+    ], true);
+
+    await checkPortfolioItem(pgClient, testUserObj.userId, 'ABNB', 2);
+    await checkPortfolioItem(pgClient, testUserObj.userId, 'USD', currentUsdBalance - (10 * boughtPrice) + (8 * soldPrice));
   });
 });

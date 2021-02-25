@@ -11,6 +11,7 @@ import cookieParser from 'cookie-parser';
 import bcrypt from 'bcryptjs';
 import session from 'express-session';
 import { fileURLToPath } from 'url';
+import axios from 'axios';
 import ws from 'ws';
 
 // have to import using .js extension, a wierd nodejs quirk
@@ -152,3 +153,21 @@ process.on('SIGTERM', () => {
 });
 
 export default app;
+
+// for testing so that we have everythign set up.
+const sleepMs = ms => new Promise(res => setTimeout(res, ms));
+
+export const getAppWhenReady = async () => {
+  while(true) {
+    // Do an HTTP request.
+    try {
+      const res = await axios.get(`http://localhost:${port}/api/health`, { timeout: 250 });
+      if (res.status === 200) {
+        break;
+      }
+    } catch(e) {
+    }
+    await sleepMs(250);
+  }
+  return app;
+}

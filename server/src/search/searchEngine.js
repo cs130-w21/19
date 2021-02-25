@@ -19,8 +19,8 @@ const initializeSearchEngine = async () => {
     allUSTickers = await getAllTickers();
     const rowsToAdd = allUSTickers.map((x) => [ x.symbol, x.name ]);
     await pgPool.query(pgFormat(`
-    INSERT INTO tickers(ticker_name, full_name) VALUES %L 
-    ON CONFLICT(ticker_name) DO NOTHING;`, 
+      INSERT INTO tickers(ticker_name, full_name) VALUES %L 
+      ON CONFLICT(ticker_name) DO NOTHING;`, 
       rowsToAdd
     ));
   } else {

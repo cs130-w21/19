@@ -30,7 +30,6 @@ const reduceUpdates = (updates) => {
 /* handler function that is called whenever finnhub sends data to us (the server). */
 export const finnhubWsMessageHandler = async ({ data: payloadString }) => {
   const payload = JSON.parse(payloadString);
-  console.log("Obtained from finnhub:", payload)
 
   if (payload.type === 'trade') {
     const { data: updates } = payload;
@@ -44,6 +43,7 @@ export const finnhubWsMessageHandler = async ({ data: payloadString }) => {
 
     const rowsToAdd = reducedUpdates.map((update) => [update.s, update.p, Math.round(update.t / 1000)]);
     // pgFormat converts everything to string. So we have to cast last_price back to numeric
+    // NOTE: can we make this into its own function?
     await pgPool.query(pgFormat(`
       UPDATE tickers
       SET last_price = vals.last_price::DECIMAL(12,2), price_last_changed = to_timestamp(vals.timestamp::bigint) AT TIME ZONE 'UTC'

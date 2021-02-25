@@ -2,6 +2,7 @@ import { createConnectedClient } from '../../src/db/dbClient.js';
 import  { finnhubWsMessageHandler } from '../../src/marketData/realtimeStream.js';
 import { FinnhubWsClient } from '../../src/marketData/finnhub.js';
 import SubscriptionManager from '../../src/marketData/subscriptionManager.js';
+import { addTestTickers, cleanupTestTickers }  from '../utils/testTickers.js';
 import sinon from 'sinon';
 import chai from 'chai';
 import chaiHttp from 'chai-http';
@@ -27,12 +28,12 @@ describe('tickerPriceUpdate / subscribeToTicker integration tests', () => {
   let pgClient;
   let registeredWsClients = [];
   const sandbox = sinon.createSandbox();
-  before(() => {
-    // TODO: should write unit tests on the SubscriptionManager, and stubb finnhubWsClient.
+  before(async () => {
+    pgClient = await createConnectedClient();
     sinon.stub(FinnhubWsClient, 'send');
+    await addTestTickers(pgClient);
   });
   beforeEach(async () => {
-    pgClient = await createConnectedClient();
   });
   afterEach(() => {
     sandbox.restore();
@@ -40,10 +41,9 @@ describe('tickerPriceUpdate / subscribeToTicker integration tests', () => {
     registeredWsClients = [];
   });
 
-  after(() => {
-    if (pgClient !== undefined) {
+  after(async () => {
+    await cleanupTestTickers(pgClient);
       pgClient.end();
-    }
   });
 
   it('should update database correctly when ticker updates are obtained', async () => {
