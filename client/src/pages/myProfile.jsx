@@ -34,7 +34,7 @@ class Profile extends Component{
     }
 
     render() {
-      const {items} = this.state;
+      const {items = []} = this.state;
       const chartinput = createChartInput(items);
       return (
         <div>
