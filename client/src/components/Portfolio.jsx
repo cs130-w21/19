@@ -24,7 +24,7 @@ class Portfolio extends Component {
     }
   
     render(){
-      const {items, titleLess, light } = this.props;
+      const {items = [], titleLess, light } = this.props;
       return (
         <div className="col">
           { ! titleLess && (
