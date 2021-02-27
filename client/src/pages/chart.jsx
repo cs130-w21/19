@@ -120,11 +120,21 @@ class ChartComponent extends Component {
           <Col md={8}>
             <div style={{ fontSize: '1.3em',  display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
               <h3 style={{ marginLeft: '1.3em', marginRight: '0.3em' }} > {ticker}: { companyName } </h3>
-              <FontAwesomeIcon
+              {user && (<React.Fragment>
+                <FontAwesomeIcon
                 style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
                 icon={isWatchlisted? solidStar: outlineStar}
                 onClick={this.toggleWatchlistAdd}
-              />
+                />  
+                </React.Fragment>)}
+
+                {!user && (<React.Fragment>
+                <FontAwesomeIcon
+                style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
+                icon={outlineStar}
+                onClick={this.toggleWatchlistAdd}
+                />  
+                </React.Fragment>)}
             </div>
           </Col >
         </Row>
