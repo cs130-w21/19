@@ -24,12 +24,13 @@ class Portfolio extends Component {
     }
   
     render(){
-      const {items = [], titleLess, light } = this.props;
+      const {items, titleLess, light, isLoggedIn } = this.props;
       return (
         <div className="col">
           { ! titleLess && (
             <h1>My Portfolio</h1>
           )}
+          {isLoggedIn ? ( 
           <Table striped bordered hover variant={light? 'light': 'dark'}>
             <thead>
               <tr>
@@ -54,6 +55,9 @@ class Portfolio extends Component {
             ))}
             </tbody>
           </Table>
+          ): (
+            <p> Please log in to view your portfolio </p>
+          )}
         </div>
       );
     }

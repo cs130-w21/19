@@ -170,6 +170,7 @@ class ChartComponent extends Component {
                   titleLess
                   onSelectStock={this.changeSelectedStock}
                   light
+                  isLoggedIn={!!user}
                 />
               </Tab>
             </Tabs>
