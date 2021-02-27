@@ -37,7 +37,8 @@
         "pg": "^8.5.1",
         "pg-format": "^1.0.4",
         "uuid": "^8.3.2",
-        "ws": "^7.4.3"
+        "ws": "^7.4.3",
+        "universal-cookie": "^4.0.4"
     },
     "devDependencies": {
         "apidoc": "^0.26.0",

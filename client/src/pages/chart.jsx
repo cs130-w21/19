@@ -25,6 +25,7 @@ class ChartComponent extends Component {
     data: undefined,
     watchlistItems: [],
     portfolioItems: [],
+    isLogin: false
   }
   constructor(props) {
     super(props);
@@ -95,6 +96,8 @@ class ChartComponent extends Component {
     this.updatePortfolioData();
   }
 
+  
+
   render() {
     const user = Store.get('user');
     const {
@@ -120,6 +123,7 @@ class ChartComponent extends Component {
           <Col md={8}>
             <div style={{ fontSize: '1.3em',  display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
               <h3 style={{ marginLeft: '1.3em', marginRight: '0.3em' }} > {ticker}: { companyName } </h3>
+              
               {user && (<React.Fragment>
                 <FontAwesomeIcon
                 style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
@@ -135,6 +139,7 @@ class ChartComponent extends Component {
                 onClick={this.toggleWatchlistAdd}
                 />  
                 </React.Fragment>)}
+              
             </div>
           </Col >
         </Row>
@@ -165,6 +170,7 @@ class ChartComponent extends Component {
                   titleLess
                   onSelectStock={this.changeSelectedStock}
                   light
+                  isLoggedIn={!!user}
                 />
               </Tab>
             </Tabs>
