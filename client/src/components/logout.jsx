@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Store from 'store'
-
 class Logout extends Component {
 
     componentDidMount() {
