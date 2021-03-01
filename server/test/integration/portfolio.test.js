@@ -66,7 +66,7 @@ describe('/api/portfolio integration tests', () => {
     expect(res.status).to.equal(200);
 
     const includedStocks = [];
-    res.body.forEach((item) => {
+    res.body.portfolioItems.forEach((item) => {
       expect(item.item_id).to.be.a("string");
       expect(item.date_changed).to.be.a("string");
       expect(item.date_created).to.be.a("string");

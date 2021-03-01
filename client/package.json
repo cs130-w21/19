@@ -18,6 +18,7 @@
     "font-awesome": "^4.7.0",
     "joi-browser": "^13.4.0",
     "luxon": "^1.25.0",
+    "mime": "^1.6.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.4.3",
     "react-bootstrap-typeahead": "^5.1.4",

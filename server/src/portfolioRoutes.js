@@ -46,7 +46,7 @@ router.get('/', authMiddleware, async (req, res) => {
   try {
     const portfolioItems = await getUpdatedPortfolio(dbClient, req.user.user_id);
     dbClient.release();
-    return res.status(200).json(portfolioItems);
+    return res.status(200).json({ portfolioItems });
   } catch(e) {
     console.error(e);
     dbClient.release();
