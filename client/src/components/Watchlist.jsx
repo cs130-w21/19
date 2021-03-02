@@ -22,15 +22,16 @@ class Watchlist extends Component {
             <thead>
               <tr>
                 <th> Stock Symbol </th>
+                <th> Name </th>
                 <th> Last Price </th>
                 <th> Added </th>
               </tr>
             </thead>
             <tbody>
               {(watchlistItems || []).map((it, i) => (
-
-                <tr key={i} onClick={() => onSelectStock(it.ticker)} style={{ cursor: 'pointer' }}>
+                <tr key={i} onClick={() => onSelectStock({ ticker: it.ticker, companyName: it.company_name })} style={{ cursor: 'pointer' }}>
                   <td> {it.ticker} </td>
+                  <td> {it.company_name} </td>
                   <td> ${this.formatQuantity(it.last_price, 'USD')}</td>
                   <td> {timeago.format(it.date_added)} </td>
                 </tr>

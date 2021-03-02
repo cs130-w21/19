@@ -15,6 +15,7 @@ export const getUpdatedPortfolio = async (dbClient, userId) => {
       P.date_changed,
       P.symbol,
       P.quantity,
+      CASE WHEN SYMBOL = 'USD' THEN null ELSE T.full_name END as company_name,
       CASE WHEN symbol = 'USD' then 1 ELSE T.last_price END as price_per_share,
       CASE WHEN symbol = 'USD' then
         false

@@ -17,9 +17,9 @@ class Portfolio extends Component {
     }
 
 
-    onSelectPortfolioItem = (symbol) => {
-      if (symbol !== 'USD') {
-        this.props.onSelectStock(symbol);
+    onSelectPortfolioItem = ({ ticker, companyName }) => {
+      if (ticker !== 'USD') {
+        this.props.onSelectStock({ticker, companyName });
       }
     }
   
@@ -42,7 +42,7 @@ class Portfolio extends Component {
             </thead>
             <tbody>
             {items.map((it, i) => (
-              <tr key={i} onClick={() => this.onSelectPortfolioItem(it.symbol)} style={{ cursor: 'pointer' }}>
+              <tr key={i} onClick={() => this.onSelectPortfolioItem({ ticker: it.symbol, companyName: it.company_name })} style={{ cursor: 'pointer' }}>
                 <td> {it.symbol} </td>
                 <td>
                   {it.symbol === 'USD' ? '-' : this.formatQuantity(it.quantity, it.symbol)}
