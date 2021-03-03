@@ -1,4 +1,10 @@
 Welcome to our repo!
+
+# Stonks
+[![Build Status](https://travis-ci.com/cs130-w21/19.svg?branch=master)](https://travis-ci.com/cs130-w21/19)
+
+Making paper trading available for everyone. Check us out [here](http://stonks.us-west-1.elasticbeanstalk.com/).
+
 # Getting set up
 
 Please follow the following commands:

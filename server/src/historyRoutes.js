@@ -8,6 +8,7 @@ import { pgPool } from './db/dbClient.js';
 /**
  * @api {get} /api/history Get history
  * @apiPermission auth
+ * @apiDescription get the history log of all trades done by this account. Outputs an array of transactions in chronological order.
  * @apiGroup history
  *
  * @apiSuccess {Object[]} Trades array of trade item objects pertaining to user

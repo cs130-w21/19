@@ -7,6 +7,7 @@ import { pgPool } from './db/dbClient.js';
 const router = express.Router();
 /**
  * @api {get} /api/portfolio Get portfolio
+ * @apiDescription For the currently logged in user, return all portfolio items that the user has (stocks and the USD balance), where the stock's price_per_share is the 'most recent' market value (subject to some staleness allowance) to allow us to calculate total portfolio worth.
  * @apiPermission auth
  * @apiGroup portfolio
  *
@@ -60,6 +61,7 @@ router.get('/', authMiddleware, async (req, res) => {
 
 /**
  * @api {get} /api/portfolio/growth Get portfolio growth for each user
+ * @apiDescription output the total values of the user's portfolio. Used in charting the growth of the user's portfolio over time.
  * @apiPermission auth
  * @apiGroup portfolio
  *
