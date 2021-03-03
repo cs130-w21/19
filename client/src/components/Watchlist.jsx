@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import { formatCommas } from '../utils';
 import * as timeago from 'timeago.js';
+import Alert from 'react-bootstrap/Alert'
 
 class Watchlist extends Component {
     formatQuantity(qty, symbol) {
@@ -39,7 +40,10 @@ class Watchlist extends Component {
             </tbody>
           </Table>
         ): (
-          <p> Please log in to create some watchlists </p>
+          <Alert key={'alertForProfolio'} variant={'info'}>
+                Please log in to create some watchlists
+          </Alert>
+          
         )}
 
 

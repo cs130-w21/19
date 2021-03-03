@@ -77,5 +77,15 @@ export const watchlistTable = `
   );
 `
 
-
-export default [usersTable, tradesTable, portfolioTable, tickersTable, watchlistTable];
+/* table containing worth of portfolio for each user. 
+ */
+export const portfolioGrowthTable = `
+  CREATE EXTENSION IF NOT EXISTS pgcrypto;
+  CREATE TABLE IF NOT EXISTS PortfolioGrowth (
+    portfolioGrowth_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    user_id UUID NOT NULL REFERENCES Users(user_id),
+    date_updated TIMESTAMP NOT NULL DEFAULT NOW(),
+    total_value DECIMAL(12, 2) NOT NULL
+  );
+`
+export default [usersTable, tradesTable, portfolioTable, tickersTable, watchlistTable, portfolioGrowthTable];

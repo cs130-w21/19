@@ -49,3 +49,36 @@ export const getUpdatedPortfolio = async (dbClient, userId) => {
   return portfolioItems;
 }
 
+export const getTotalPortfolioValue = async (dbClient, userId) => {
+  const portfolioItems = await getUpdatedPortfolio(dbClient, userId);
+  let portfolioTotalValue = 0
+  portfolioItems.forEach((portfolioItem, i) => {
+    portfolioTotalValue += (portfolioItems[i].quantity * portfolioItems[i].price_per_share)
+  });
+
+  return portfolioTotalValue;
+}
+
+export const updatePortfolioValues = async (dbClient) => {
+  const { rows: uniqueUserRows } = await dbClient.query(
+    `
+    SELECT DISTINCT
+      user_id
+    FROM PortfolioItems
+    `
+  );
+
+  await Promise.all(uniqueUserRows.map(async (uniqueUserRow, i) => {
+    const userId = uniqueUserRows[i].user_id
+    const curDate = new Date();
+    const totalValue = await getTotalPortfolioValue(dbClient, userId);
+    const { rowCount: portfolioGrowthRowCount } = await dbClient.query(`
+      INSERT INTO PortfolioGrowth(user_id, date_updated, total_value)
+      VALUES ($1, $2, $3)
+      `, [userId, curDate, totalValue]);
+    if (portfolioGrowthRowCount === 0) {
+      throw Error('failed to insert to PortfolioGrowth table');
+    }
+  }));
+}
+

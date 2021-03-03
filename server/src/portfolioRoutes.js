@@ -57,4 +57,44 @@ router.get('/', authMiddleware, async (req, res) => {
   }
 });
 
+
+/**
+ * @api {get} /api/portfolio/growth Get portfolio growth for each user
+ * @apiPermission auth
+ * @apiGroup portfolio
+ *
+ * @apiSuccess {Object[]} portfolioGrowth array of portfolio growth objects pertaining to user
+ * @apiSuccessExample {json} Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "portfolioGrowth": [
+ *         {
+ *           "portfolioGrowth_id": "51cb778c-6129-443e-8be4-0b8a96fa808a",
+ *           "user_id": "61f004d1-56c0-4303-af89-fe39e904cbce",
+ *           "date_updated": "2021-02-255T13:00:00Z",
+ *           "total_value": "10000.88",
+ *         },
+ *         {
+ *           "portfolioGrowth_id": "51cb778c-6129-443e-8be4-0b8a96fa808a",
+ *           "user_id": "61f004d1-56c0-4303-af89-fe39e904cbce",
+ *           "date_updated": "2021-02-25T12:00:00Z",
+ *           "total_value": "13000.88",
+ *         }
+ *       ]
+ *     }
+ * @apiUse auth
+ */
+
+
+router.get('/growth', authMiddleware, async (req, res) => {
+  const { rows }  = await pgPool.query(`
+    SELECT * FROM PortfolioGrowth
+    WHERE user_id = $1
+    ORDER BY date_updated ASC;`, 
+    [ req.user.user_id ]);
+  return res.json({
+    portfolioGrowth: rows,
+  });
+});
+
 export default router;

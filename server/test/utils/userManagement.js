@@ -18,9 +18,9 @@ chai.use(chaiHttp);
  *    userId: 'userId of the new user'
  *  }
  */
-const createTestUser = async (dbClient, app) => {
-  const username = 'test_user';
-  const email = 'test_user@email.com';
+const createTestUser = async (dbClient, app, suffix='') => {
+  const username = 'test_user'+ suffix;
+  const email = 'test_user@email.com' + suffix;
   const password = 'password123';
   const res = await chai.request(app)
     .post('/api/accounts/register')
@@ -49,6 +49,10 @@ const deleteTestUser = async (dbClient, userId) => {
 
   await dbClient.query(`
     DELETE FROM watchlist WHERE user_id = $1;
+  `, [ userId ]);
+
+  await dbClient.query(`
+    DELETE FROM PortfolioGrowth WHERE user_id = $1;
   `, [ userId ]);
 
   await dbClient.query(`
