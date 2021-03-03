@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import { formatCommas } from '../utils';
 import * as timeago from 'timeago.js';
-import Store from 'store';
 import Alert from 'react-bootstrap/Alert'
 
 class Portfolio extends Component {
@@ -28,8 +27,8 @@ class Portfolio extends Component {
     }
   
     render(){
-      const {items = [], titleLess, light } = this.props;
-      const user = Store.get('user');
+      const {items = [], titleLess, light, isLoggedIn } = this.props;
+      //const user = Store.get('user');
       
       
 
@@ -37,7 +36,7 @@ class Portfolio extends Component {
 
       return (
         <div>
-        {user &&  (<React.Fragment>
+        {isLoggedIn &&  (<React.Fragment>
         <div className="col">
           { ! titleLess && (
             <h1>My Portfolio</h1>
@@ -72,7 +71,7 @@ class Portfolio extends Component {
       
         </React.Fragment>)}
 
-        { !user && (<React.Fragment>
+        { !isLoggedIn && (<React.Fragment>
           <Alert key={'alertForProfolio'} variant={'info'} style={{marginTop:'10px'}}>
                 Please Loggin to view the Profolio.
           </Alert>

@@ -30,7 +30,7 @@ const checkStockUpdates = async (ticker, pgClient, unixTimeStart, price) => {
     WHERE ticker_name = $1
   `, [ ticker ]);
   expect(rows.length).to.equal(1);
-  expect(rows[0].last_price).to.equal(price.toFixed(2));
+  expect(rows[0].last_price).to.equal(price);
   expect(parseInt(rows[0].last_changed)).to.be.at.least(unixTimeStart);
 };
 
