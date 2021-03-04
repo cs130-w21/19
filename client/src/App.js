@@ -36,7 +36,7 @@ class App extends Component {
         <Route path= "/logout" component={Logout}/>
         <Route path= "/chart" component={ChartPage} />
         <Route path= "/myProfile" component={ProfilePage} />
-        <Route path= "/" component={WelcomeComponent} />
+        <Route path= "/" component={ChartPage} />
 
         </Switch>
       </main>

@@ -25,7 +25,7 @@ describe('Portfolio tests', () => {
         const mockClickCallBack = jest.fn();
         mockClickCallBack.mockImplementation((val) => (val.companyName === "MICROSOFT CORP" && val.ticker === "MSFT"));
         
-        const wrapper = mount(<Portfolio items={items} titleLess={true} light={true} onSelectStock={mockClickCallBack} isLoggedIn={true}/>);
+        const wrapper = mount(<Portfolio items={items} titleLess={true} light={true} onSelectStock={mockClickCallBack} isLoggedIn={true} enableClick={true}/>);
         //console.log(wrapper.html());
         
         wrapper.update();

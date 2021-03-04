@@ -21,13 +21,16 @@ class Portfolio extends Component {
   
 
     onSelectPortfolioItem = ({ ticker, companyName }) => {
+      if(this.props.enableClick == false){
+        return false;
+      }
       if (ticker !== 'USD') {
         this.props.onSelectStock({ticker, companyName });
       }
     }
   
     render(){
-      const {items = [], titleLess, light, isLoggedIn } = this.props;
+      const {items = [], titleLess, light, isLoggedIn, enableClick } = this.props;
       //const user = Store.get('user');
       
       
@@ -51,19 +54,21 @@ class Portfolio extends Component {
                 <th> Date changed </th>
               </tr>
             </thead>
-            <tbody>
-            {items.map((it, i) => (
-              <tr key={i} onClick={() => this.onSelectPortfolioItem({ ticker: it.symbol, companyName: it.company_name })} style={{ cursor: 'pointer' }}>
-                <td> {it.symbol} </td>
-                <td>
-                  {it.symbol === 'USD' ? '-' : this.formatQuantity(it.quantity, it.symbol)}
-                </td>
-                <td> {it.symbol === "USD" ? "-": `\$${this.formatQuantity(it.price_per_share, 'USD')}`} </td>
-                <td> ${it.symbol === "USD" ? this.formatQuantity(it.quantity, 'USD') : this.getStockValueNumber(it.quantity, it.price_per_share)}</td>
-                <td> {timeago.format(it.date_changed)} </td>
-              </tr>
-            ))}
+            
+              <tbody>
+              {items.map((it, i) => (
+                <tr key={i} onClick={() => this.onSelectPortfolioItem({ ticker: it.symbol, companyName: it.company_name })} style={{ cursor: 'pointer' }}>
+                  <td> {it.symbol} </td>
+                  <td>
+                    {it.symbol === 'USD' ? '-' : this.formatQuantity(it.quantity, it.symbol)}
+                  </td>
+                  <td> {it.symbol === "USD" ? "-": `\$${this.formatQuantity(it.price_per_share, 'USD')}`} </td>
+                  <td> ${it.symbol === "USD" ? this.formatQuantity(it.quantity, 'USD') : this.getStockValueNumber(it.quantity, it.price_per_share)}</td>
+                  <td> {timeago.format(it.date_changed)} </td>
+                </tr>
+              ))}
             </tbody>
+
           </Table>
           
         </div>
