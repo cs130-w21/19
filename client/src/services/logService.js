@@ -5,7 +5,10 @@ function log(error) {
   console.error(error);
 }
 
-export default {
+
+const log_service = {
   init,
   log
 };
+
+export default log_service;

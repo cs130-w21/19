@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import Store from 'store'
 import * as timeago from 'timeago.js';
 import HistoryTable from './HistoryTable'
-import * as getUserHistory from "../services/getUserData";
 import { paginate } from "../components/common/paginate";
 import Pagination from "../components/common/pagination";
 import _ from "lodash"
