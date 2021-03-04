@@ -2385,6 +2385,18 @@
     "normalize-path" "^3.0.0"
     "picomatch" "^2.0.4"
 
+"apexcharts@^3.18.0", "apexcharts@^3.25.0":
+  "integrity" "sha512-uM7OF+jLL4ba79noYcrMwMgJW8DI+Ff28CCQoGq23g25z8nGSQEoU+u12YWlECA9gBA5tbmdaQhMxjlK+M6B9Q=="
+  "resolved" "https://registry.npmjs.org/apexcharts/-/apexcharts-3.25.0.tgz"
+  "version" "3.25.0"
+  dependencies:
+    "svg.draggable.js" "^2.2.2"
+    "svg.easing.js" "^2.0.0"
+    "svg.filter.js" "^2.0.2"
+    "svg.pathmorphing.js" "^0.1.3"
+    "svg.resize.js" "^1.4.3"
+    "svg.select.js" "^3.0.1"
+
 "aproba@^1.1.1":
   "integrity" "sha512-Y9J6ZjXtoYh8RnXVCMOU/ttDmk1aBjunq9vO0ta5x85WDQiQfUF9sIPBITdbiiIVcBo03Hi3jMxigBtsddlXRw=="
   "resolved" "https://registry.npmjs.org/aproba/-/aproba-1.2.0.tgz"
@@ -5741,11 +5753,6 @@
   "resolved" "https://registry.npmjs.org/graceful-fs/-/graceful-fs-4.2.6.tgz"
   "version" "4.2.6"
 
-"growly@^1.3.0":
-  "integrity" "sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE="
-  "resolved" "https://registry.npmjs.org/growly/-/growly-1.3.0.tgz"
-  "version" "1.3.0"
-
 "gud@^1.0.0":
   "integrity" "sha512-zGEOVKFM5sVPPrYs7J5/hYEw2Pof8KCyOwyhG8sAF26mCAeUFAcYPu1mwB7hhpIP29zOIBaDqwuHdLp0jvZXjw=="
   "resolved" "https://registry.npmjs.org/gud/-/gud-1.0.0.tgz"
@@ -6570,7 +6577,7 @@
   "resolved" "https://registry.npmjs.org/is-wsl/-/is-wsl-1.1.0.tgz"
   "version" "1.1.0"
 
-"is-wsl@^2.1.1", "is-wsl@^2.2.0":
+"is-wsl@^2.1.1":
   "integrity" "sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww=="
   "resolved" "https://registry.npmjs.org/is-wsl/-/is-wsl-2.2.0.tgz"
   "version" "2.2.0"
@@ -7817,15 +7824,15 @@
   dependencies:
     "mime-db" "1.46.0"
 
+"mime@^1.6.0", "mime@1.6.0":
+  "integrity" "sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg=="
+  "resolved" "https://registry.npmjs.org/mime/-/mime-1.6.0.tgz"
+  "version" "1.6.0"
+
 "mime@^2.4.4":
   "integrity" "sha512-tqkh47FzKeCPD2PUiPB6pkbMzsCasjxAfC62/Wap5qrUWcb+sFasXUC5I3gYM5iBM8v/Qpn4UK0x+j0iHyFPDg=="
   "resolved" "https://registry.npmjs.org/mime/-/mime-2.5.2.tgz"
   "version" "2.5.2"
-
-"mime@1.6.0":
-  "integrity" "sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg=="
-  "resolved" "https://registry.npmjs.org/mime/-/mime-1.6.0.tgz"
-  "version" "1.6.0"
 
 "mimic-fn@^2.1.0":
   "integrity" "sha512-OqbOk5oEQeAZ8WXWydlu9HJjz9WVdEIvamMCcXmuqUYjTknH/sqsWvhQ3vgwKFRR1HpjvNBKQ37nbJgYzGqGcg=="
@@ -8104,18 +8111,6 @@
   "integrity" "sha1-jZ2+KJZKSsVxLpExZCEHxx6Q7EA="
   "resolved" "https://registry.npmjs.org/node-modules-regexp/-/node-modules-regexp-1.0.0.tgz"
   "version" "1.0.0"
-
-"node-notifier@^8.0.0":
-  "integrity" "sha512-BvEXF+UmsnAfYfoapKM9nGxnP+Wn7P91YfXmrKnfcYCx6VBeoN5Ez5Ogck6I8Bi5k4RlpqRYaw75pAwzX9OphA=="
-  "resolved" "https://registry.npmjs.org/node-notifier/-/node-notifier-8.0.1.tgz"
-  "version" "8.0.1"
-  dependencies:
-    "growly" "^1.3.0"
-    "is-wsl" "^2.2.0"
-    "semver" "^7.3.2"
-    "shellwords" "^0.1.1"
-    "uuid" "^8.3.0"
-    "which" "^2.0.2"
 
 "node-releases@^1.1.61", "node-releases@^1.1.70":
   "integrity" "sha512-zR6HoT6LrLCRBwukmrVbHv0EpEQjksO6GmFcZQQuCAy139BEsoVKPYnf3jongYW83fAa1torLGYwxxky/p28sg=="
@@ -9495,7 +9490,7 @@
     "react-is" "^16.3.2"
     "warning" "^4.0.0"
 
-"prop-types@^15.5.8", "prop-types@^15.6.0", "prop-types@^15.6.1", "prop-types@^15.6.2", "prop-types@^15.7.2":
+"prop-types@^15.5.7", "prop-types@^15.5.8", "prop-types@^15.6.0", "prop-types@^15.6.1", "prop-types@^15.6.2", "prop-types@^15.7.2":
   "integrity" "sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
   "version" "15.7.2"
@@ -9658,6 +9653,13 @@
     "http-errors" "1.7.2"
     "iconv-lite" "0.4.24"
     "unpipe" "1.0.0"
+
+"react-apexcharts@^1.3.7":
+  "integrity" "sha512-2OFhEHd70/WHN0kmrJtVx37UfaL71ZogVkwezmDqwQWgwhK6upuhlnEEX7tEq4xvjA+RFDn6hiUTNIuC/Q7Zqw=="
+  "resolved" "https://registry.npmjs.org/react-apexcharts/-/react-apexcharts-1.3.7.tgz"
+  "version" "1.3.7"
+  dependencies:
+    "prop-types" "^15.5.7"
 
 "react-app-polyfill@^2.0.0":
   "integrity" "sha512-0sF4ny9v/B7s6aoehwze9vJNWcmCemAUYBVasscVr92+UYiEqDXOxfKjXN685mDaMRNF3WdhHQs76oTODMocFA=="
@@ -9975,7 +9977,7 @@
     "loose-envify" "^1.4.0"
     "prop-types" "^15.6.2"
 
-"react@^17.0.1":
+"react@^17.0.1", "react@>=0.13":
   "integrity" "sha512-lG9c9UuMHdcAexXtigOZLX8exLWkW0Ku29qPRU8uhF2R9BN96dLCt0psvzPLlHc5OWkgymP3qwTRgbnw5BKx3w=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.1.tgz"
   "version" "17.0.1"
@@ -10856,11 +10858,6 @@
   "resolved" "https://registry.npmjs.org/shell-quote/-/shell-quote-1.7.2.tgz"
   "version" "1.7.2"
 
-"shellwords@^0.1.1":
-  "integrity" "sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww=="
-  "resolved" "https://registry.npmjs.org/shellwords/-/shellwords-0.1.1.tgz"
-  "version" "0.1.1"
-
 "side-channel@^1.0.4":
   "integrity" "sha512-q5XPytqFEIKHkGdiMIrY10mvLRvnQh42/+GoBlFW3b2LXLE2xxJpZFdm94we0BaoV3RwJyGqg5wS7epxTv0Zvw=="
   "resolved" "https://registry.npmjs.org/side-channel/-/side-channel-1.0.4.tgz"
@@ -11419,6 +11416,61 @@
   "integrity" "sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ=="
   "resolved" "https://registry.npmjs.org/svg-parser/-/svg-parser-2.0.4.tgz"
   "version" "2.0.4"
+
+"svg.draggable.js@^2.2.2":
+  "integrity" "sha512-JzNHBc2fLQMzYCZ90KZHN2ohXL0BQJGQimK1kGk6AvSeibuKcIdDX9Kr0dT9+UJ5O8nYA0RB839Lhvk4CY4MZw=="
+  "resolved" "https://registry.npmjs.org/svg.draggable.js/-/svg.draggable.js-2.2.2.tgz"
+  "version" "2.2.2"
+  dependencies:
+    "svg.js" "^2.0.1"
+
+"svg.easing.js@^2.0.0":
+  "integrity" "sha1-iqmUawqOJ4V6XEChDrpAkeVpHxI="
+  "resolved" "https://registry.npmjs.org/svg.easing.js/-/svg.easing.js-2.0.0.tgz"
+  "version" "2.0.0"
+  dependencies:
+    "svg.js" ">=2.3.x"
+
+"svg.filter.js@^2.0.2":
+  "integrity" "sha1-kQCOFROJ3ZIwd5/L5uLJo2LRwgM="
+  "resolved" "https://registry.npmjs.org/svg.filter.js/-/svg.filter.js-2.0.2.tgz"
+  "version" "2.0.2"
+  dependencies:
+    "svg.js" "^2.2.5"
+
+"svg.js@^2.0.1", "svg.js@^2.2.5", "svg.js@^2.4.0", "svg.js@^2.6.5", "svg.js@>=2.3.x":
+  "integrity" "sha512-ycbxpizEQktk3FYvn/8BH+6/EuWXg7ZpQREJvgacqn46gIddG24tNNe4Son6omdXCnSOaApnpZw6MPCBA1dODA=="
+  "resolved" "https://registry.npmjs.org/svg.js/-/svg.js-2.7.1.tgz"
+  "version" "2.7.1"
+
+"svg.pathmorphing.js@^0.1.3":
+  "integrity" "sha512-49HWI9X4XQR/JG1qXkSDV8xViuTLIWm/B/7YuQELV5KMOPtXjiwH4XPJvr/ghEDibmLQ9Oc22dpWpG0vUDDNww=="
+  "resolved" "https://registry.npmjs.org/svg.pathmorphing.js/-/svg.pathmorphing.js-0.1.3.tgz"
+  "version" "0.1.3"
+  dependencies:
+    "svg.js" "^2.4.0"
+
+"svg.resize.js@^1.4.3":
+  "integrity" "sha512-9k5sXJuPKp+mVzXNvxz7U0uC9oVMQrrf7cFsETznzUDDm0x8+77dtZkWdMfRlmbkEEYvUn9btKuZ3n41oNA+uw=="
+  "resolved" "https://registry.npmjs.org/svg.resize.js/-/svg.resize.js-1.4.3.tgz"
+  "version" "1.4.3"
+  dependencies:
+    "svg.js" "^2.6.5"
+    "svg.select.js" "^2.1.2"
+
+"svg.select.js@^2.1.2":
+  "integrity" "sha512-tH6ABEyJsAOVAhwcCjF8mw4crjXSI1aa7j2VQR8ZuJ37H2MBUbyeqYr5nEO7sSN3cy9AR9DUwNg0t/962HlDbQ=="
+  "resolved" "https://registry.npmjs.org/svg.select.js/-/svg.select.js-2.1.2.tgz"
+  "version" "2.1.2"
+  dependencies:
+    "svg.js" "^2.2.5"
+
+"svg.select.js@^3.0.1":
+  "integrity" "sha512-h5IS/hKkuVCbKSieR9uQCj9w+zLHoPh+ce19bBYyqF53g6mnPB8sAtIbe1s9dh2S2fCmYX2xel1Ln3PJBbK4kw=="
+  "resolved" "https://registry.npmjs.org/svg.select.js/-/svg.select.js-3.0.1.tgz"
+  "version" "3.0.1"
+  dependencies:
+    "svg.js" "^2.6.5"
 
 "svgo@^1.0.0", "svgo@^1.2.2":
   "integrity" "sha512-yhy/sQYxR5BkC98CY7o31VGsg014AKLEPxdfhora76l36hD9Rdy5NZA/Ocn6yayNPgSamYdtX2rFJdcv07AYVw=="
@@ -12038,11 +12090,6 @@
   "resolved" "https://registry.npmjs.org/uuid/-/uuid-3.4.0.tgz"
   "version" "3.4.0"
 
-"uuid@^8.3.0":
-  "integrity" "sha512-+NYs2QeMWy+GWFOEm9xnn6HCDp0l7QBD7ml8zLUmJ+93Q5NF0NocErnwkTkXVFNiX3/fpC6afS8Dhb/gz7R7eg=="
-  "resolved" "https://registry.npmjs.org/uuid/-/uuid-8.3.2.tgz"
-  "version" "8.3.2"
-
 "v8-compile-cache@^2.0.3":
   "integrity" "sha512-gTpR5XQNKFwOd4clxfnhaqvfqMpqEwr4tOtCyz4MtYZX2JYhfr1JvBFKdS+7K/9rfpZR3VLX+YWBbKoxCgS43Q=="
   "resolved" "https://registry.npmjs.org/v8-compile-cache/-/v8-compile-cache-2.2.0.tgz"
@@ -12318,13 +12365,6 @@
     "isexe" "^2.0.0"
 
 "which@^2.0.1":
-  "integrity" "sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA=="
-  "resolved" "https://registry.npmjs.org/which/-/which-2.0.2.tgz"
-  "version" "2.0.2"
-  dependencies:
-    "isexe" "^2.0.0"
-
-"which@^2.0.2":
   "integrity" "sha512-BLI3Tl1TW3Pvl70l3yq3Y64i+awpwXqsGBYWkkqMtnbXgrMD+yj7rhW0kuEDxzJaYXGjEW5ogapKNMEKNMjibA=="
   "resolved" "https://registry.npmjs.org/which/-/which-2.0.2.tgz"
   "version" "2.0.2"
