@@ -32,10 +32,12 @@
         "express-session": "^1.17.1",
         "luxon": "^1.25.0",
         "minisearch": "^3.0.2",
+        "node-cron": "^2.0.3",
         "passport": "^0.4.1",
         "passport-local": "^1.0.0",
         "pg": "^8.5.1",
         "pg-format": "^1.0.4",
+        "universal-cookie": "^4.0.4",
         "uuid": "^8.3.2",
         "ws": "^7.4.3",
         "universal-cookie": "^4.0.4"

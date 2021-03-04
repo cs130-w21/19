@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import { formatCommas } from '../utils';
 import * as timeago from 'timeago.js';
+import Alert from 'react-bootstrap/Alert'
 
 class Portfolio extends Component {
+
     formatQuantity(qty, symbol) {
       if (symbol === 'USD') {
         return formatCommas(qty);
@@ -16,16 +18,25 @@ class Portfolio extends Component {
       return formatCommas((Number(quantity) * Number(pricePerShare)).toFixed(2));
     }
 
+  
 
-    onSelectPortfolioItem = (symbol) => {
-      if (symbol !== 'USD') {
-        this.props.onSelectStock(symbol);
+    onSelectPortfolioItem = ({ ticker, companyName }) => {
+      if (ticker !== 'USD') {
+        this.props.onSelectStock({ticker, companyName });
       }
     }
   
     render(){
-      const {items = [], titleLess, light } = this.props;
+      const {items = [], titleLess, light, isLoggedIn } = this.props;
+      //const user = Store.get('user');
+      
+      
+
+      
+
       return (
+        <div>
+        {isLoggedIn &&  (<React.Fragment>
         <div className="col">
           { ! titleLess && (
             <h1>My Portfolio</h1>
@@ -42,7 +53,7 @@ class Portfolio extends Component {
             </thead>
             <tbody>
             {items.map((it, i) => (
-              <tr key={i} onClick={() => this.onSelectPortfolioItem(it.symbol)} style={{ cursor: 'pointer' }}>
+              <tr key={i} onClick={() => this.onSelectPortfolioItem({ ticker: it.symbol, companyName: it.company_name })} style={{ cursor: 'pointer' }}>
                 <td> {it.symbol} </td>
                 <td>
                   {it.symbol === 'USD' ? '-' : this.formatQuantity(it.quantity, it.symbol)}
@@ -54,6 +65,21 @@ class Portfolio extends Component {
             ))}
             </tbody>
           </Table>
+          
+        </div>
+
+      
+        </React.Fragment>)}
+
+        { !isLoggedIn && (<React.Fragment>
+          <Alert key={'alertForProfolio'} variant={'info'} style={{marginTop:'10px'}}>
+                Please Loggin to view the Profolio.
+          </Alert>
+
+        </React.Fragment>)
+
+        }
+
         </div>
       );
     }

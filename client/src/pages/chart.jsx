@@ -59,16 +59,10 @@ class ChartComponent extends Component {
     this.updatePortfolioData();
   }
 
-
-  onSearchbarSelectStock = ({ name, symbol }) => {
-    this.setState({
-      ticker: symbol,
-      companyName: name,
-    });
-  }
-  changeSelectedStock = (ticker) => {
+  changeSelectedStock = ({ ticker, companyName }) => {
     this.setState({
       ticker,
+      companyName,
     });
   }
 
@@ -117,7 +111,7 @@ class ChartComponent extends Component {
     const isWatchlisted = this.checkCurrentStockWatchlisted();
     return (
       <>
-      <StockSelector onSelectStock={this.onSearchbarSelectStock} />
+      <StockSelector onSelectStock={({name, symbol}) => this.changeSelectedStock({ticker: symbol, companyName: name})} />
       <Container style={{ marginTop: '1rem'}}>
         <Row md={12}>
           <Col md={8}>

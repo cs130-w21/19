@@ -29,6 +29,7 @@ import { initializeSearchEngine } from './src/search/searchEngine.js';
 import configurePassport from './src/auth/passportConfig.js';
 import { pgPool } from './src/db/dbClient.js';
 import SubscriptionManager from './src/marketData/subscriptionManager.js';
+import { schedulePortfolioCron } from './src/portfolio/cron.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -122,14 +123,17 @@ wsServer.on('connection', (ws) => {
 });
 
 
-/* Finnhub Websocket Client listeners */ 
-FinnhubWsClient.addEventListener('message', finnhubWsMessageHandler);
 
 console.log("Initializing pg tables if not exists...");
 initializePg().then(() => {
   console.log("OK. Initializing search engine & ticker table...");
   initializeSearchEngine().then(() => {
     const server = app.listen(port);
+    /* Updating Portfolio Growth Using Cron Job */
+    schedulePortfolioCron();
+    /* Finnhub Websocket Client listeners */ 
+    FinnhubWsClient.addEventListener('message', finnhubWsMessageHandler);
+
     server.on('upgrade', (req, socket, head) => {
       wsServer.handleUpgrade(req, socket, head, (ws) => {
         wsServer.emit('connection', ws, req);
@@ -141,6 +145,7 @@ initializePg().then(() => {
   console.error("DB initialization ERROR", e)
   process.exit(1);
 });
+
 
 process.on('SIGINT', () => {
   console.log("SIGINT received - Shutting down server.")

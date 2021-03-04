@@ -26,9 +26,9 @@ const getMarketPrice = async (dbTxnClient, ticker, updateIfStale=true) => {
   if (updateIfStale && (!last_price || parseInt(secs_since_change) > PRICE_STALENESS_TTL_SECS)) {
     // price is stale. Get new price and save to DB.
     const [currentPrice ] = await obj.updateMultiplePrices(dbTxnClient, [ticker]);
-    return currentPrice;
+    return currentPrice.toFixed(2);
   } else {
-    return last_price;
+    return parseFloat(last_price).toFixed(2);
   }
 };
 

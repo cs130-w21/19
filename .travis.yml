@@ -24,7 +24,7 @@ before_script:
 # run our unit and integration tests
 # note: FINNHUB_API_KEY is ste in the travis environment.
 script:
-- bash -c "cd client && yarn run test --passWithNoTests"
+- bash -c "cd client && yarn run test"
 - bash -c "cd server && npm run unit-test"
 - FINNHUB_API_KEY=$FINNHUB_API_KEY PG_CONNSTR='postgresql://postgres:@localhost:5432/integration_test_db' bash -c "cd server && npm run integration-test"
 - bash -c "cd server && npm run doc" # build documentation

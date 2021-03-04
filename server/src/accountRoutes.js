@@ -8,6 +8,7 @@ const router = express.Router()
 
 /**
 * @api {post} /api/accounts/login Login
+* @apiDescription Login to an existing account using your username and password.
 * @apiPermission none
 * @apiGroup accounts
 * @apiParam (Request body) {String} username username
@@ -54,6 +55,7 @@ router.post('/login', (req, res, next) => {
 
 /**
 * @api {post} /api/accounts/register Register new account 
+* @apiDescription Create a new stonks account. Also adds $75k USD as a starting balance.
 * @apiPermission none
 * @apiGroup accounts
 * @apiParam (Request body) {String} username username

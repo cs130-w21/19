@@ -29,9 +29,17 @@ import { validTicker } from './utils/validation.js';
  * @apiUse auth
  */
 router.get('/', authMiddleware, async (req, res) => {
+  // TODO:  last_price? We need to get real data for this?
   const { rows: watchlistItems }  = await pgPool.query(`
-    SELECT watchlist_id, date_added, ticker, 50.40 AS last_price
-    FROM watchlist WHERE user_id = $1;`,
+    SELECT 
+      W.watchlist_id,
+      W.date_added,
+      W.ticker,
+      50.40 AS last_price,
+      T.full_name as company_name
+    FROM watchlist W
+    LEFT JOIN tickers T ON W.ticker = T.ticker_name
+    WHERE user_id = $1;`,
     [ req.user.user_id ]);
   return res.json({
     watchlistItems,

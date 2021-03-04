@@ -4,7 +4,7 @@ import Portfolio from "../components/Portfolio"
 import History from "./myHistory"
 import { Doughnut } from 'react-chartjs-2'
 import {createChartInput} from '../utils'
-
+import GrowthChart from '../pages/profolioChart'
 
 class Profile extends Component{
     constructor(props){
@@ -39,6 +39,7 @@ class Profile extends Component{
       return (
         <div>
         <Portfolio items={items}/>
+        <GrowthChart items={items}/>
         <Doughnut
             data={chartinput}
             options={{

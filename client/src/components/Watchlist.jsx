@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Table from 'react-bootstrap/Table';
 import { formatCommas } from '../utils';
 import * as timeago from 'timeago.js';
+import Alert from 'react-bootstrap/Alert'
 
 class Watchlist extends Component {
     formatQuantity(qty, symbol) {
@@ -22,15 +23,16 @@ class Watchlist extends Component {
             <thead>
               <tr>
                 <th> Stock Symbol </th>
+                <th> Name </th>
                 <th> Last Price </th>
                 <th> Added </th>
               </tr>
             </thead>
             <tbody>
               {(watchlistItems || []).map((it, i) => (
-
-                <tr key={i} onClick={() => onSelectStock(it.ticker)} style={{ cursor: 'pointer' }}>
+                <tr key={i} onClick={() => onSelectStock({ ticker: it.ticker, companyName: it.company_name })} style={{ cursor: 'pointer' }}>
                   <td> {it.ticker} </td>
+                  <td> {it.company_name} </td>
                   <td> ${this.formatQuantity(it.last_price, 'USD')}</td>
                   <td> {timeago.format(it.date_added)} </td>
                 </tr>
@@ -38,7 +40,10 @@ class Watchlist extends Component {
             </tbody>
           </Table>
         ): (
-          <p> Please log in to create some watchlists </p>
+          <Alert key={'alertForProfolio'} variant={'info'}>
+                Please log in to create some watchlists
+          </Alert>
+          
         )}
 
 

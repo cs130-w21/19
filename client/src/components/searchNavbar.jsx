@@ -59,7 +59,7 @@ class SearchNavBar extends Component{
 
 
   render(){
-    const {ticker, suggestions} = this.state;
+    const {suggestions} = this.state;
     return(
     <>
         

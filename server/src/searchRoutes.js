@@ -6,6 +6,7 @@ const router = express.Router()
 
 /**
  * @api {get} /api/search search stock by ticker & company name
+ * @apiDescription search for stocks by its company name or its ticker. We obtain the list of tickers using finnhub.
  * @apiPermission none
  * @apiGroup search
  * @apiParam (Query param) {String} searchString search string (company name / ticker)

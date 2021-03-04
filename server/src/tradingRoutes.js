@@ -229,6 +229,7 @@ export const executeMarketSellOrder = async (userId, ticker, stockQuantity) => {
 * @api {post} /api/trading/buy Buy a stock
 * @apiPermission auth
 * @apiUse auth
+* @apiDescription execute a market buy order for a stock ticker at a given quantity, using the most recent market price.
 * @apiGroup trading
 * @apiParam (Request body) {String} ticker capitalized stock ticker e.g. MSFT 
 * @apiParam (Request body) {Number} quantity positive integer indicating amount to buy
@@ -283,6 +284,7 @@ router.post('/buy', authMiddleware, async (req, res) => {
 
 /**
 * @api {post} /api/trading/sell Sell a stock
+* @apiDescription execute a market sell order for a stock ticker at a given quantity, using the most recent market price.
 * @apiPermission auth
 * @apiUse auth
 * @apiGroup trading

@@ -9,18 +9,19 @@ const router = express.Router();
 
 /**
  * @api {get} /api/chart Get historical OHLC data
- * @apiDescription get historical OHLC data. Each data point i has its OHLC data in opens[i], highs[i], lows[i], closes[i] and volume data in volumes[i].
+ * @apiDescription get historical OHLC data for a particular stock.. OHLC denotes Open High Low Close. In each measurement over some resolution R (see below), the stock's highest(H), lowest(L), and earliest (O for open) and latest (C for Close) values are recorded. Each data point i has its OHLC data in opens[i], highs[i], lows[i], closes[i] and volume data in volumes[i].
  * @apiPermission none
  * @apiGroup charting
  * @apiParam (Query param) {Number} from unix timestamp (in seconds)
  * @apiParam (Query param) {Number} to unix timestamp (in seconds) (optional - If not specified, uses current time).
  * @apiParam (Query param) {String} ticker ticker (capitalized) to get.
- * @apiParam (Query param) {String} resolution resolution of each datapoint. one of '1', '5', '30', '60', 'D', 'W', 'M'. 1/5/30/60 are in minutes.
+ * @apiParam (Query param) {String} resolution resolution of each datapoint, i.e. for how long each OHLC datapoint was measured for. one of '1' (1 min), '5' (5 mins), '30' (half an hour), '60' (1 hour), 'D' (24 hours), 'W' (7 days), 'M' (a month).
  * @apiSuccess {Boolean} hasData if there are any datapoints or not.
- * @apiSuccess {Number} opens[i] open data for datapoint i.
- * @apiSuccess {Number} highs[i] high for datapoint i.
- * @apiSuccess {Number} lows[i] time for datapoint i.
- * @apiSuccess {Number} closes[i] close for datapoint i.
+ * @apiSuccess {Number} opens[i] open price for datapoint i.
+ * @apiSuccess {Number} volumes[i] trading volume for datapoint i.
+ * @apiSuccess {Number} highs[i] highest price for datapoint i.
+ * @apiSuccess {Number} lows[i] lowest price for datapoint i.
+ * @apiSuccess {Number} closes[i] closing price for datapoint i.
  * @apiSuccess {Number} timestamps[i] timestamp for datapoint i.
  *
  * @apiSuccessExample {json} Success-Response:
@@ -73,12 +74,13 @@ router.get('/', async (req, res) => {
 
 /**
  * @api {WebSocket} event:"subscribeToTicker" subscribe to ticker price updates
- * @apiDescription subscribe to realtime price updates for a ticker.
+ * @apiDescription subscribe to realtime price updates for a ticker. Note that this is a websocket call, so the example HTTP request tool won't work.
  * @apiPermission none
  * @apiGroup charting
  * @apiParam (Websocket request body) {String} event "subscribeToTicker"
  * @apiParam (Websocket request body) {String} ticker Stock ticker in caps lock.
  * @apiExample WS request body example:
+ * Send a JSON stringified message like the below to subscribe to MSFT stock updates.
  * {
  *   "event": "subscribeToTicker",
  *   "ticker": "MSFT",
@@ -92,11 +94,12 @@ router.get('/', async (req, res) => {
  * @apiSuccess (Websocket Response) {Number} volume updated volume.
  * @apiSuccess (Websocket Response) {Number} timestamp time of update (unix time in seconds)
  * @apiSuccessExample (json) Success-Response:
- * Sample update messages sent from server:
+ * Sample update messages sent from server (to subscribed clients of a particular stock):
  * {
  *   "event": "tickerPriceUpdate",
  *   "timestamp": 1613411273,
  *   "price": 200.43,
+ *   "ticker": "MSFT",
  *   "volume": 1000
  * }
  */
@@ -130,13 +133,14 @@ const wsSubscribeToTickerHandler = async (wss, ws, payload) => {
 
 /**
  * @api {WebSocket} event:"unsubscribeFromTicker" unsubscribe to ticker price updates
- * @apiDescription unsubscribe to stop realtime price updates for a ticker.
+ * @apiDescription unsubscribe to stop realtime price updates for a ticker. Note that this is a websocket call, so the example HTTP request tool won't work.
  * @apiParam (Websocket request body) {String} event "subscribeToTicker"
  * @apiParam (Websocket request body) {String} ticker Stock ticker in caps lock.
  * @apiExample WS request body example:
+ * Send a JSON stringified message like the below to unsubscribe from MSFT stock updates.
  * {
  *   "event": "unsubscribeFromTicker",
- *   "ticker": "MSFT",
+ *   "ticker": "MSFT"
  * }
  *
  *
