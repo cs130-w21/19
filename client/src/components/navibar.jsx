@@ -24,7 +24,7 @@ class NavBar extends Component{
         </button>
         <div className="navbar-nav" >
           <NavLink className="nav-item nav-link" to="/chart">
-            Chart
+            Market
           </NavLink></div>
           {!this.props.user   &&  (<React.Fragment>
           <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
@@ -41,7 +41,7 @@ class NavBar extends Component{
           {this.props.user    && (<React.Fragment>
             <div className="navbar-nav" >
           <NavLink className="nav-item nav-link" to="/myProfile">
-            {this.props.user}
+            Profile
           </NavLink> </div>
       
           <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">

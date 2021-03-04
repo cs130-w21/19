@@ -164,6 +164,7 @@ class ChartComponent extends Component {
                   onSelectStock={this.changeSelectedStock}
                   light
                   isLoggedIn={!!user}
+                  enableClick={true}
                 />
               </Tab>
             </Tabs>

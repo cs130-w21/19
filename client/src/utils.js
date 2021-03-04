@@ -52,23 +52,30 @@ export function generateRandomColor(){
 	return "#" + color;
 }
 
+export function getStockValueNumber(quantity, price_per_share){
+	return ((Number(quantity) * Number(price_per_share)).toFixed(2));
+}
 export function createChartInput(items){
 	var labels_val = [];
       var bgcolor = [];
       var data_val = [];
       items.forEach(function (item){
-        labels_val.push(item.symbol)
-        bgcolor.push(generateRandomColor());
-        data_val.push(item.quantity)
-      });
+		  if(item.symbol != 'USD'){
+			  labels_val.push(item.symbol)
+			  bgcolor.push(generateRandomColor());
+			  var stock_val = getStockValueNumber(item.quantity, item.price_per_share);
+			  //console.log(stock_val);
+			  data_val.push(stock_val);
+			}
+		});
 //currently, only dummy values
 //replace rhs with labels_val, bgcolor, and data_val 
 	  const input = {
-		labels: ['MSFT', 'AAPL', 'AMZN'],
+		labels: labels_val, //['MSFT', 'AAPL', 'AMZN'],
 		datasets: [{
 			label: "Shares",
-			backgroundColor: ['#ff0000', '#ff9500', '#2d9c00'],
-			data: [10, 20, 30],
+			backgroundColor: bgcolor,//['#ff0000', '#ff9500', '#2d9c00'],
+			data: data_val, //[6826.80, 20114.10, 585.60, 50.00],
 		}]
 	}
 	return input;

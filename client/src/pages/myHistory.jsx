@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Store from 'store'
+import * as timeago from 'timeago.js';
 import HistoryTable from './HistoryTable'
 import * as getUserHistory from "../services/getUserData";
 import { paginate } from "../components/common/paginate";
@@ -38,6 +39,7 @@ class Histroy extends Component {
             { 
                 item.quantity = parseFloat(item.quantity);
                 item.unit_price_executed = parseFloat(item.unit_price_executed);
+                item.date_executed = timeago.format(item.date_executed);
                 return item;
             });
         
@@ -79,14 +81,14 @@ class Histroy extends Component {
     render() { 
 
         const user =  Store.get('user')
-        const history_title = "Purchase History of " + user;
+        const history_title = "";//user + "'s Trading History";
         //const userHistroy = getUserHistory.getUserHistoryData(user)
 
         const count = this.state.userHistory.length;
         const { pageSize, currentPage, sortColumn } = this.state;
         if (count === 0) return (
             <div>
-                <h1>{history_title} </h1>
+                <h2 class="text-dark"> &nbsp; {history_title} </h2>
                 <p>There are no history of transaction.</p>
 
             </div>
@@ -98,21 +100,21 @@ class Histroy extends Component {
         {
             return (
                 <div>
-                <h1>
-                    {history_title}
+                <h2 class="text-dark"> &nbsp;
+                   
                     <Alert variant="danger">
                         {this.state.error}
                     </Alert>
-                </h1>
+                </h2>
                 </div>
             )
         }
 
         return (
             <div>
-                <h1>
+                {/*<h2 class="text-dark"> &nbsp;
                     {history_title}
-                </h1>
+        </h2>*/}
 
             <div className="col">
                 <p>Showing {totalCount} result from History.</p>
