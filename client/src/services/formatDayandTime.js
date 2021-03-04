@@ -1,19 +1,10 @@
 
 import {apiUrl} from "../config.json";
 import http from "./httpService";
-import _ from 'lodash'
 const apiEndpoint= apiUrl+ "/portfolio/growth";
 
 const moment = require('moment'); 
 
-const dateTest1 = ["2021-03-02T02:00:00.017Z", 
-                    "2021-03-02T03:00:00.011Z", 
-                    "2021-03-02T04:00:00.011Z", 
-                    "2021-03-02T05:00:00.009Z", 
-                    "2021-03-02T06:00:00.016Z", 
-                    "2021-03-02T07:00:00.031Z", 
-                    "2021-03-02T08:00:00.019Z", 
-                    "2021-03-02T09:00:00.010Z"]
 export function PortfolioData()
 {
     return http.get(apiEndpoint );
@@ -49,13 +40,7 @@ export function DateArray( DArray )
         return moment(x).get('date')
     })
 
-    const hour = DateArr.map((x)=>{
-        return moment(x).get('hour')
-    })
-
-    const min =  DateArr.map((x)=>{
-        return moment(x).get('min')
-    })
+    
 
     
 

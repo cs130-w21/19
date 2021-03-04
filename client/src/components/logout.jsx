@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import  {Component} from 'react';
 import Store from 'store'
 class Logout extends Component {
 
