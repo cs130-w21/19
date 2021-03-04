@@ -60,7 +60,7 @@ export function createChartInput(items){
       var bgcolor = [];
       var data_val = [];
       items.forEach(function (item){
-		  if(item.symbol != 'USD'){
+		  if(item.symbol !== 'USD'){
 			  labels_val.push(item.symbol)
 			  bgcolor.push(generateRandomColor());
 			  var stock_val = getStockValueNumber(item.quantity, item.price_per_share);

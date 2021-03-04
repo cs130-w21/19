@@ -21,7 +21,7 @@ class Portfolio extends Component {
   
 
     onSelectPortfolioItem = ({ ticker, companyName }) => {
-      if(this.props.enableClick == false){
+      if(this.props.enableClick === false){
         return false;
       }
       if (ticker !== 'USD') {
@@ -30,7 +30,7 @@ class Portfolio extends Component {
     }
   
     render(){
-      const {items = [], titleLess, light, isLoggedIn, enableClick } = this.props;
+      const {items = [], titleLess, light, isLoggedIn } = this.props;
       //const user = Store.get('user');
       
       

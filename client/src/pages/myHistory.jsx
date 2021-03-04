@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Store from 'store'
 import * as timeago from 'timeago.js';
 import HistoryTable from './HistoryTable'
 import { paginate } from "../components/common/paginate";
@@ -79,7 +78,6 @@ class Histroy extends Component {
 
     render() { 
 
-        const user =  Store.get('user')
         const history_title = "";//user + "'s Trading History";
         //const userHistroy = getUserHistory.getUserHistoryData(user)
 
