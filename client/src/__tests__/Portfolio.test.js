@@ -1,6 +1,6 @@
 import React from 'react';
 import {mount, shallow} from 'enzyme';
-import Portfolio from './Portfolio';
+import Portfolio from '../components/Portfolio';
 
 function onSelectPortfolioItem({ ticker, companyName }){
     if (ticker !== 'USD') {

@@ -16,12 +16,13 @@ import { getWatchlist, addToWatchlist, deleteFromWatchlist } from '../services/w
 import { getPortfolioItems } from '../services/portfolioService';
 import Portfolio from '../components/Portfolio';
 import StockSelector from '../components/StockSelector';
+import '../styles/app.css';
 class ChartComponent extends Component {
 
   defaultState = {
     isWatchlistSelected: true,
     ticker: 'MSFT',
-    companyName: 'Microsoft Corporation Common Stock',
+    companyName: 'MICROSOFT CORP',
     data: undefined,
     watchlistItems: [],
     portfolioItems: [],
@@ -112,19 +113,18 @@ class ChartComponent extends Component {
     return (
       <>
       <StockSelector onSelectStock={({name, symbol}) => this.changeSelectedStock({ticker: symbol, companyName: name})} />
-      <Container style={{ marginTop: '1rem'}}>
+      <Container style={{ marginTop: '2rem'}}>
         <Row md={12}>
           <Col md={8}>
             <div style={{ fontSize: '1.3em',  display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
-              <h3 style={{ marginLeft: '1.3em', marginRight: '0.3em' }} > {ticker}: { companyName } </h3>
+              <h3 className={'tutorial-step-2'} style={{ marginLeft: '1.3em', marginRight: '0.3em' }} > {ticker}: { companyName } </h3>
               {user && (<React.Fragment>
                 <FontAwesomeIcon
                 style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
                 icon={isWatchlisted? solidStar: outlineStar}
                 onClick={this.toggleWatchlistAdd}
-                />  
+                /> 
                 </React.Fragment>)}
-
                 {!user && (<React.Fragment>
                 <FontAwesomeIcon
                 style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
@@ -136,17 +136,17 @@ class ChartComponent extends Component {
             </div>
           </Col >
         </Row>
-        <Row md={12}>
+        <Row md={12} >
           <Col md={8}>
             <Chart type="hybrid" data={data}/>
           </Col>
-          <Col md={4}>
+          <Col>
             <BuySellWidget ticker={ticker} mostRecentPrice={mostRecentPrice} isLoggedIn={!!user} onTransactionSuccess={this.onTransactionSuccess}/>
           </Col>
         </Row>
         <Row md={12}>
-          <Col md={8}>
-            <Tabs
+          <Col md={12}>
+            <Tabs className={'tutorial-step-4'}
               activeKey={isWatchlistSelected ? 'watchlist': 'portfolio'}
               onSelect={(k) => this.setState({ isWatchlistSelected: k === 'watchlist' })}
             >

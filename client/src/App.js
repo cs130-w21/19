@@ -8,7 +8,6 @@ import ProfilePage from "./pages/myProfile"
 import Store from 'store'
 import Logout from './components/logout';
 import './styles/app.css';
-import WelcomeComponent from './pages/welcome';
 
 
 class App extends Component {

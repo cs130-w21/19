@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import Joi from "joi-browser"
 import Form from './common/Form'
 import {login} from '../services/authService'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
 import Store from 'store'
 class LoginForm extends Form {
     
@@ -45,13 +48,19 @@ class LoginForm extends Form {
 
     render() { 
         return (
-            <div>
-              <h3>Login Form</h3>
+            
+            <div className= "container" style={{ marginTop: '8rem'}}>
+                <Row md={12}>
+                <Col md={2}></Col>
+                <Col md={8}>
+                <h2 className="text-dark">Already a user? Sign in!</h2>
               <form onSubmit={this.handleSubmit}>
-                {this.renderInput("username", "Username", "text", "Enter Username")}
-                {this.renderInput("password", "Password", "password", "Enter Password")}
-                {this.renderButton("Login")}
+                {this.renderInput("username", "", "text", "Enter Your Username")}
+                {this.renderInput("password", "", "password", "Enter Your Password")}
+                {/*<Row md={12}><Col md={4}></Col> <Col md={4}>*/}{this.renderButton("Login")}{/*</Col></Row>*/}
               </form>
+              </Col>
+              </Row>
             </div>
           );
     }

@@ -169,7 +169,8 @@ class BuySellWidget extends Component {
     )
     return (
       <Card
-        style={{ paddingLeft: '0.2em', paddingRight: '0.2em' }}
+        className={'tutorial-step-3'}
+        style={{ paddingLeft: '0.4em', paddingRight: '0.4em', paddingTop:'0.4em', paddingBottom: '0.4em'}}
       >
       <AlertList alerts={alert ? [alert]: []} timeout={4500} onDismiss={this.onDismissAlert}/>
       <Card.Title
@@ -189,7 +190,7 @@ class BuySellWidget extends Component {
               pill
               style={{ marginLeft: '0.6em' }}
             >
-              {isMarketOpen? "market is open": "market closed" }
+              {isMarketOpen? "Market Open": "Market Closed" }
             </Badge>
           </OverlayTrigger>
           </div>
@@ -208,9 +209,9 @@ class BuySellWidget extends Component {
         <ListGroup.Item className={!isBuying? 'btn-inactive': ''} disabled={isChangeDisabled} action variant="primary" eventKey="buySelect"> Buy </ListGroup.Item>
           <ListGroup.Item className={isBuying? 'btn-inactive': ''} disabled={isChangeDisabled} action variant="danger" eventKey="sellSelect"> Sell</ListGroup.Item>
         </ListGroup>
-        <p style={{ marginTop: '0.5em' }}> 
+        <p className={isLoggedIn ? "text-dark": "text-danger"} style={{ marginTop: '0.5em' }}  > 
           { isLoggedIn ?
-            `Enter a quantity to purchase or sell ${ticker}.`:"Please login/register to trade!"
+            `Enter a quantity to purchase or sell ${ticker}.`:"You must be logged in to trade!"
           }
         </p>
 
@@ -223,7 +224,7 @@ class BuySellWidget extends Component {
               <td>
                 <InputGroup size="sm" style={{ marginTop: '0.5em' }}>
                   <FormControl
-                    placeholder="enter amount"
+                    placeholder="Enter Amount"
                     onChange={this.onQuantityChange}
                     isInvalid={!!this.state.errorMessage}
                     disabled={isChangeDisabled}

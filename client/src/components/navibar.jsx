@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
-import { Link, NavLink } from "react-router-dom";
+import { useLocation, Link, NavLink } from "react-router-dom";
+import Tutorial from './Tutorial';
 
 class NavBar extends Component{
- 
 
+  constructor(props) {
+    super(props);
+  }
 
   render(){
+    const { location } =this.props;
+    const isInProfilePage = location.pathname === '/myProfile';
     return(
     <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
         <Link className = "navbar-brand" to="/">
@@ -30,10 +35,10 @@ class NavBar extends Component{
           <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
         <div className="navbar-nav" >
           <NavLink className="nav-item nav-link" to="/login">
-            Login
+            Sign In
           </NavLink>
           <NavLink className="nav-item nav-link" to="/register">
-            Register
+            Sign Up
           </NavLink></div></div>
           </React.Fragment>)
           }
@@ -44,18 +49,27 @@ class NavBar extends Component{
             Profile
           </NavLink> </div>
       
+          
           <div className="collapse navbar-collapse justify-content-end" id="navbarNavAltMarkup">
+            
           <div className="navbar-nav" >
+          {this.props.user && <Tutorial isProfile={isInProfilePage} />}
           <NavLink className="nav-item nav-link" to="/logout">
             Logout
           </NavLink></div></div>
           </React.Fragment>)
           }
-          
     </nav>
 
     );
   }
 }
 
-export default NavBar
+const NavBarWithLocation = (props) => {
+  const location = useLocation();
+  return (
+    <NavBar location={location} {...props} />
+  );
+}
+
+export default NavBarWithLocation;

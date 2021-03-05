@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount} from 'enzyme'
-import BuySellWidget from './buySellWidget'
+import BuySellWidget from '../components/buySellWidget'
 
 
 jest.mock('../services/tradingService', () => {
@@ -34,7 +34,7 @@ describe('BuySellWidget Tests', () => {
         //console.log(wrapper.html());
         
         const textP = wrapper.find('p');
-        expect(textP.text()).toBe('Please login/register to trade!');
+        expect(textP.text()).toBe('You must be logged in to trade!');
         
         /* buttons should be disabled for unregistered/signed out users */
         const button = wrapper.find('button').at(1);
@@ -63,7 +63,7 @@ describe('BuySellWidget Tests', () => {
         //console.log(wrapper.instance().state.isMarketOpen)
         const badge = wrapper.find('div').at(6)
         //console.log(badge.html());
-        expect(badge.text()).toBe('MSFTmarket closed')
+        expect(badge.text()).toBe('MSFTMarket Closed')
 
         /*note: we allow user to enter amount even when market is closed but buttons are disabled, 
         diff behavior from when user is only logged out */

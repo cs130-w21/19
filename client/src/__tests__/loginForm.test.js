@@ -6,8 +6,8 @@ describe('loginForm', () => {
 
     it('should display heading', () => {
         const wrapper = shallow(<LoginForm/>);
-        const s = wrapper.find('div h3');
-        expect(s.text()).toBe('Login Form');
+        const s = wrapper.find('div h2');
+        expect(s.text()).toBe('Already a user? Sign in!');
         
     })
 

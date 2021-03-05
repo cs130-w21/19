@@ -41,12 +41,10 @@ class Watchlist extends Component {
           </Table>
         ): (
           <Alert key={'alertForProfolio'} variant={'info'}>
-                Please log in to create some watchlists
+                Please log in to create a watchlist!
           </Alert>
           
         )}
-
-
         </div>
       );
     }

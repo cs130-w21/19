@@ -30,7 +30,7 @@ class Portfolio extends Component {
     }
   
     render(){
-      const {items = [], titleLess, light, isLoggedIn, enableClick } = this.props;
+      const {items = [], titleLess, light, isLoggedIn } = this.props;
       //const user = Store.get('user');
       
       
@@ -78,7 +78,7 @@ class Portfolio extends Component {
 
         { !isLoggedIn && (<React.Fragment>
           <Alert key={'alertForProfolio'} variant={'info'} style={{marginTop:'10px'}}>
-                Please Loggin to view the Profolio.
+                Please log in to view your portfolio!
           </Alert>
 
         </React.Fragment>)

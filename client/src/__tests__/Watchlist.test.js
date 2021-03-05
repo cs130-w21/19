@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount} from 'enzyme'
-import Watchlist from './Watchlist'
+import Watchlist from '../components/Watchlist'
 
 
 describe('Watchlist Tests', () => {
@@ -23,7 +23,7 @@ describe('Watchlist Tests', () => {
         //console.log(wrapper.html());
         const pText = wrapper.find('div').at(1);
         //console.log(pText.html());
-        expect(pText.text()).toBe('Please log in to create some watchlists');
+        expect(pText.text()).toBe('Please log in to create a watchlist!');
     })
 
     it('should display items for logged in user and update ticker, company_name', () => {

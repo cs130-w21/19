@@ -34,8 +34,9 @@ class CandleStickChartWithCHMousePointer extends React.Component {
 		const xExtents = [start, end];
 
 		return (
+			<div>
 			<ChartCanvas
-				height={400}
+				height={500}
 				ratio={ratio}
 				width={width}
 				margin={{ left: 70, right: 70, top: 10, bottom: 30 }}
@@ -89,6 +90,7 @@ class CandleStickChartWithCHMousePointer extends React.Component {
 				</Chart>
 				<CrossHairCursor />
 			</ChartCanvas>
+			</div>
 		);
 	}
 }
