@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStar as solidStar } from '@fortawesome/free-solid-svg-icons';
 import { faStar as outlineStar } from '@fortawesome/free-regular-svg-icons';
 import Chart from '../components/Chart';
-import { getData } from "../utils"
+import { getData } from "../services/chartingService"
 import BuySellWidget from '../components/buySellWidget';
 import Watchlist from '../components/Watchlist';
 import { getWatchlist, addToWatchlist, deleteFromWatchlist } from '../services/watchlistService';
@@ -17,24 +17,30 @@ import { getPortfolioItems } from '../services/portfolioService';
 import Portfolio from '../components/Portfolio';
 import StockSelector from '../components/StockSelector';
 import '../styles/app.css';
-class ChartComponent extends Component {
+import { timeParse } from "d3-time-format";
 
-  defaultState = {
+const parseDate = timeParse("%s");
+
+class ChartComponent extends Component {
+  defaultState = { 
     isWatchlistSelected: true,
     ticker: 'MSFT',
     companyName: 'MICROSOFT CORP',
     data: undefined,
     watchlistItems: [],
     portfolioItems: [],
-    isLogin: false
+    isLogin: false,
+    end: Math.floor(Date.now() / 1000),
+    hasQueryData: true
   }
   constructor(props) {
     super(props);
     this.state = this.defaultState;
+    this.parseFinnhubData = this.parseFinnhubData.bind(this);
   }
 
   updateWatchlistData = () => {
-    getWatchlist().then(({ data: resData })=> {
+    getWatchlist().then(({ data: resData }) => {
       const { watchlistItems } = resData;
       this.setState(prevState => {
         return {
@@ -53,11 +59,13 @@ class ChartComponent extends Component {
 
   componentDidMount() {
     const mostRecentPrice = 50.40;
-    getData().then(data => {
-      this.setState({ data, mostRecentPrice })
-    })
+    this.runGetData(this.state.ticker);
     this.updateWatchlistData();
     this.updatePortfolioData();
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   changeSelectedStock = ({ ticker, companyName }) => {
@@ -65,6 +73,8 @@ class ChartComponent extends Component {
       ticker,
       companyName,
     });
+
+    this.runGetData(ticker);
   }
 
   toggleWatchlistAdd = async () => {
@@ -76,7 +86,7 @@ class ChartComponent extends Component {
         await addToWatchlist(this.state.ticker);
       }
       await this.updateWatchlistData();
-    } catch(e) {
+    } catch (e) {
       // TODO: error
       console.log("ERROR", e);
     }
@@ -91,7 +101,32 @@ class ChartComponent extends Component {
     this.updatePortfolioData();
   }
 
-  
+  runGetData(ticker) {
+    getData(this.state.end - 5097600, this.state.end, ticker, "30").then(({ data }) => {
+      this.setState(prevState=> ({
+        data,
+        hasQueryData: data.hasData,
+        mostRecentPrice: data.hasData? data.closes[data.closes.length - 1] : prevState.mostRecentPrice
+      }));
+    })
+  }
+
+  parseFinnhubData(finnhubData) {
+    let data = [];
+    const { opens, highs, lows, closes, volumes, timestamps, hasData } = finnhubData;
+    timestamps.forEach((t, i) => {
+      data.push({
+        open: opens[i],
+        high: highs[i],
+        low: lows[i],
+        close: closes[i],
+        volume: volumes[i],
+        date: parseDate(timestamps[i]),
+        hasData: hasData
+      });
+    });
+    return data;
+  }
 
   render() {
     const user = Store.get('user');
@@ -105,8 +140,11 @@ class ChartComponent extends Component {
       watchlistItems,
     } = this.state || {};
 
-    if (this.state == null || !mostRecentPrice || !data) {
+    if (this.state == null || !data) {
       return <div>Loading...</div>
+    }
+    else if (!this.state.hasQueryData || !mostRecentPrice) {
+      return <div>Data error, please try a different ticker.</div>
     }
 
     const isWatchlisted = this.checkCurrentStockWatchlisted();
@@ -126,19 +164,21 @@ class ChartComponent extends Component {
                 /> 
                 </React.Fragment>)}
                 {!user && (<React.Fragment>
-                <FontAwesomeIcon
-                style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
-                icon={outlineStar}
-                onClick={this.toggleWatchlistAdd}
-                />  
+                  <FontAwesomeIcon
+                    style={{ marginRight: '1.3em', marginTop: '0.3em', cursor: 'pointer' }}
+                    icon={outlineStar}
+                    onClick={this.toggleWatchlistAdd}
+                  />
                 </React.Fragment>)}
-              
             </div>
           </Col >
         </Row>
         <Row md={12} >
           <Col md={8}>
-            <Chart type="hybrid" data={data}/>
+          <Chart
+                key={this.state.ticker}
+                type="hybrid"
+                data={this.parseFinnhubData(data)} />
           </Col>
           <Col>
             <BuySellWidget ticker={ticker} mostRecentPrice={mostRecentPrice} isLoggedIn={!!user} onTransactionSuccess={this.onTransactionSuccess}/>
