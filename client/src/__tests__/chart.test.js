@@ -1,6 +1,6 @@
 import React from 'react'
 import {mount, shallow} from 'enzyme'
-import ChartComponent from './chart'
+import ChartComponent from '../pages/chart'
 import {act} from 'react-dom/test-utils'
 
 

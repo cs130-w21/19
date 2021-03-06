@@ -1,4 +1,7 @@
-import React from 'react';
+import React, { Component } from 'react';
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
+
 import Joi from "joi-browser"
 import Form from './common/Form'
 import * as authService from "../services/authService";
@@ -31,8 +34,8 @@ class RegisterForm extends Form {
             const {data} = this.state;
             await authService.register(data);
             localStorage.setItem('user',data.username );
-            window.location="/";
-
+            localStorage.setItem('show_tutorial_first_time', true);
+            window.location="/chart";
        }
        catch (ex){
            if(ex.response && ex.response.status===400)
@@ -50,15 +53,20 @@ class RegisterForm extends Form {
 
     render() { 
         return (    
-            <div className= "container">
-                <h3>Register Form</h3>
+            <div className= "container" style={{ marginTop: '8rem'}}>
+                <Row md={12}>
+                <Col md={2}></Col>
+                <Col md={8}>
+                {/*<h3>Register Form</h3>*/}
+                <h2 className="text-dark"> &nbsp; Sign up to get started! </h2>
                 <form onSubmit={this.handleSubmit}>
-                    {this.renderInput("username", "Username", "text", "Enter Username")}
-                    {this.renderInput("password", "Password", "password", "Enter Password")}
-                    {this.renderInput("email", "Email", "text", "Enter Email")}
-                    {this.renderButton("Register")}
+                    {this.renderInput("username", "", "text", "Enter Username")}
+                    {this.renderInput("password", "", "password", "Enter Password")}
+                    {this.renderInput("email", "", "text", "Enter Email")}
+                   {this.renderButton("Sign Up")}
                 </form>
-
+                </Col>
+                </Row>
             </div>
           );
     }

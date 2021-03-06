@@ -37,6 +37,7 @@ class StockSelector extends React.Component {
 
   render() {
     return (
+      <div className={'tutorial-step-1'} style={{marginTop: "2rem"}}>
       <AsyncTypeahead
         {...this.state}
         style={{
@@ -54,7 +55,7 @@ class StockSelector extends React.Component {
         onPaginate={this.handlePagination}
         onSearch={this.handleSearch}
         paginate
-        placeholder="Search Ticker by symbol or company name ..."
+        placeholder="Search Ticker. . ."
         renderMenuItemChildren={option => (
           <div key={option.name}>
            <Row style={{color: "blue"}} className="justify-content-md-left"> 
@@ -68,6 +69,7 @@ class StockSelector extends React.Component {
         )}
         useCache={false}
       />
+      </div>
     );
   }
 

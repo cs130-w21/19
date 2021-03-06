@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import * as timeago from 'timeago.js';
 import HistoryTable from './HistoryTable'
-import { paginate } from "../components/common/paginate";
-import Pagination from "../components/common/pagination";
+import { paginate } from "./common/paginate";
+import Pagination from "./common/pagination";
 import _ from "lodash"
 import * as getUserHistoryData from "../services/getUserData"
 import Alert from 'react-bootstrap/Alert'

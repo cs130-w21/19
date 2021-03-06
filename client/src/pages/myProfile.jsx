@@ -6,10 +6,10 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {getPortfolioItems} from "../services/portfolioService.js"
 import Portfolio from "../components/Portfolio"
-import History from "./myHistory"
+import History from "../components/myHistory"
 import { Doughnut } from 'react-chartjs-2'
 import {createChartInput} from '../utils'
-import GrowthChart from '../pages/profolioChart'
+import GrowthChart from '../components/GrowthChart'
 import Store from 'store';
 
 class Profile extends Component{
@@ -17,8 +17,8 @@ class Profile extends Component{
         super(props);
         this.state = {
             isFetching: false,
-            isGrowthChartSelected: true,
             isPortfolioSelected: true,
+            isGrowthChartSelected: true,
             items: [],
             chartstate: {
               labels: [],
@@ -40,11 +40,12 @@ class Profile extends Component{
     componentDidMount() {
       this.fetchItems();     
     }
-
+    
+   
     render() {
       //console.log(new Intl.DateTimeFormat('en-US', {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}).format(Date.now()));
       const user = Store.get('user');
-      const {items = [], isGrowthChartSelected, isPortfolioSelected} = this.state;
+      const {items = [], isGrowthChartSelected, isPortfolioSelected } = this.state;
       const chartinput = createChartInput(items);
       console.log(items);
       return (
@@ -54,8 +55,7 @@ class Profile extends Component{
         <Col md={10}>
         <h2 className="text-dark text-center"> &nbsp; Hi {user}! </h2>
         
-        <Row></Row>
-        <Tabs style={{ marginTop: '2rem'}}
+        <Tabs className={'tutorial2-step-1'} style={{ marginTop: '2rem'}}
               activeKey={isPortfolioSelected ? 'Portfolio': 'History'}
               onSelect={(k) => this.setState({ isPortfolioSelected: k === 'Portfolio' })}
             >
@@ -63,13 +63,12 @@ class Profile extends Component{
         <Row md={12}>
         <Col md={1}></Col>
         <Col md={10}>
-        {/*<h2 className="text-dark"> &nbsp; {user}'s Portfolio </h2>*/}
         <Portfolio items={items} titleLess={true} light isLoggedIn={!!user} enableClick={false}/>
         </Col></Row>
         <Row md={12}>
         <Col md={1}></Col>
         <Col md={10}>
-            <Tabs
+            <Tabs 
               activeKey={isGrowthChartSelected ? 'Portfolio Growth': 'Portfolio Distribution'}
               onSelect={(k) => this.setState({ isGrowthChartSelected: k === 'Portfolio Growth' })}
             >

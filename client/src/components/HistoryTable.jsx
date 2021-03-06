@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import Tablehis from "../components/common/table";
+import {Link} from "react-router-dom";
+import Tablehis from "./common/table";
 
 
 
