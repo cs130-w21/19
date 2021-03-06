@@ -9,6 +9,7 @@ const pgClient = new Client({ connectionString });
 
 const pgPool = new Pool({ connectionString });
 
+/* c8 ignore start */
 const createConnectedClient = async () => {
   const c = new Client({ connectionString });
   await c.connect();
@@ -21,5 +22,6 @@ const initializePg = async () => {
   // then we generate all tables if not exist.
   await Promise.all(tableSchemas.map((schemaQuery) => pgClient.query(schemaQuery)));
 };
+/* c8 ignore stop */
 
 export { initializePg, createConnectedClient, pgClient, pgPool };

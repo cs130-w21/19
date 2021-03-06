@@ -8,6 +8,7 @@ import { pgPool } from './db/dbClient.js';
 // NOTE: all these routes are prefixed with /api/trading (see server.js)
 
 // router-specific middleware to always check trading time of day.
+/* c8 ignore start */
 router.use((_, res, next) => {
   if(marketUtils.checkMarketOpen()) {
     next();
@@ -31,31 +32,13 @@ function validStockQuantity(stockQuantity){
   }
   return true;
 }
+/* c8 ignore stop */
 
-function validTicker(ticker) {
-  if (typeof ticker !== 'string') {
-    return false;
-  }
-  if (ticker.length === 0) {
-    return false;
-  }
-  return true;
-}
-
-function respond(res, status, body) {
-  return res.staus(status).json(body);
-}
 
 const invalidStockQuantityErrorResponse = {
   errorMessage: 'quantity body field not a valid positive integer',
   success: false,
 };
-
-const invalidTickerErrorResponse = {
-  errorMessage: 'ticker is not a valid non-empty string',
-  success: false,
-};
-
 /*
 * executeMarketBuyOrder and executeMarketSellOrder are promise functions that 
 * initiates and fills a market order for the userId, ticker and quantity.

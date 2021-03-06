@@ -15,26 +15,22 @@ install:
 - bash -c "cd server && npm install"
 - bash -c "cd client && yarn install"
 
-
 # step to build assets & setup for tests
 before_script:
 - bash -c "cd client && CI='' yarn run build"
 
-
-# run our unit and integration tests
+# run our unit and integration tests, and validate test coverage.
 # note: FINNHUB_API_KEY is ste in the travis environment.
 script:
 - bash -c "cd client && yarn run test"
 - bash -c "cd server && npm run unit-test"
 - FINNHUB_API_KEY=$FINNHUB_API_KEY PG_CONNSTR='postgresql://postgres:@localhost:5432/integration_test_db' bash -c "cd server && npm run integration-test"
 - bash -c "cd server && npm run doc" # build documentation
-
+- bash -c "cd server && npm run coverage"  # adds html and text coverage, which we will serve in prod. Also enforces code coverage percentages.
 
 # create EB (Elastic Beanstalk) zip bundle to upload to AWS EB.
 before_deploy:
 - chmod +x ./ci/create-zip-bundle.sh && ./ci/create-zip-bundle.sh
-
-
 
 # deploy step (only when branch is master)
 deploy:

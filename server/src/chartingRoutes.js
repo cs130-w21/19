@@ -60,7 +60,7 @@ const router = express.Router();
   ]
 }
  */
-router.get('/', async (req, res) => {
+const getOHLCHandler = async (req, res) => {
   const { from, to, resolution, ticker } = req.query;
   if (!from || !resolution || !ticker) {
     return res.status(400).json({
@@ -70,7 +70,8 @@ router.get('/', async (req, res) => {
   }
   const data = await getHistoricalData(ticker, resolution, from, to || Math.round(Date.now() / 1000));
   res.status(200).json(data);
-});
+};
+router.get('/', getOHLCHandler);
 
 /**
  * @api {WebSocket} event:"subscribeToTicker" subscribe to ticker price updates

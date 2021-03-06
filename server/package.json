@@ -7,8 +7,12 @@
     "scripts": {
         "start": "nodemon --ignore docs --ignore node_modules --exec npm run dev-server",
         "dev-server": "npm run doc && cross-env NODE_ENV='stonks-dev' node server.js",
-        "unit-test": "mocha 'test/unit/*.test.js' --exit",
-        "integration-test": "cross-env mocha --file test/integration/setupTest.js 'test/integration/*.test.js' --timeout 6000 --exit",
+        "unit-test": "c8 mocha 'test/unit/*.test.js' --exit; rm -rf raw-coverage-unit && mv coverage raw-coverage-unit",
+        "integration-test": "c8 cross-env NODE_ENV=test mocha --file test/integration/setupTest.js 'test/integration/*.test.js' --timeout 6000 --exit; rm -rf raw-coverage-integration && mv coverage raw-coverage-integration",
+        "coverage-integration": "c8 report --temp-directory raw-coverage-integration/tmp --reporter=text --reporter=html --report-dir coverage-integration && c8 check-coverage --temp-directory raw-coverage-integration/tmp --lines 80 --functions 68 --branches 70",
+        "coverage-unit": "c8 report --temp-directory raw-coverage-unit/tmp --reporter=text --reporter=html --report-dir coverage-unit && c8 check-coverage --temp-directory raw-coverage-unit/tmp --lines 76 --functions 68 --branches 70",
+        "coverage": "concurrently -n unit,integration  \"npm run coverage-unit\" \"npm run coverage-integration\"",
+        "clean": "rm -rf coverage raw-coverage-unit raw-coverage-integration coverage-unit coverage-integration",
         "doc": "apidoc -i src/ -o docs/"
     },
     "repository": {
@@ -43,8 +47,11 @@
     },
     "devDependencies": {
         "apidoc": "^0.26.0",
+        "c8": "^7.6.0",
         "chai": "^4.2.0",
+        "chai-arrays": "^2.2.0",
         "chai-http": "^4.3.0",
+        "concurrently": "^6.0.0",
         "cross-env": "^7.0.3",
         "mocha": "^8.2.1",
         "nodemon": "^2.0.7",
