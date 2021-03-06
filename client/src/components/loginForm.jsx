@@ -5,7 +5,6 @@ import {login} from '../services/authService'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
-import Store from 'store'
 class LoginForm extends Form {
     
     state = {

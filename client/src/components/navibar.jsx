@@ -4,9 +4,7 @@ import Tutorial from './Tutorial';
 
 class NavBar extends Component{
 
-  constructor(props) {
-    super(props);
-  }
+ 
 
   render(){
     const { location } =this.props;
