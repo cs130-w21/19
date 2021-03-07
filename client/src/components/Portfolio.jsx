@@ -21,7 +21,7 @@ class Portfolio extends Component {
   
 
     onSelectPortfolioItem = ({ ticker, companyName }) => {
-      if(this.props.enableClick === false){
+      if(!this.props.enableClick){
         return false;
       }
       if (ticker !== 'USD') {
@@ -62,7 +62,7 @@ class Portfolio extends Component {
                   <td>
                     {it.symbol === 'USD' ? '-' : this.formatQuantity(it.quantity, it.symbol)}
                   </td>
-                  <td> {it.symbol === "USD" ? "-": `\$${this.formatQuantity(it.price_per_share, 'USD')}`} </td>
+                  <td> {it.symbol === "USD" ? "-": `$${this.formatQuantity(it.price_per_share, 'USD')}`} </td>
                   <td> ${it.symbol === "USD" ? this.formatQuantity(it.quantity, 'USD') : this.getStockValueNumber(it.quantity, it.price_per_share)}</td>
                   <td> {timeago.format(it.date_changed)} </td>
                 </tr>

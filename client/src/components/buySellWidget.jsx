@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Joi from 'joi-browser';
+import AnimatedNumber from 'react-animated-number';
 import Button from 'react-bootstrap/Button';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Spinner from 'react-bootstrap/Spinner';
@@ -38,6 +39,11 @@ class BuySellWidget extends Component {
   resetState = () => {
     this.setState(this.defaultState);
   }
+  componentDidUpdate(prevProps) {
+    if(prevProps.ticker !== this.props.ticker) {
+      this.resetState();
+    }
+  }
 
   constructor(props) {
     super(props);
@@ -45,6 +51,9 @@ class BuySellWidget extends Component {
     this.qtyValidator = Joi.object({
       quantity: Joi.number().integer().greater(0)
     });
+  }
+  componentWillUnmount() {
+    clearInterval(this.marketOpenChecker);
   }
 
   componentDidMount() {
@@ -215,8 +224,18 @@ class BuySellWidget extends Component {
           }
         </p>
 
-        <h1 className="text-center"> USD {mostRecentPrice.toFixed(2)} </h1>
-
+        <h1 className="text-center"> 
+          USD <AnimatedNumber 
+                style={{ transition: '0.8s ease-out', transitionProperty: 'background-color, color, opacity'}} 
+                component="text" 
+                value={mostRecentPrice} 
+                duration={400} 
+                frameStyle={perc => (
+                  perc === 100 ? {} : {backgroundColor: '#ffeb3b'}
+                )}
+                formatValue={(x)=> x.toFixed(2)} 
+              />
+        </h1>
         <Table size="sm" striped bordered variant="light" style={{ marginTop: '1em' }}>
           <tbody>
             <tr>

@@ -16,13 +16,11 @@ axios.interceptors.response.use(null, error => {
   return Promise.reject(error);
 });
 
-
-const http = {
+const obj = {
   get: axios.get,
   post: axios.post,
   put: axios.put,
   delete: axios.delete
-} 
+};
 
-
-export default http;
+export default obj;

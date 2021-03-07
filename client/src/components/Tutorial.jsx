@@ -1,10 +1,9 @@
-import React, {useReducer, useEffect} from 'react';
+import React, {useReducer, useEffect, useState} from 'react';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestionCircle as questionIcon } from '@fortawesome/free-regular-svg-icons';
 import JoyRide, {ACTIONS, EVENTS, STATUS} from 'react-joyride';
-
 
 const tutorial_steps = [
     {
@@ -27,7 +26,7 @@ const tutorial_steps = [
     },
     {
         target: ".tutorial-step-4",
-        content: "Awesome, this table should now show the stock you purchased moments ago! Move to the Profile page for more insights on your portfolio and trading history"
+        content: "Awesome, this table should now show the stock you purchased moments ago! Move to the Profile page for more insights on your portfolio and trading history."
     },
 ]
 
@@ -49,6 +48,7 @@ const initial_state = {
     loading: false,
     stepIndex: 0,
 }
+
 const reducer = (state = initial_state, action) => {
     switch (action.type) {
       case "START":
@@ -74,29 +74,33 @@ const reducer = (state = initial_state, action) => {
 
 const Tutorial = ({ isProfile }) => {
     const [state, dispatch] = useReducer(reducer, initial_state);
+    const [button_state, setButton_state] =  useState("End Tutorial");
     useEffect(() => {
-        if(isProfile === true){
-            if(!localStorage.getItem("tutorial2")){
-                dispatch({type: "START"});
-            }
+        
+        if(isProfile){
+          setButton_state("End Tutorial");
         }
-        else{
-            if(!localStorage.getItem("tutorial")){
-                dispatch({type: "START"});
-            }
+        if(!isProfile){
+          setButton_state("Go to Profile Page");
         }
 
         if(localStorage.getItem('show_tutorial_first_time')) {
           localStorage.removeItem('show_tutorial_first_time');
           //really bad hacky way to do it, but i couldnt think of any other. We need to wait until all
           // DOM elements of the main page are ready so that the css selectors can work?
-          setTimeout(() => dispatch({type: "RESTART"}), 2000);
+          setTimeout(() => dispatch({type: "RESTART"}), 1000);
+        }
+        if(localStorage.getItem('show_tutorial2_first_time')) {
+          localStorage.removeItem('show_tutorial2_first_time');
+          //really bad hacky way to do it, but i couldnt think of any other. We need to wait until all
+          // DOM elements of the main page are ready so that the css selectors can work?
+          setTimeout(() => dispatch({type: "RESTART"}), 1000);
         }
     }, []);
     
 
     const setViewed = () => {
-        if(isProfile === true){
+        if(isProfile){
             localStorage.setItem("tutorial2", "1");
         }
         else{
@@ -110,6 +114,13 @@ const Tutorial = ({ isProfile }) => {
         if (
             status === STATUS.FINISHED
           ) {
+            if(!isProfile){
+              localStorage.setItem('show_tutorial2_first_time', true);
+              window.location = "/myProfile"
+            }
+            else if(isProfile){
+              setButton_state("Go to Profile Page");
+            }
             setViewed();
             dispatch({ type: "STOP" });
           } else if (type === EVENTS.STEP_AFTER || type === EVENTS.TARGET_NOT_FOUND) {
@@ -123,7 +134,7 @@ const Tutorial = ({ isProfile }) => {
 
        
         const toggleTutorialMode = () => {
-            if(state.run === false){
+            if(!state.run){
                 dispatch({type: "RESTART"});
             }
             else{
@@ -153,7 +164,7 @@ const Tutorial = ({ isProfile }) => {
             steps={isProfile? tutorial_steps2: tutorial_steps} 
             showSkipButton={true}  
             locale={{
-                last: "End Tutorial",
+                last: button_state,
                 skip: "Close"
             }}
             styles={{

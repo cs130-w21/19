@@ -40,7 +40,6 @@ export function DateArray( DArray )
         return moment(x).get('date')
     })
 
-    
 
     
 

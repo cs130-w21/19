@@ -1,29 +1,4 @@
-import { tsvParse } from  "d3-dsv";
-import { timeParse } from "d3-time-format";
 import { DateTime } from 'luxon';
-
-function parseData(parse) {
-	return function(d) {
-		d.date = parse(d.date);
-		d.open = +d.open;
-		d.high = +d.high;
-		d.low = +d.low;
-		d.close = +d.close;
-		d.volume = +d.volume;
-
-		return d;
-	};
-}
-
-const parseDate = timeParse("%Y-%m-%d");
-
-export function getData() {
-	const promiseMSFT = fetch("https://cdn.rawgit.com/rrag/react-stockcharts/master/docs/data/MSFT.tsv")
-		.then(response => response.text())
-		.then(data => tsvParse(data, parseData(parseDate)))
-	return promiseMSFT;
-
-}
 
 // returns a boolean that indicates whether markets are open or not.
 // we are using NYSE / NASDAQ US stock markets, so they open
@@ -34,49 +9,49 @@ export const checkMarketOpen = () => {
   const { minute: mm, hour: hh, weekday: dow } = DateTime.local().setZone('America/New_York');
 
   const elapsedMinsDay = hh * 60 + mm;
-  const isDuringTime = (9*60 + 30) <= elapsedMinsDay && elapsedMinsDay <= (16 * 60);
+  const isDuringTime = (9 * 60 + 30) <= elapsedMinsDay && elapsedMinsDay <= (16 * 60);
 
   const isWeekday = 1 <= dow && dow <= 5;
-  //return isDuringTime && isWeekday;
-  return true;
+  // TODO: remove 'true' below once testing is done.
+  return true || (isDuringTime && isWeekday);
 }
-
 
 export function formatCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 
-export function generateRandomColor(){
-	const color = Math.floor(Math.random()*16777215).toString(16);
-	return "#" + color;
+export function generateRandomColor() {
+  const color = Math.floor(Math.random() * 16777215).toString(16);
+  return "#" + color;
 }
 
-export function getStockValueNumber(quantity, price_per_share){
-	return ((Number(quantity) * Number(price_per_share)).toFixed(2));
+export function getStockValueNumber(quantity, price_per_share) {
+  return ((Number(quantity) * Number(price_per_share)).toFixed(2));
 }
-export function createChartInput(items){
-	var labels_val = [];
-      var bgcolor = [];
-      var data_val = [];
-      items.forEach(function (item){
-		  if(item.symbol !== 'USD'){
-			  labels_val.push(item.symbol)
-			  bgcolor.push(generateRandomColor());
-			  var stock_val = getStockValueNumber(item.quantity, item.price_per_share);
-			  //console.log(stock_val);
-			  data_val.push(stock_val);
-			}
-		});
-//currently, only dummy values
-//replace rhs with labels_val, bgcolor, and data_val 
-	  const input = {
-		labels: labels_val, //['MSFT', 'AAPL', 'AMZN'],
-		datasets: [{
-			label: "Shares",
-			backgroundColor: bgcolor,//['#ff0000', '#ff9500', '#2d9c00'],
-			data: data_val, //[6826.80, 20114.10, 585.60, 50.00],
-		}]
-	}
-	return input;
+export function createChartInput(items) {
+  var labels_val = [];
+  var bgcolor = [];
+  var data_val = [];
+  items.forEach(function (item){
+    if(item.symbol !== 'USD'){
+      labels_val.push(item.symbol)
+      bgcolor.push(generateRandomColor());
+      var stock_val = getStockValueNumber(item.quantity, item.price_per_share);
+      //console.log(stock_val);
+      data_val.push(stock_val);
+    }
+  });
+  //currently, only dummy values
+  //replace rhs with labels_val, bgcolor, and data_val 
+  const input = {
+    labels: labels_val, //['MSFT', 'AAPL', 'AMZN'],
+    datasets: [{
+      label: "Shares",
+      backgroundColor: bgcolor,//['#ff0000', '#ff9500', '#2d9c00'],
+      data: data_val, //[6826.80, 20114.10, 585.60, 50.00],
+    }]
+  }
+
+  return input;
 }

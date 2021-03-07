@@ -40,6 +40,9 @@ const wsServer = new ws.Server({ noServer :true, clientTracking: true });
 
 app.use('/docs', express.static(path.join(__dirname, 'docs')));
 
+app.use('/coverage-integration', express.static(path.join(__dirname, 'coverage-integration')));
+app.use('/coverage-unit', express.static(path.join(__dirname, 'coverage-unit')));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cors({

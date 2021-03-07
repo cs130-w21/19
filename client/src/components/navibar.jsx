@@ -3,9 +3,6 @@ import { useLocation, Link, NavLink } from "react-router-dom";
 import Tutorial from './Tutorial';
 
 class NavBar extends Component{
-
- 
-
   render(){
     const { location } =this.props;
     const isInProfilePage = location.pathname === '/myProfile';

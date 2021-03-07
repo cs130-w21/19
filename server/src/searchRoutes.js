@@ -29,7 +29,7 @@ const router = express.Router()
  *       ]
  *     }
  */
-router.get('/', async (req, res) => {
+const searchStocksHandler = async (req, res) => {
   const { searchString, maxResults } = req.query;
   if (!searchString || typeof searchString !== 'string') {
     return res.status(400).json({
@@ -50,6 +50,6 @@ router.get('/', async (req, res) => {
     searchResults,
 
   });
-});
-
+};
+router.get('/', searchStocksHandler);
 export default router;

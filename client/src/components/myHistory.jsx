@@ -78,8 +78,7 @@ class Histroy extends Component {
 
     render() { 
 
-        const history_title = "";//user + "'s Trading History";
-        //const userHistroy = getUserHistory.getUserHistoryData(user)
+        const history_title = "";
 
         const count = this.state.userHistory.length;
         const { pageSize, currentPage, sortColumn } = this.state;
@@ -109,10 +108,6 @@ class Histroy extends Component {
 
         return (
             <div>
-                {/*<h2 class="text-dark"> &nbsp;
-                    {history_title}
-        </h2>*/}
-
             <div className="col">
                 <p>Showing {totalCount} result from History.</p>
                 <HistoryTable

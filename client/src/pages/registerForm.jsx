@@ -1,9 +1,13 @@
+<<<<<<< HEAD:client/src/components/registerForm.jsx
 import React  from 'react';
+=======
+import React from 'react';
+>>>>>>> d5ddd73983826058f13120dc4a8c1c86b768e35b:client/src/pages/registerForm.jsx
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import Joi from "joi-browser"
-import Form from './common/Form'
+import Form from '../components/common/Form'
 import * as authService from "../services/authService";
 
 

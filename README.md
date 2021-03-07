@@ -40,6 +40,8 @@ open localhost:3000
 - [CICD (Travis)](https://travis-ci.com/github/cs130-w21/19)
 - [Live prod site](http://stonks.us-west-1.elasticbeanstalk.com/)
 - [Live API docs](http://stonks.us-west-1.elasticbeanstalk.com/docs)
+- [Live Integration Test coverage report](http://stonks.us-west-1.elasticbeanstalk.com/coverage-integration)
+- [Live Unit Test coverage report](http://stonks.us-west-1.elasticbeanstalk.com/coverage-unit)
 
 # Repo Conventions
 

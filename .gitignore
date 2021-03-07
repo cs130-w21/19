@@ -22,7 +22,6 @@ pids
 lib-cov
 
 # Coverage directory used by tools like istanbul
-coverage
 *.lcov
 
 # nyc test coverage
@@ -128,3 +127,9 @@ docs/
 
 
 .env
+
+# Coverage testing
+server/coverage-integration
+server/coverage-unit
+server/raw-coverage-integration
+server/raw-coverage-unit

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "cd server && npm run test",
+    "coverage": "cd server && npm run coverage",
     "install:all": "npm install && npm run install:server && npm run install:client",
     "install:server": "cd server && npm install",
     "install:client": "cd client && yarn install",
