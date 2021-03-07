@@ -6,52 +6,52 @@ import { DateTime } from 'luxon';
 // Normally, federal holidays are included, but for the sake 
 // of simplicity we're not doing it here.
 export const checkMarketOpen = () => {
-	const { minute: mm, hour: hh, weekday: dow } = DateTime.local().setZone('America/New_York');
+  const { minute: mm, hour: hh, weekday: dow } = DateTime.local().setZone('America/New_York');
 
-	const elapsedMinsDay = hh * 60 + mm;
-	const isDuringTime = (9 * 60 + 30) <= elapsedMinsDay && elapsedMinsDay <= (16 * 60);
+  const elapsedMinsDay = hh * 60 + mm;
+  const isDuringTime = (9 * 60 + 30) <= elapsedMinsDay && elapsedMinsDay <= (16 * 60);
 
-	const isWeekday = 1 <= dow && dow <= 5;
-	//return isDuringTime && isWeekday;
-	return true;
+  const isWeekday = 1 <= dow && dow <= 5;
+  // TODO: remove 'true' below once testing is done.
+  return true || (isDuringTime && isWeekday);
 }
 
 export function formatCommas(x) {
-	return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 
 export function generateRandomColor() {
-	const color = Math.floor(Math.random() * 16777215).toString(16);
-	return "#" + color;
+  const color = Math.floor(Math.random() * 16777215).toString(16);
+  return "#" + color;
 }
 
 export function getStockValueNumber(quantity, price_per_share) {
-	return ((Number(quantity) * Number(price_per_share)).toFixed(2));
+  return ((Number(quantity) * Number(price_per_share)).toFixed(2));
 }
 export function createChartInput(items) {
-	var labels_val = [];
-	var bgcolor = [];
-	var data_val = [];
-	items.forEach(function (item) {
-		if (item.symbol != 'USD') {
-			labels_val.push(item.symbol)
-			bgcolor.push(generateRandomColor());
-			var stock_val = getStockValueNumber(item.quantity, item.price_per_share);
-			//console.log(stock_val);
-			data_val.push(stock_val);
-		}
-	});
-	//currently, only dummy values
-	//replace rhs with labels_val, bgcolor, and data_val 
-	const input = {
-		labels: labels_val, //['MSFT', 'AAPL', 'AMZN'],
-		datasets: [{
-			label: "Shares",
-			backgroundColor: bgcolor,//['#ff0000', '#ff9500', '#2d9c00'],
-			data: data_val, //[6826.80, 20114.10, 585.60, 50.00],
-		}]
-	}
+  var labels_val = [];
+  var bgcolor = [];
+  var data_val = [];
+  items.forEach(function (item){
+    if(item.symbol !== 'USD'){
+      labels_val.push(item.symbol)
+      bgcolor.push(generateRandomColor());
+      var stock_val = getStockValueNumber(item.quantity, item.price_per_share);
+      //console.log(stock_val);
+      data_val.push(stock_val);
+    }
+  });
+  //currently, only dummy values
+  //replace rhs with labels_val, bgcolor, and data_val 
+  const input = {
+    labels: labels_val, //['MSFT', 'AAPL', 'AMZN'],
+    datasets: [{
+      label: "Shares",
+      backgroundColor: bgcolor,//['#ff0000', '#ff9500', '#2d9c00'],
+      data: data_val, //[6826.80, 20114.10, 585.60, 50.00],
+    }]
+  }
 
-	return input;
+  return input;
 }

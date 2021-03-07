@@ -5,7 +5,9 @@ function log(error) {
   console.error(error);
 }
 
-export default {
+const obj = {
   init,
   log
 };
+
+export default obj;

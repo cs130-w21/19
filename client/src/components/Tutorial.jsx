@@ -1,12 +1,9 @@
 import React, {useReducer, useEffect} from 'react';
-import Button from 'react-bootstrap/Button'
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Popover from 'react-bootstrap/Popover';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestionCircle as questionIcon } from '@fortawesome/free-regular-svg-icons';
 import JoyRide, {ACTIONS, EVENTS, STATUS} from 'react-joyride';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
 
 const tutorial_steps = [
     {
@@ -77,7 +74,7 @@ const reducer = (state = initial_state, action) => {
 const Tutorial = ({ isProfile }) => {
     const [state, dispatch] = useReducer(reducer, initial_state);
     useEffect(() => {
-        if(isProfile == true){
+        if(isProfile){
             if(!localStorage.getItem("tutorial2")){
                 dispatch({type: "START"});
             }
@@ -98,7 +95,7 @@ const Tutorial = ({ isProfile }) => {
     
 
     const setViewed = () => {
-        if(isProfile == true){
+        if(isProfile){
             localStorage.setItem("tutorial2", "1");
         }
         else{
@@ -125,7 +122,7 @@ const Tutorial = ({ isProfile }) => {
 
        
         const toggleTutorialMode = () => {
-            if(state.run == false){
+            if(!state.run){
                 dispatch({type: "RESTART"});
             }
             else{

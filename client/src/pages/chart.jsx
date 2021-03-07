@@ -89,9 +89,6 @@ class ChartComponent extends Component {
   }
   componentWillUnmount(){
     wsClient.disconnect();
-  }
-
-  componentWillUnmount() {
     clearInterval(this.interval);
   }
 
