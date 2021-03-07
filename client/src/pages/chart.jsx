@@ -16,21 +16,21 @@ import { getWatchlist, addToWatchlist, deleteFromWatchlist } from '../services/w
 import { getPortfolioItems } from '../services/portfolioService';
 import Portfolio from '../components/Portfolio';
 import StockSelector from '../components/StockSelector';
+import * as wsClient from '../services/liveDataService';
 import '../styles/app.css';
 import { timeParse } from "d3-time-format";
 
 const parseDate = timeParse("%s");
 
 class ChartComponent extends Component {
-  defaultState = { 
+  defaultState = {
     isWatchlistSelected: true,
     ticker: 'MSFT',
-    companyName: 'MICROSOFT CORP',
+    companyName: 'MICROSOFT CORPORATION COMMON STOCK',
     data: undefined,
     watchlistItems: [],
     portfolioItems: [],
     isLogin: false,
-    end: Math.floor(Date.now() / 1000),
     hasQueryData: true
   }
   constructor(props) {
@@ -57,11 +57,38 @@ class ChartComponent extends Component {
     });
   }
 
+  onReceiveStockUpdate = (updatedStock) => {
+    const { ticker, timestamp, price, volume } = updatedStock;
+    if(ticker === this.state.ticker) {
+      this.setState(prevState => {
+        const { opens, highs, lows, closes, volumes, timestamps, hasData } = prevState.data;
+        return {
+          mostRecentPrice: price,
+          data: {
+            hasData,
+            timestamps: [...timestamps, timestamp],
+            volumes: [...volumes, volume],
+            opens: [...opens, closes[closes.length - 1]],
+            closes: [...closes, price],
+            highs: [...highs, Math.max(closes[closes.length - 1], price)],
+            lows: [...lows, Math.min(closes[lows.length - 1], price)],
+          }
+        }
+      });
+    }
+  }
+
   componentDidMount() {
-    const mostRecentPrice = 50.40;
-    this.runGetData(this.state.ticker);
+    this.runGetData(this.state.ticker).then(data => {
+      wsClient.connect(this.onReceiveStockUpdate).then(() => { 
+        wsClient.subscribeToTicker(this.state.ticker);
+      }).catch((e) => console.log("FAILED TO CONNECT", e));
+    })
     this.updateWatchlistData();
     this.updatePortfolioData();
+  }
+  componentWillUnmount(){
+    wsClient.disconnect();
   }
 
   componentWillUnmount() {
@@ -69,12 +96,14 @@ class ChartComponent extends Component {
   }
 
   changeSelectedStock = ({ ticker, companyName }) => {
+    wsClient.unsubscribeFromTicker(this.state.ticker);
     this.setState({
       ticker,
       companyName,
     });
-
-    this.runGetData(ticker);
+    this.runGetData(ticker).then(() => {
+      wsClient.subscribeToTicker(ticker);
+    });
   }
 
   toggleWatchlistAdd = async () => {
@@ -101,14 +130,14 @@ class ChartComponent extends Component {
     this.updatePortfolioData();
   }
 
-  runGetData(ticker) {
-    getData(this.state.end - 5097600, this.state.end, ticker, "30").then(({ data }) => {
-      this.setState(prevState=> ({
-        data,
-        hasQueryData: data.hasData,
-        mostRecentPrice: data.hasData? data.closes[data.closes.length - 1] : prevState.mostRecentPrice
-      }));
-    })
+  async runGetData(ticker) {
+    const endTimeUnix = Math.floor(Date.now() / 1000);
+    const { data } = await getData(endTimeUnix - 5097600, endTimeUnix, ticker, "15");
+    this.setState(prevState=> ({
+      data,
+      hasQueryData: data.hasData,
+      mostRecentPrice: data.hasData? data.closes[data.closes.length - 1] : prevState.mostRecentPrice
+    }));
   }
 
   parseFinnhubData(finnhubData) {

@@ -10,7 +10,7 @@
         "unit-test": "c8 mocha 'test/unit/*.test.js' --exit; rm -rf raw-coverage-unit && mv coverage raw-coverage-unit",
         "integration-test": "c8 cross-env NODE_ENV=test mocha --file test/integration/setupTest.js 'test/integration/*.test.js' --timeout 6000 --exit; rm -rf raw-coverage-integration && mv coverage raw-coverage-integration",
         "coverage-integration": "c8 report --temp-directory raw-coverage-integration/tmp --reporter=text --reporter=html --report-dir coverage-integration && c8 check-coverage --temp-directory raw-coverage-integration/tmp --lines 80 --functions 68 --branches 70",
-        "coverage-unit": "c8 report --temp-directory raw-coverage-unit/tmp --reporter=text --reporter=html --report-dir coverage-unit && c8 check-coverage --temp-directory raw-coverage-unit/tmp --lines 76 --functions 68 --branches 70",
+        "coverage-unit": "c8 report --temp-directory raw-coverage-unit/tmp --reporter=text --reporter=html --report-dir coverage-unit && c8 check-coverage --temp-directory raw-coverage-unit/tmp --lines 75 --functions 68 --branches 70",
         "coverage": "concurrently -n unit,integration  \"npm run coverage-unit\" \"npm run coverage-integration\"",
         "clean": "rm -rf coverage raw-coverage-unit raw-coverage-integration coverage-unit coverage-integration",
         "doc": "apidoc -i src/ -o docs/"
@@ -34,6 +34,7 @@
         "csvtojson": "^2.0.10",
         "express": "^4.17.1",
         "express-session": "^1.17.1",
+        "gaussian": "^1.2.0",
         "luxon": "^1.25.0",
         "minisearch": "^3.0.2",
         "node-cron": "^2.0.3",

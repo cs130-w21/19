@@ -68,6 +68,10 @@ class SubscriptionManager {
     const instance = this.getInstance();
     return instance.clientIdToSubscriptions[client.id] || [];
   }
+  static getAllSubscribedTickers() {
+    const instance = this.getInstance();
+    return Object.keys(instance.tickerToClients);
+  }
 
   static getSubscribedClients(ticker) {
     const instance = this.getInstance();

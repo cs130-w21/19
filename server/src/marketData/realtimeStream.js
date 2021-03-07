@@ -1,8 +1,10 @@
 import { pgPool } from '../db/dbClient.js';
 import SubscriptionManager from './subscriptionManager.js';
+import gaussian from 'gaussian';
 import { FinnhubWsClient } from './finnhub.js';
 import ws from 'ws';
 import pgFormat from 'pg-format';
+import marketPriceFns from './marketPrice.js';
 
 
 const reduceUpdates = (updates) => {
@@ -28,7 +30,7 @@ const reduceUpdates = (updates) => {
 }
 
 /* handler function that is called whenever finnhub sends data to us (the server). */
-export const finnhubWsMessageHandler = async ({ data: payloadString }) => {
+export const finnhubWsMessageHandler = async ({ data: payloadString }, updatePrices=true) => {
   const payload = JSON.parse(payloadString);
 
   if (payload.type === 'trade') {
@@ -38,18 +40,19 @@ export const finnhubWsMessageHandler = async ({ data: payloadString }) => {
     // when having series of statements.
     // see here: https://stackoverflow.com/questions/1006969/why-are-batch-inserts-updates-faster-how-do-batch-updates-work/1007006#1007006
 
-    // TODO: There might be a postgres deadlock problem here. WHY?
     const reducedUpdates = reduceUpdates(updates);
 
-    const rowsToAdd = reducedUpdates.map((update) => [update.s, update.p, Math.round(update.t / 1000)]);
-    // pgFormat converts everything to string. So we have to cast last_price back to numeric
-    // NOTE: can we make this into its own function?
-    await pgPool.query(pgFormat(`
+    if (updatePrices) {
+      const rowsToAdd = reducedUpdates.map((update) => [update.s, update.p, Math.round(update.t / 1000)]);
+      // pgFormat converts everything to string. So we have to cast last_price back to numeric
+      // NOTE: can we make this into its own function?
+      await pgPool.query(pgFormat(`
       UPDATE tickers
       SET last_price = vals.last_price::DECIMAL(12,2), price_last_changed = to_timestamp(vals.timestamp::bigint) AT TIME ZONE 'UTC'
       FROM ( VALUES %L) AS vals(ticker_name, last_price, timestamp)
       WHERE tickers.ticker_name = vals.ticker_name;`, rowsToAdd)
-    );
+      );
+    }
     reducedUpdates.forEach((update) => {
       const { s: ticker, p: price, t: timestampMillis, v: volume } = update;
       const clients = SubscriptionManager.getSubscribedClients(ticker);
@@ -60,7 +63,7 @@ export const finnhubWsMessageHandler = async ({ data: payloadString }) => {
             volume,
             ticker,
             event: "tickerPriceUpdate",
-            timestamp: timestampMillis/1000,
+            timestamp: Math.round(timestampMillis/1000),
           }));
         }
       });
@@ -72,3 +75,41 @@ export const finnhubWsMessageHandler = async ({ data: payloadString }) => {
     console.error("Unrecognized finnhub WS type:", payload);
   }
 };
+
+
+/**
+ * method that we use to simulate stock updates during weekends.
+ * This is because market data changes don't happen at weekends.
+ */
+const generateFakeStockUpdates = async () => {
+  const pgClient = await pgPool.connect();
+  const tickers = SubscriptionManager.getAllSubscribedTickers();
+  // get all prices for this.
+  const prices = await Promise.all(tickers.map((ticker) => marketPriceFns.getMarketPrice(pgClient, ticker)));
+
+  // model with a normal distribution.
+  const fakeUpdates = prices.map((price, i) => {
+    const p = parseFloat(price);
+    const variance = (p * 0.004) ** 2;
+    const gaussDistr = gaussian(0, variance);
+    return {
+      s: tickers[i],
+      p: p + gaussDistr.random(1)[0],
+      t: Date.now(),
+      v: 10000 + (Math.random() * 250),
+    }
+  });
+
+  pgClient.release();
+  return JSON.stringify({
+    type: 'trade',
+    data: fakeUpdates,
+  });
+}
+
+setInterval(async () => {
+  if(process.env.NODE_ENV !== 'production') {
+    const fakeStockUpdates = await generateFakeStockUpdates();
+    await finnhubWsMessageHandler({ data: fakeStockUpdates }, false);
+  }
+}, 3500);
