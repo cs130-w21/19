@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import LoginForm from "./components/loginForm"
-import RegisterForm from "./components/registerForm"
+import LoginForm from "./pages/loginForm"
+import RegisterForm from "./pages/registerForm"
 import NavBar from "./components/navibar"
 import { Route, Switch } from "react-router-dom";
 import ChartPage from "./pages/chart"
 import ProfilePage from "./pages/myProfile"
 import Store from 'store'
-import Logout from './components/logout';
+import Logout from './pages/logout';
 import './styles/app.css';
 
 

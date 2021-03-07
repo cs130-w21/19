@@ -26,7 +26,7 @@ class ChartComponent extends Component {
   defaultState = {
     isWatchlistSelected: true,
     ticker: 'MSFT',
-    companyName: 'MICROSOFT CORPORATION COMMON STOCK',
+    companyName: 'MICROSOFT CORP',
     data: undefined,
     watchlistItems: [],
     portfolioItems: [],

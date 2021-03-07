@@ -3,7 +3,7 @@ import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 
 import Joi from "joi-browser"
-import Form from './common/Form'
+import Form from '../components/common/Form'
 import * as authService from "../services/authService";
 
 
