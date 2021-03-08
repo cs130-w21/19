@@ -30,6 +30,14 @@ npm start
 # navigate to localhost:3000 to see the frontend! Backend is hosted in port 8080 (default)
 open localhost:3000
 ```
+## Deployments & the state of the `master` branch
+We do CICD on Travis CI. For every push onto every branch, a travis build is triggered. See the link below for our travis site.
+
+Merging to master can only happen upon approval in review and the passing of checks. Once merged to `master`, tested & built successfully, Travis CI will kick off the deployment to elastic beanstalk. We must not skip builds and deployments on `master`.
+
+The **master** branch is a **direct** reflection of what's deployed in production. To streamline and simplify the project, we do not operate on a tag & release system.
+
+
 
 # Useful links
 
